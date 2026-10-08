@@ -11,9 +11,10 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)App.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AppPlumbingRibbon.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Commands\CmdPlumbingSample.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Commands\Login\CmdAboutUs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Commands\Login\CmdLogin.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Commands\Plumbing\PlumbingCommandBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Commands\Plumbing\PlumbingCommands.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)LoginLicense\Client\ActivationError.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)LoginLicense\Client\ActivationStore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)LoginLicense\Client\ApiModels.cs" />

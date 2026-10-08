@@ -78,6 +78,8 @@
         <File Id="IconLicense" Source="$(var.SourceRoot)\Icon\Lincense.psd-01.png" />
         <File Id="IconSignin" Source="$(var.SourceRoot)\Icon\Signin.psd-01.png" />
         <File Id="IconLogo" Source="$(var.SourceRoot)\Icon\logo dai Flash BIM.png" />
+        <File Id="IconPlumbing16" Source="$(var.SourceRoot)\Icon\PlumbingSolution_16x16.png" />
+        <File Id="IconPlumbing32" Source="$(var.SourceRoot)\Icon\PlumbingSolution_32x32.png" />
         <RegistryValue Root="HKCU" Key="Software\FlashBim\PlumbingSolution2024" Name="Icons" Type="integer" Value="1"
                        KeyPath="yes" />
         <RemoveFolder Id="RemoveIconDir" Directory="IconDir" On="uninstall" />
