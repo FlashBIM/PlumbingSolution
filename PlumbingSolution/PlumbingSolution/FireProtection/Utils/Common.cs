@@ -1611,6 +1611,152 @@ namespace PlumbingSolution.FireProtection.Ultis
                 return null;
             }
         }
+
+        public static void DisconnectFrom(FamilyInstance fittingWye, out Connector connectedSt, out Connector connectedEnd, out Element eleSt, out Element eleEnd)
+        {
+            connectedSt = null;
+            connectedEnd = null;
+            eleSt = null;
+            eleEnd = null;
+            if (fittingWye != null)
+            {
+                GetInformationConectorWye(fittingWye, null, out Connector conSt, out Connector conEnd, out Connector conNhanhWye);
+
+                if (conSt != null && conSt.IsConnected)
+                {
+                    foreach (Connector item in conSt.AllRefs)
+                    {
+                        if (item != null && item.IsConnectedTo(conSt))
+                        {
+                            conSt.DisconnectFrom(item);
+
+                            if (item != null && item.Owner != null)
+                            {
+                                connectedSt = item;
+                                eleSt = item.Owner;
+                            }
+                        }
+                    }
+                }
+
+                if (conEnd != null && conEnd.IsConnected)
+                {
+                    foreach (Connector item in conEnd.AllRefs)
+                    {
+                        if (item != null && item.IsConnectedTo(conEnd))
+                        {
+                            conEnd.DisconnectFrom(item);
+
+                            if (item != null && item.Owner != null)
+                            {
+                                connectedEnd = item;
+                                eleEnd = item.Owner;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// project a point onto plane
+        /// </summary>
+        public static XYZ GetPointProjectOnPlane(PlanarFace planarFace, XYZ point)
+        {
+            Plane plane = Plane.CreateByNormalAndOrigin(planarFace.FaceNormal, planarFace.Origin);
+
+            plane.Project(point, out UV uv1, out double d);
+            XYZ projectedPoint = plane.Origin + (uv1.U * plane.XVec) + (uv1.V * plane.YVec);
+            return projectedPoint;
+        }
+
+        public static XYZ GetPointProjectOnPlane(Plane plane, XYZ point, XYZ vectorAlong, double Tolerance = 1.0e-5)
+        {
+            if (vectorAlong != null)
+            {
+                // Calculate t parameter for intersection
+                double numerator = plane.Normal.DotProduct(plane.Origin - point);
+                double denominator = plane.Normal.DotProduct(vectorAlong);
+
+                if (Math.Abs(denominator) < Tolerance)
+                {
+                    return null; // The vector is parallel to the plane
+                }
+
+                double t = numerator / denominator;
+
+                // Calculate projected point
+                return point + vectorAlong * t;
+            }
+            else
+            {
+                plane.Project(point, out UV uv1, out double d);
+                XYZ projectedPoint = plane.Origin + (uv1.U * plane.XVec) + (uv1.V * plane.YVec);
+                return projectedPoint;
+            }
+        }
+
+        /// Tìm giao điểm của 2 curve
+        /// Chú ý line unbound không sử dụng được
+        /// </summary>
+        /// <param name="c1"></param>
+        /// <param name="c2"></param>
+        /// <returns></returns>
+        public static XYZ Intersection(Curve c1, Curve c2)
+        {
+            if (!c1.IsBound || !c2.IsBound)
+                return null;
+
+            XYZ p1 = c1.GetEndPoint(0);
+            XYZ q1 = c1.GetEndPoint(1);
+            XYZ p2 = c2.GetEndPoint(0);
+            XYZ q2 = c2.GetEndPoint(1);
+            XYZ v1 = q1 - p1;
+            XYZ v2 = q2 - p2;
+            XYZ w = p2 - p1;
+            XYZ p5 = null;
+            double c = (v2.X * w.Y - v2.Y * w.X)
+                       / (v2.X * v1.Y - v2.Y * v1.X);
+            if (!double.IsInfinity(c) && !double.IsNaN(c))
+            {
+                double x = p1.X + c * v1.X;
+                double y = p1.Y + c * v1.Y;
+                p5 = new XYZ(x, y, 0);
+            }
+            return p5;
+        }
+
+        public static void RotateLine(Document doc, FamilyInstance fitting, Line axisSource, Line axisDestination)
+        {
+            if (doc == null || fitting == null || axisDestination == null || axisSource == null)
+                return;
+
+            if (GeometryUtils.IsParallel(axisSource.Direction, axisDestination.Direction))
+                return;
+
+            XYZ vector = axisDestination.Direction.CrossProduct(axisSource.Direction);
+            XYZ intersection = GeometryUtils.GetUnBoundIntersection(axisDestination, axisSource);
+
+            if (intersection != null)
+            {
+                double angle = axisDestination.Direction.AngleTo(axisSource.Direction);
+
+                Line line = Line.CreateUnbound(intersection, vector);
+
+                ElementTransformUtils.RotateElement(doc, fitting.Id, line, angle);
+                doc.Regenerate();
+            }
+            else
+            {
+                intersection = (axisDestination.GetEndPoint(0) + axisDestination.GetEndPoint(1)) / 2;
+                double angle = axisDestination.Direction.AngleTo(axisSource.Direction);
+
+                Line line = Line.CreateUnbound(intersection, vector);
+
+                ElementTransformUtils.RotateElement(doc, fitting.Id, line, angle);
+                doc.Regenerate();
+            }
+        }
     }
 
     public class ObjectItem

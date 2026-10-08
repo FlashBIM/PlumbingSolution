@@ -313,5 +313,126 @@ namespace PlumbingSolution.FireProtection.Ultis
 
             return retval;
         }
+    
+
+        public static void DisconnectFrom(Connector conInput, out Element eleInput)
+        {
+            eleInput = null;
+
+            if (conInput != null && conInput.IsConnected)
+            {
+                Element main = conInput.Owner as Element;
+
+                foreach (Connector item in conInput.AllRefs)
+                {
+                    if (item != null && item.IsConnectedTo(conInput))
+                    {
+                        Element ele = item.Owner;
+
+                        if (ele != null && ele.Id != main.Id && (ele is FamilyInstance || ele is MEPCurve))
+                        {
+                            if (ele.Category.Id.ToInt() != (int)BuiltInCategory.OST_DuctInsulations
+                                && ele.Category.Id.ToInt() != (int)BuiltInCategory.OST_PipeInsulations
+                                && ele.Category.Id.ToInt() != (int)BuiltInCategory.OST_DuctLinings)
+                            {
+                                eleInput = ele;
+                                conInput.DisconnectFrom(item);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Lấy ra connector gần nhất và xa nhất với 1 điểm cho trước
+        /// </summary>
+        /// <param name="point"></param>
+        /// <param name="pipe"></param>
+        /// <param name="outFarest"></param>
+        /// <returns></returns>
+        public static Connector GetConnectorNearest(XYZ point, List<Connector> connectors, out Connector outFarest, bool is2D = false)
+        {
+            Connector retval = null;
+            outFarest = null;
+
+            if (point != null && connectors != null)
+            {
+                double max = double.MaxValue;
+                double min = double.MinValue;
+
+                if (is2D)
+                    point = Common.To2D(point);
+
+                foreach (Connector item in connectors)
+                {
+                    XYZ conPoint = new XYZ(item.Origin.X, item.Origin.Y, item.Origin.Z);
+
+                    if (is2D)
+                        conPoint = Common.To2D(conPoint);
+
+                    double distance = conPoint.DistanceTo(point);
+
+                    // lấy connector gần nhất
+                    if (distance < max)
+                    {
+                        max = distance;
+                        retval = item;
+                    }
+                    // lấy connector xa nhất
+                    if (distance > min)
+                    {
+                        min = distance;
+                        outFarest = item;
+                    }
+                }
+            }
+
+            return retval;
+        }
+
+        public static Connector GetConnectorNearest(XYZ point, ConnectorManager connectorManager, out Connector outFarest, bool is2D = false)
+        {
+            Connector retval = null;
+            outFarest = null;
+
+            if (point != null && connectorManager != null)
+            {
+                if (is2D)
+                    point = Common.To2D(point);
+
+                double max = double.MaxValue;
+                double min = double.MinValue;
+
+                foreach (Connector item in connectorManager.Connectors)
+                {
+                    if (item.ConnectorType != ConnectorType.End)
+                        continue;
+
+                    XYZ conPoint = new XYZ(item.Origin.X, item.Origin.Y, item.Origin.Z);
+
+                    if (is2D)
+                        conPoint = Common.To2D(conPoint);
+
+                    double distance = conPoint.DistanceTo(point);
+
+                    // lấy connector gần nhất
+                    if (distance < max)
+                    {
+                        max = distance;
+                        retval = item;
+                    }
+                    // lấy connector xa nhất
+                    if (distance > min)
+                    {
+                        min = distance;
+                        outFarest = item;
+                    }
+                }
+            }
+
+            return retval;
+        }
     }
 }
