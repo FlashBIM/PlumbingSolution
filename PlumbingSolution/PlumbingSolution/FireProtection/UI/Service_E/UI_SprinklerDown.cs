@@ -239,6 +239,8 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
                 string error = null;
                 if (PipeTypeIdC3 == ElementId.InvalidElementId)
                     error = "Select a Pipe Type.";
+                else if (cboC3PipeSize.SelectedItem == null || PipeSizeC3 == double.MaxValue)
+                    error = "Select a Pipe Size.";
                 else if (L1_ <= 0)
                     error = "L1 must be greater than 0.";
                 else if (!IsByMep && L2_ <= 0)
@@ -398,7 +400,8 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
             }
             else
             {
-                ckbConnectCo90.Enabled = true;
+                // Type 5/6 tự đặt co khi điểm nối nằm ở đầu ống chính, tee/tap khi nằm giữa ống.
+                ckbConnectCo90.Enabled = !type56;
             }
 
             // Family Elbow chỉ dùng cho Phương án 5 cũ của Dirit (đã bỏ theo sheet Fire Protection);
