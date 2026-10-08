@@ -4,9 +4,6 @@ namespace PlumbingSolution.Commands.Plumbing
 {
     // ---- Panel Fire Protection ----
     [Transaction(TransactionMode.Manual)]
-    public class CmdPendentSprinkler : PlumbingCommandBase { protected override string Title => "Pendent Sprinkler"; }
-
-    [Transaction(TransactionMode.Manual)]
     public class CmdPlaceSprinkler : PlumbingCommandBase { protected override string Title => "Place Sprinkler"; }
 
     [Transaction(TransactionMode.Manual)]

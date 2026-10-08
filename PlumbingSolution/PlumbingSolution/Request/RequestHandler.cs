@@ -1,7 +1,7 @@
 using Autodesk.Revit.UI;
 using PlumbingSolution.Ultis;
 
-namespace PlumbingSolution.Request
+namespace PlumbingSolution.Requests
 {
     /// <summary>
     /// ExternalEvent handler tối thiểu, điều phối các command modeless của PlumbingSolution.

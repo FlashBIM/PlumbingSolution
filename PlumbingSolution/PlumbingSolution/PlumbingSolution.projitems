@@ -15,6 +15,55 @@
     <Compile Include="$(MSBuildThisFileDirectory)Commands\Login\CmdLogin.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Commands\Plumbing\PlumbingCommandBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Commands\Plumbing\PlumbingCommands.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\App.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Command\Fire\DiritConnectSprayHead\Service_E\ConnectSprinklerCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Command\Fire\DiritConnectSprayHead\Service_E\FlexSprinklerCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Command\Fire\DiritConnectSprayHead\Service_E\SprinklerDownCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Command\Modify\CmdDeleteSprinker.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Command\Modify\CmdFlexSprinkler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Command\Modify\CmdSprinklerDownright.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Command\Modify\CmdSprinklerUpright.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Command\Modify\CmdTwinSprinkler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Command\Modify\TwinSprinklerProcess.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Define.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Extensions\ElementIdExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\ItemData\FamilyCategoryData.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\ItemData\ItemFamilySymbol.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\RequestForm\Request.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\RequestForm\RequestHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Services\DisplayService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\UI\ProcessBarForm\FrmProcessbar.xaml.cs">
+      <DependentUpon>FrmProcessbar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\UI\Service_E\UI_ConnectSprinkle.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\UI\Service_E\UI_ConnectSprinkle.Designer.cs">
+      <DependentUpon>UI_ConnectSprinkle.cs</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\UI\Service_E\UI_FlexSprinkler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\UI\Service_E\UI_FlexSprinkler.Designer.cs">
+      <DependentUpon>UI_FlexSprinkler.cs</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\UI\Service_E\UI_SprinklerDown.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\UI\Service_E\UI_SprinklerDown.Designer.cs">
+      <DependentUpon>UI_SprinklerDown.cs</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\UI\Service_E\UI_TwinSprinkler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\UI\Service_E\UI_TwinSprinkler.Designer.cs">
+      <DependentUpon>UI_TwinSprinkler.cs</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Utils\AppUtils.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Utils\Common.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Utils\ConnectorUtils.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Utils\CreateFittingForMEPUtils.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Utils\DirectoryUtils.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Utils\EnumUtils.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Utils\Extension.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Utils\Global.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Utils\IO.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Utils\MEPCurveFilter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Utils\ParameterUtils.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Utils\RevitUtils.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Utils\StorageUtility.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)LoginLicense\Client\ActivationError.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)LoginLicense\Client\ActivationStore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)LoginLicense\Client\ApiModels.cs" />
@@ -76,6 +125,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)Ultis\RevitUtils.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="$(MSBuildThisFileDirectory)FireProtection\UI\ProcessBarForm\FrmProcessbar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="$(MSBuildThisFileDirectory)LoginLicense\img\close.png" />
     <Content Include="$(MSBuildThisFileDirectory)LoginLicense\img\Email.png" />
     <Content Include="$(MSBuildThisFileDirectory)LoginLicense\img\Lock.png" />
@@ -85,6 +140,18 @@
     <Content Include="$(MSBuildThisFileDirectory)LoginLicense\Resources\LogoLicense1.png" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)FireProtection\UI\Service_E\UI_ConnectSprinkle.resx">
+      <DependentUpon>UI_ConnectSprinkle.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)FireProtection\UI\Service_E\UI_FlexSprinkler.resx">
+      <DependentUpon>UI_FlexSprinkler.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)FireProtection\UI\Service_E\UI_SprinklerDown.resx">
+      <DependentUpon>UI_SprinklerDown.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)FireProtection\UI\Service_E\UI_TwinSprinkler.resx">
+      <DependentUpon>UI_TwinSprinkler.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)UI\BeginUI\AboutUsForm.resx">
       <DependentUpon>AboutUsForm.cs</DependentUpon>
     </EmbeddedResource>

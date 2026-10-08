@@ -126,6 +126,15 @@ function Publish-AddinPackage {
         Write-Warning "Khong thay thu muc Icon nguon ($iconSrc) - ribbon se thieu icon nhung van chay duoc."
     }
 
+    # Tai nguyen cua cac tool dau phun (ghep tu Dirit): Language\Language.csv (chu tren form),
+    # Family\Pipe Fittings (form loc family theo ten file o day). Icon\Preview da di cung Icon o tren.
+    foreach ($res in @('Language', 'Family')) {
+        $resSrc = Join-Path $root $res
+        if (Test-Path $resSrc) {
+            Copy-Item $resSrc (Join-Path $assemblyDir $res) -Recurse -Force
+        }
+    }
+
     $addinContent = @"
 <?xml version="1.0" encoding="utf-8"?>
 <RevitAddIns>

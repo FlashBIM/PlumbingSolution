@@ -26,8 +26,19 @@ jobs:
       # build trong VS. "dotnet build" thi phai doi dinh dang resource va ship them System.Resources.Extensions.
       - uses: microsoft/setup-msbuild@v2
 
+      # Loi bien dich gom vao MOT annotation (nhieu dong) de doc duoc qua API ma khong can tai log.
       - name: Build PlumbingSolution.dll (Release_2024)
-        run: msbuild PlumbingSolution\PlumbingSolution2024\PlumbingSolution2024.csproj -restore -p:Configuration=Release_2024 -v:minimal -nologo
+        shell: pwsh
+        run: |
+          msbuild PlumbingSolution\PlumbingSolution2024\PlumbingSolution2024.csproj -restore -p:Configuration=Release_2024 -v:minimal -nologo "-flp:logfile=build.log;errorsonly"
+          if ($LASTEXITCODE -ne 0) {
+            $errs = Select-String -Path build.log -Pattern ': error ' | ForEach-Object { ($_.Line -replace '\s*\[[^\]]*\]\s*$', '' -replace '^.*?\\PlumbingSolution\\PlumbingSolution\\PlumbingSolution\\', '').Trim() } | Sort-Object -Unique
+            if (-not $errs) { $errs = Get-Content build.log -Tail 30 }
+            $msg = ($errs | Select-Object -First 300) -join '%0A'
+            if ($msg.Length -gt 60000) { $msg = $msg.Substring(0, 60000) }
+            Write-Output "::error title=Build errors ($($errs.Count))::$msg"
+            exit 1
+          }
 
       # Loi build hien thanh annotation (::error::) de doc duoc ngay o trang commit, khong phai mo log.
       - name: Build MSI (WiX)
@@ -50,7 +61,9 @@ jobs:
           name: PlumbingSolution_Revit2024_v${{ env.MSI_VERSION }}
           path: msi/*.msi
 
+      # Chi dang Release khi build tu main; chay tay tren nhanh khac chi de kiem tra build (MSI van co o Artifacts).
       - name: Publish release
+        if: github.ref == 'refs/heads/main'
         shell: pwsh
         env:
           GH_TOKEN: ${{ github.token }}

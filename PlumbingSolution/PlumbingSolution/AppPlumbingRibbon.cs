@@ -1,6 +1,10 @@
 using System;
+using System.IO;
+using System.Windows.Media.Imaging;
 using Autodesk.Revit.UI;
 using PlumbingSolution.Commands.Plumbing;
+using PlumbingSolution.FireProtection.Command.Fire.DiritConnectSprayHead.Service_E;
+using PlumbingSolution.FireProtection.Command.Modify;
 
 namespace PlumbingSolution
 {
@@ -18,7 +22,17 @@ namespace PlumbingSolution
                                          string iconFolder)
         {
             Autodesk.Revit.UI.RibbonPanel panel0 = app.CreateRibbonPanel(tabName, "Fire Protection");
-            panel0.AddItem(NewPlumbingButton("PendentSprinkler", "Pendent\nSprinkler", typeof(CmdPendentSprinkler), assemblyPath, iconFolder));
+            // Nút xổ "Pendent Sprinkler" = panel "Kết nối đầu phun" của Dirit (ghép trong FireProtection/).
+            PulldownButtonData sprinklerData = new PulldownButtonData("PendentSprinkler", "Pendent\nSprinkler");
+            sprinklerData.ToolTip = "Pendent Sprinkler";
+            sprinklerData.LargeImage = LoadIcon(iconFolder, PlumbingIconLarge);
+            sprinklerData.Image = LoadIcon(iconFolder, PlumbingIconSmall);
+            PulldownButton sprinkler = (PulldownButton)panel0.AddItem(sprinklerData);
+            sprinkler.AddPushButton(NewPlumbingButton("UprightSprinkler", "Upright Sprinkler", typeof(ConnectSprinklerCommand), assemblyPath, iconFolder));
+            sprinkler.AddPushButton(NewPlumbingButton("PendentSprinklerDown", "Pendent Sprinkler", typeof(SprinklerDownCommand), assemblyPath, iconFolder));
+            sprinkler.AddPushButton(NewPlumbingButton("FlexSprinkler", "Flex Sprinkler", typeof(FlexSprinklerCommand), assemblyPath, iconFolder));
+            sprinkler.AddPushButton(NewPlumbingButton("TwinSprinkler", "Twin Sprinkler", typeof(CmdTwinSprinkler), assemblyPath, iconFolder));
+            sprinkler.AddPushButton(NewPlumbingButton("DeleteConnection", "Delete Connection", typeof(CmdDeleteSprinker), assemblyPath, iconFolder));
             panel0.AddItem(NewPlumbingButton("PlaceSprinkler", "Place\nSprinkler", typeof(CmdPlaceSprinkler), assemblyPath, iconFolder));
             panel0.AddItem(NewPlumbingButton("HosereelConnect", "Hosereel\nConnect", typeof(CmdHosereelConnect), assemblyPath, iconFolder));
             panel0.AddItem(NewPlumbingButton("CreateBranch", "Create\nBranch", typeof(CmdCreateBranch), assemblyPath, iconFolder));
@@ -64,6 +78,12 @@ namespace PlumbingSolution
             data.ToolTip = text.Replace("\n", " ");
             AddImages(data, iconFolder, PlumbingIconLarge, PlumbingIconSmall);
             return data;
+        }
+
+        private static BitmapImage LoadIcon(string iconFolder, string fileName)
+        {
+            string path = Path.Combine(iconFolder ?? string.Empty, fileName);
+            return File.Exists(path) ? new BitmapImage(new Uri(path)) : null;
         }
     }
 }
