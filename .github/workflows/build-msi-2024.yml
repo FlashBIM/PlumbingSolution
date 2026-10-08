@@ -30,7 +30,7 @@ jobs:
       - name: Build PlumbingSolution.dll (Release_2024)
         shell: pwsh
         run: |
-          msbuild PlumbingSolution\PlumbingSolution2024\PlumbingSolution2024.csproj -restore -p:Configuration=Release_2024 -v:minimal -nologo 2>&1 | Tee-Object -FilePath build.log
+          msbuild PlumbingSolution\PlumbingSolution2024\PlumbingSolution2024.csproj -restore -p:Configuration=Release_2024 -v:minimal -nologo "-flp:logfile=build.log;errorsonly"
           if ($LASTEXITCODE -ne 0) {
             $errs = Select-String -Path build.log -Pattern ': error ' | ForEach-Object { ($_.Line -replace '^.*\\PlumbingSolution\\PlumbingSolution\\', '' -replace '\s*\[[^\]]*\]\s*$', '').Trim() } | Sort-Object -Unique
             if (-not $errs) { $errs = Get-Content build.log -Tail 30 }
