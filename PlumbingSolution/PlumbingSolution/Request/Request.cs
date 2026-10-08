@@ -1,6 +1,8 @@
 using System.Threading;
 
-namespace PlumbingSolution.Request
+// Namespace "Requests" (không phải "Request"): code đầu phun ghép từ Dirit có class tên Request,
+// một namespace PlumbingSolution.Request sẽ che mất class đó (lỗi CS0118).
+namespace PlumbingSolution.Requests
 {
     public enum RequestId
     {

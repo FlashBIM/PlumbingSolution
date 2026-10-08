@@ -50,7 +50,9 @@ jobs:
           name: PlumbingSolution_Revit2024_v${{ env.MSI_VERSION }}
           path: msi/*.msi
 
+      # Chi dang Release khi build tu main; chay tay tren nhanh khac chi de kiem tra build (MSI van co o Artifacts).
       - name: Publish release
+        if: github.ref == 'refs/heads/main'
         shell: pwsh
         env:
           GH_TOKEN: ${{ github.token }}

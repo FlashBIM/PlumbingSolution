@@ -24,7 +24,16 @@
             <Directory Id="ContentsDir" Name="Contents">
               <Directory Id="YearDir" Name="2024">
                 <Directory Id="AddinDir" Name="PlumbingSolution">
-                  <Directory Id="IconDir" Name="Icon" />
+                  <Directory Id="IconDir" Name="Icon">
+                    <Directory Id="PreviewDir" Name="Preview">
+                      <Directory Id="PreviewFireDir" Name="DIRIT FIRE" />
+                      <Directory Id="PreviewMech2Dir" Name="DIRIT MECH 2" />
+                    </Directory>
+                  </Directory>
+                  <Directory Id="LanguageDir" Name="Language" />
+                  <Directory Id="FamilyDir" Name="Family">
+                    <Directory Id="PipeFittingsDir" Name="Pipe Fittings" />
+                  </Directory>
                 </Directory>
               </Directory>
             </Directory>
@@ -83,6 +92,65 @@
         <RegistryValue Root="HKCU" Key="Software\FlashBim\PlumbingSolution2024" Name="Icons" Type="integer" Value="1"
                        KeyPath="yes" />
         <RemoveFolder Id="RemoveIconDir" Directory="IconDir" On="uninstall" />
+      </Component>
+      <!-- Tài nguyên của các tool đầu phun ghép từ Dirit: ảnh preview của form, file ngôn ngữ, family Pipe Fittings (form lọc family theo tên file ở đây). -->
+      <Component Id="PreviewFire" Guid="{A37BC386-86FE-43B2-BDCB-17AA14BB463C}" Directory="PreviewFireDir">
+        <File Id="PreviewFire_0" Source="$(var.SourceRoot)\Icon\Preview\DIRIT FIRE\C5_Sprinkler_Up_Connect_to_Tee.jpg" />
+        <File Id="PreviewFire_1" Source="$(var.SourceRoot)\Icon\Preview\DIRIT FIRE\PhuongAnMem1.png" />
+        <File Id="PreviewFire_2" Source="$(var.SourceRoot)\Icon\Preview\DIRIT FIRE\PhuongAnMem2.png" />
+        <File Id="PreviewFire_3" Source="$(var.SourceRoot)\Icon\Preview\DIRIT FIRE\PhuongAnMem3.png" />
+        <File Id="PreviewFire_4" Source="$(var.SourceRoot)\Icon\Preview\DIRIT FIRE\PhuongAnMem4.png" />
+        <File Id="PreviewFire_5" Source="$(var.SourceRoot)\Icon\Preview\DIRIT FIRE\Phuongan1.png" />
+        <File Id="PreviewFire_6" Source="$(var.SourceRoot)\Icon\Preview\DIRIT FIRE\Phuongan2.png" />
+        <File Id="PreviewFire_7" Source="$(var.SourceRoot)\Icon\Preview\DIRIT FIRE\Phuongan3.png" />
+        <File Id="PreviewFire_8" Source="$(var.SourceRoot)\Icon\Preview\DIRIT FIRE\Phuonganlen1.png" />
+        <File Id="PreviewFire_9" Source="$(var.SourceRoot)\Icon\Preview\DIRIT FIRE\Phuonganlen2.png" />
+        <File Id="PreviewFire_10" Source="$(var.SourceRoot)\Icon\Preview\DIRIT FIRE\Twin sprinkler_1.jpg" />
+        <File Id="PreviewFire_11" Source="$(var.SourceRoot)\Icon\Preview\DIRIT FIRE\Twin sprinkler_2.jpg" />
+        <File Id="PreviewFire_12" Source="$(var.SourceRoot)\Icon\Preview\DIRIT FIRE\Twin sprinkler_3.jpg" />
+        <File Id="PreviewFire_13" Source="$(var.SourceRoot)\Icon\Preview\DIRIT FIRE\Twin sprinkler_4.jpg" />
+        <File Id="PreviewFire_14" Source="$(var.SourceRoot)\Icon\Preview\DIRIT FIRE\Twin sprinkler_5.jpg" />
+        <RegistryValue Root="HKCU" Key="Software\FlashBim\PlumbingSolution2024" Name="PreviewFire" Type="integer" Value="1"
+                       KeyPath="yes" />
+        <RemoveFolder Id="RemovePreviewFireDir" Directory="PreviewFireDir" On="uninstall" />
+        <RemoveFolder Id="RemovePreviewDir" Directory="PreviewDir" On="uninstall" />
+      </Component>
+
+      <Component Id="PreviewMech2" Guid="{EC253D4C-9235-4ED5-A356-22CCF04EEF8F}" Directory="PreviewMech2Dir">
+        <File Id="PreviewMech2_0" Source="$(var.SourceRoot)\Icon\Preview\DIRIT MECH 2\A_Dau phun huong xuong_Type 4.jpg" />
+        <File Id="PreviewMech2_1" Source="$(var.SourceRoot)\Icon\Preview\DIRIT MECH 2\A_Dau phun huong xuong_Type 5.jpg" />
+        <RegistryValue Root="HKCU" Key="Software\FlashBim\PlumbingSolution2024" Name="PreviewMech2" Type="integer" Value="1"
+                       KeyPath="yes" />
+        <RemoveFolder Id="RemovePreviewMech2Dir" Directory="PreviewMech2Dir" On="uninstall" />
+      </Component>
+
+      <Component Id="LanguageFiles" Guid="{1EFF75B3-CAD6-4449-BF49-69ED731A561A}" Directory="LanguageDir">
+        <File Id="LanguageFiles_0" Source="$(var.SourceRoot)\Language\Language.csv" />
+        <RegistryValue Root="HKCU" Key="Software\FlashBim\PlumbingSolution2024" Name="LanguageFiles" Type="integer" Value="1"
+                       KeyPath="yes" />
+        <RemoveFolder Id="RemoveLanguageDir" Directory="LanguageDir" On="uninstall" />
+      </Component>
+
+      <Component Id="PipeFittingFamilies" Guid="{C787CC10-9B5C-4070-915D-85FC47344FB2}" Directory="PipeFittingsDir">
+        <File Id="PipeFittingFamilies_0" Source="$(var.SourceRoot)\Family\Pipe Fittings\DRT_Steel_Elbow Reducing - Threaded.rfa" />
+        <File Id="PipeFittingFamilies_1" Source="$(var.SourceRoot)\Family\Pipe Fittings\Dirit_Cast Iron Coupling.rfa" />
+        <File Id="PipeFittingFamilies_2" Source="$(var.SourceRoot)\Family\Pipe Fittings\Dirit_PPR Male Thread Adapter.rfa" />
+        <File Id="PipeFittingFamilies_3" Source="$(var.SourceRoot)\Family\Pipe Fittings\Dirit_Steel Coupling.rfa" />
+        <File Id="PipeFittingFamilies_4" Source="$(var.SourceRoot)\Family\Pipe Fittings\Dirit_Steel Flanges cho Van.rfa" />
+        <File Id="PipeFittingFamilies_5" Source="$(var.SourceRoot)\Family\Pipe Fittings\Dirit_Steel Nipple.rfa" />
+        <File Id="PipeFittingFamilies_6" Source="$(var.SourceRoot)\Family\Pipe Fittings\Dirit_uPVC Male Thread Adaptor.rfa" />
+        <File Id="PipeFittingFamilies_7" Source="$(var.SourceRoot)\Family\Pipe Fittings\Dirit_uPVC Tien Phong Reducer.rfa" />
+        <File Id="PipeFittingFamilies_8" Source="$(var.SourceRoot)\Family\Pipe Fittings\Dirit_uPVC Tien Phong Sanitary Tee.rfa" />
+        <File Id="PipeFittingFamilies_9" Source="$(var.SourceRoot)\Family\Pipe Fittings\Dirit_uPVC Tien Phong Siphon.rfa" />
+        <File Id="PipeFittingFamilies_10" Source="$(var.SourceRoot)\Family\Pipe Fittings\Dirit_uPVC Tien Phong Union.rfa" />
+        <File Id="PipeFittingFamilies_11" Source="$(var.SourceRoot)\Family\Pipe Fittings\Dirit_uPVC TienPhong Cap End.rfa" />
+        <File Id="PipeFittingFamilies_12" Source="$(var.SourceRoot)\Family\Pipe Fittings\Dirit_uPVC TienPhong Clean Out.rfa" />
+        <File Id="PipeFittingFamilies_13" Source="$(var.SourceRoot)\Family\Pipe Fittings\Dirit_uPVC TienPhong Elbow.rfa" />
+        <File Id="PipeFittingFamilies_14" Source="$(var.SourceRoot)\Family\Pipe Fittings\Dirit_uPVC TienPhong Y.rfa" />
+        <RegistryValue Root="HKCU" Key="Software\FlashBim\PlumbingSolution2024" Name="PipeFittingFamilies" Type="integer" Value="1"
+                       KeyPath="yes" />
+        <RemoveFolder Id="RemovePipeFittingsDir" Directory="PipeFittingsDir" On="uninstall" />
+        <RemoveFolder Id="RemoveFamilyDir" Directory="FamilyDir" On="uninstall" />
       </Component>
     </ComponentGroup>
   </Fragment>
