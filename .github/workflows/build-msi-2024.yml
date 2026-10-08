@@ -40,6 +40,26 @@ jobs:
             exit 1
           }
 
+      # Chi khi chay tay (workflow_dispatch): chup anh cac form dau phun, day len nhanh ci-screens de soat giao dien.
+      - name: Form screenshots
+        if: github.event_name == 'workflow_dispatch'
+        continue-on-error: true
+        shell: pwsh
+        run: |
+          msbuild PlumbingSolution\Tools\FormSnapshot\FormSnapshot.csproj -restore -p:Configuration=Release -v:minimal -nologo
+          $dll = Resolve-Path "PlumbingSolution\Output\2024\Release_2024\PlumbingSolution.dll"
+          Copy-Item PlumbingSolution\Language (Split-Path $dll) -Recurse -Force
+          $exe = Get-ChildItem PlumbingSolution\Tools\FormSnapshot\bin -Recurse -Filter FormSnapshot.exe | Select-Object -First 1
+          & $exe.FullName $dll PlumbingSolution\Icon screens
+          & $exe.FullName $dll PlumbingSolution\Icon screens raw
+          Remove-Item (Join-Path (Split-Path $dll) Language) -Recurse -Force
+          Set-Location screens
+          git init -q
+          git checkout -q -b ci-screens
+          git add .
+          git -c user.name=ci -c user.email=ci@localhost commit -q -m "screens $env:GITHUB_SHA"
+          git push -q -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}" ci-screens
+
       # Loi build hien thanh annotation (::error::) de doc duoc ngay o trang commit, khong phai mo log.
       - name: Build MSI (WiX)
         shell: pwsh

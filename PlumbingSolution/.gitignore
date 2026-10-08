@@ -13,3 +13,5 @@ PlumbingSolution_Installer_2024/Debug/
 PlumbingSolution_Installer_2024/Release/
 *.csproj.user
 *.Backup.tmp
+Tools/**/bin/
+Tools/**/obj/
