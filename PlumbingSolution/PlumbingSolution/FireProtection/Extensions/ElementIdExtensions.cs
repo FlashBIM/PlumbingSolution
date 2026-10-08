@@ -26,14 +26,10 @@ namespace PlumbingSolution.FireProtection.Extensions
             if (geomInstance == null || doc == null)
                 return "";
 
-#if Release_2026 || Debug_2026 || Release_2025 || Debug_2025 || Release_2024 || Debug_2024 || Bundle_2024 || Bundle_2025|| Bundle_2026 || Release_2027 || Debug_2027 || Bundle_2027
+            // PlumbingSolution chỉ build cho Revit 2024+ (GeometryInstance.Symbol đã bỏ), nên dùng thẳng API mới;
+            // ký hiệu cấu hình kiểu Dirit (Release_2024...) không có trong project này.
             Element element = doc.GetElement(geomInstance.GetSymbolGeometryId().SymbolId);
             return element?.Name;
-
-#else
-            return geomInstance.Symbol.Name;
-
-#endif
         }
     }
 }
