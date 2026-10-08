@@ -54,7 +54,10 @@ internal static class Program
             string file = Path.Combine(outDir, shot.Item1 + (styled ? "" : "_old") + ".png");
             try
             {
-                Type t = asm.GetTypes().First(x => x.Name == shot.Item1 && typeof(Form).IsAssignableFrom(x));
+                // Không dùng asm.GetTypes(): nhiều type tham chiếu Revit API, không nạp được ngoài Revit.
+                Type t = new[] { "Service_E", "Service_J", "Service_A", "DiritFire" }
+                    .Select(ns => asm.GetType("PlumbingSolution.FireProtection.UI." + ns + "." + shot.Item1))
+                    .FirstOrDefault(x => x != null) ?? throw new TypeLoadException(shot.Item1);
                 Form f = (Form)FormatterServices.GetUninitializedObject(t);
                 typeof(Form).GetConstructor(Type.EmptyTypes).Invoke(f, null);
                 t.GetMethod("InitializeComponent", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(f, null);
