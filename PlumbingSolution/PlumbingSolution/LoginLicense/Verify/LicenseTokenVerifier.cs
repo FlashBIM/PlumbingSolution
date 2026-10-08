@@ -27,9 +27,8 @@ namespace PlumbingSolution.LoginLicense.Verify
 
         /// <summary>
         /// Mã sản phẩm của PlumbingSolution — PHẢI khớp product code đăng ký trên license server.
-        /// TODO: "PS" là mã tạm — đăng ký product code thật của PlumbingSolution trên license
-        /// server rồi sửa lại đây trước khi phát hành. Không được dùng chung "ST" với SmartTag,
-        /// nếu không key SmartTag sẽ mở được PlumbingSolution và file kích hoạt hai add-in đè nhau.
+        /// Không được dùng chung "ST" với SmartTag, nếu không key SmartTag sẽ mở được
+        /// PlumbingSolution và file kích hoạt hai add-in đè nhau.
         /// </summary>
         public const string ProductCode = "PS";
 
