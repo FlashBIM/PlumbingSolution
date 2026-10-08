@@ -1,0 +1,58 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 18
+VisualStudioVersion = 18.6.11819.183 stable
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "PlumbingSolution", "PlumbingSolution\PlumbingSolution.shproj", "{13421E87-1563-4579-9299-374D7B681659}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RevitVersions", "RevitVersions", "{C416AC9F-5383-42D9-AEA8-5965FE4F792F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlumbingSolution2024", "PlumbingSolution2024\PlumbingSolution2024.csproj", "{466277A6-F3CC-42AA-A1F1-8BA561BF7EE2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlumbingSolution2025", "PlumbingSolution2025\PlumbingSolution2025.csproj", "{936D5732-2BC4-4C70-B328-DA45B78B1198}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug_2024|Any CPU = Debug_2024|Any CPU
+		Debug_2025|Any CPU = Debug_2025|Any CPU
+		Debug|Any CPU = Debug|Any CPU
+		Release_2024|Any CPU = Release_2024|Any CPU
+		Release_2025|Any CPU = Release_2025|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{466277A6-F3CC-42AA-A1F1-8BA561BF7EE2}.Debug_2024|Any CPU.ActiveCfg = Debug_2024|Any CPU
+		{466277A6-F3CC-42AA-A1F1-8BA561BF7EE2}.Debug_2024|Any CPU.Build.0 = Debug_2024|Any CPU
+		{466277A6-F3CC-42AA-A1F1-8BA561BF7EE2}.Debug_2025|Any CPU.ActiveCfg = Debug_2024|Any CPU
+		{466277A6-F3CC-42AA-A1F1-8BA561BF7EE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{466277A6-F3CC-42AA-A1F1-8BA561BF7EE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{466277A6-F3CC-42AA-A1F1-8BA561BF7EE2}.Release_2024|Any CPU.ActiveCfg = Release_2024|Any CPU
+		{466277A6-F3CC-42AA-A1F1-8BA561BF7EE2}.Release_2024|Any CPU.Build.0 = Release_2024|Any CPU
+		{466277A6-F3CC-42AA-A1F1-8BA561BF7EE2}.Release_2025|Any CPU.ActiveCfg = Release_2024|Any CPU
+		{466277A6-F3CC-42AA-A1F1-8BA561BF7EE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{466277A6-F3CC-42AA-A1F1-8BA561BF7EE2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{936D5732-2BC4-4C70-B328-DA45B78B1198}.Debug_2024|Any CPU.ActiveCfg = Debug_2025|Any CPU
+		{936D5732-2BC4-4C70-B328-DA45B78B1198}.Debug_2025|Any CPU.ActiveCfg = Debug_2025|Any CPU
+		{936D5732-2BC4-4C70-B328-DA45B78B1198}.Debug_2025|Any CPU.Build.0 = Debug_2025|Any CPU
+		{936D5732-2BC4-4C70-B328-DA45B78B1198}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{936D5732-2BC4-4C70-B328-DA45B78B1198}.Release_2024|Any CPU.ActiveCfg = Release_2025|Any CPU
+		{936D5732-2BC4-4C70-B328-DA45B78B1198}.Release_2025|Any CPU.ActiveCfg = Release_2025|Any CPU
+		{936D5732-2BC4-4C70-B328-DA45B78B1198}.Release_2025|Any CPU.Build.0 = Release_2025|Any CPU
+		{936D5732-2BC4-4C70-B328-DA45B78B1198}.Release|Any CPU.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{466277A6-F3CC-42AA-A1F1-8BA561BF7EE2} = {C416AC9F-5383-42D9-AEA8-5965FE4F792F}
+		{936D5732-2BC4-4C70-B328-DA45B78B1198} = {C416AC9F-5383-42D9-AEA8-5965FE4F792F}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BA089BBE-87B4-4E0F-BF98-6C1D0D995212}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		PlumbingSolution\PlumbingSolution.projitems*{13421e87-1563-4579-9299-374d7b681659}*SharedItemsImports = 13
+		PlumbingSolution\PlumbingSolution.projitems*{466277a6-f3cc-42aa-a1f1-8ba561bf7ee2}*SharedItemsImports = 5
+		PlumbingSolution\PlumbingSolution.projitems*{936d5732-2bc4-4c70-b328-da45b78b1198}*SharedItemsImports = 5
+	EndGlobalSection
+EndGlobal

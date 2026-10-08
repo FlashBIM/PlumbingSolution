@@ -1,0 +1,57 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Revit 2025 chuyển sang .NET 8 (gói Revit_All_Main_Versions_API_x64 2025.0.0 chỉ có
+    lib/net8.0) — khác hẳn net48 của các bản 2020-2024. TargetFramework PHẢI là
+    net8.0-windows (không phải net8.0 trần) để giữ được WinForms/WPF.
+  -->
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <OutputType>Library</OutputType>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <Configurations>Debug;Release;Release_2025;Debug_2025</Configurations>
+    <PackageOutputPath>..\Output\Release\2025\PlumbingSolution\</PackageOutputPath>
+    <BaseOutputPath>..\Output\2025\</BaseOutputPath>
+    <PackageId>PlumbingSolution</PackageId>
+    <AssemblyName>PlumbingSolution</AssemblyName>
+    <RootNamespace>PlumbingSolution</RootNamespace>
+    <AutoFileVersion>$([System.DateTime]::Now.ToString('yyyy.MMdd.H.mm'))</AutoFileVersion>
+    <FileVersion>$(AutoFileVersion)</FileVersion>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <InformationalVersion>$(AutoFileVersion)</InformationalVersion>
+  </PropertyGroup>
+
+  <Import Project="..\PlumbingSolution\PlumbingSolution.projitems" Label="Shared" />
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+    <PackageReference Include="Revit_All_Main_Versions_API_x64" Version="2025.0.0" />
+    <!-- ProtectedData (DPAPI) cho ActivationStore: net8 không có sẵn trong framework,
+         phải lấy qua NuGet (net48 dùng thẳng System.Security.dll, xem ItemGroup dưới). -->
+    <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="8.0.0" />
+  </ItemGroup>
+
+  <!--
+    hwid.dll di kem add-in: ma may phai tu chu, khong phu thuoc thu muc nao khac.
+    CANH BAO: thay file nay thi PHAI cap nhat ExpectedSha256 trong HwidExpectedHash.cs,
+    neu khong add-in tu choi nap (dung thiet ke chong hwid.dll gia).
+    CANH BAO: cung phai them file vao bo cai (installer) - thieu no thi add-in khoa sach.
+  -->
+  <ItemGroup>
+    <Content Include="..\PlumbingSolution\native\hwid.dll" Link="hwid.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- net8 không cần Microsoft.CSharp/Microsoft.VisualBasic/System.Net làm GAC
+         reference như net48 — đã có sẵn qua SDK. System.Management vẫn cần NuGet
+         nếu có dùng, nhưng WMI (Common.GetHardwareId) đã bị gỡ khỏi shared code. -->
+  </ItemGroup>
+
+</Project>

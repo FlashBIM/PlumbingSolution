@@ -1,0 +1,51 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <OutputType>Library</OutputType>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>    
+    <ImplicitUsings>disable</ImplicitUsings>   
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>   
+	<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>   
+	<Configurations>Debug;Release;Release_2024;Debug_2024</Configurations>   
+	<PackageOutputPath>..\Output\Release\2024\PlumbingSolution\</PackageOutputPath>   
+	<BaseOutputPath>..\Output\2024\</BaseOutputPath>   
+	<PackageId>PlumbingSolution</PackageId>   
+	<AssemblyName>PlumbingSolution</AssemblyName>   
+	<RootNamespace>PlumbingSolution</RootNamespace>
+	<AutoFileVersion>$([System.DateTime]::Now.ToString('yyyy.MMdd.H.mm'))</AutoFileVersion>
+    <FileVersion>$(AutoFileVersion)</FileVersion>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <InformationalVersion>$(AutoFileVersion)</InformationalVersion>
+  </PropertyGroup>
+
+  <Import Project="..\PlumbingSolution\PlumbingSolution.projitems" Label="Shared" />
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+    <PackageReference Include="Revit_All_Main_Versions_API_x64" Version="2024.2.0" />
+  </ItemGroup>
+
+  <!--
+    hwid.dll di kem add-in: ma may phai tu chu, khong phu thuoc thu muc nao khac.
+    CANH BAO: thay file nay thi PHAI cap nhat ExpectedSha256 trong HwidExpectedHash.cs,
+    neu khong add-in tu choi nap (dung thiet ke chong hwid.dll gia).
+    CANH BAO: cung phai them file vao bo cai (installer) - thieu no thi add-in khoa sach.
+  -->
+  <ItemGroup>
+    <Content Include="..\PlumbingSolution\native\hwid.dll" Link="hwid.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Net.Http" />
+    <!-- ProtectedData (DPAPI) cho ActivationStore: net48 co san trong System.Security.dll -->
+    <Reference Include="System.Security" />
+  </ItemGroup>
+
+</Project>

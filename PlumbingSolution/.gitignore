@@ -1,0 +1,15 @@
+.vs/
+**/.vs/
+bin/
+**/bin/
+obj/
+**/obj/
+Output/2024/
+Output/2025/
+Output/Deploy/
+Output/Installer/
+Output/Confused/
+PlumbingSolution_Installer_2024/Debug/
+PlumbingSolution_Installer_2024/Release/
+*.csproj.user
+*.Backup.tmp

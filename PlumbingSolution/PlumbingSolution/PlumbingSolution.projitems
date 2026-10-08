@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>13421e87-1563-4579-9299-374d7b681659</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>PlumbingSolution</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)App.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppPlumbingRibbon.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Commands\CmdPlumbingSample.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Commands\Login\CmdAboutUs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Commands\Login\CmdLogin.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LoginLicense\Client\ActivationError.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LoginLicense\Client\ActivationStore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LoginLicense\Client\ApiModels.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LoginLicense\Client\LicenseApiClient.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LoginLicense\Client\LicenseKeyFormat.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LoginLicense\Client\TokenManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LoginLicense\Constants\API.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LoginLicense\Enums\LicenseEnum.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LoginLicense\Gate\LicenseGate.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LoginLicense\Gate\LicenseState.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LoginLicense\Hwid\HwidExpectedHash.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LoginLicense\Hwid\HwidInterop.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LoginLicense\LicenseLog.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LoginLicense\LicenseMessages.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LoginLicense\Models\ApiResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LoginLicense\Models\User\LicenseData.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LoginLicense\Models\User\ProductCategoryData.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LoginLicense\Models\User\ProductData.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LoginLicense\Models\User\UserData.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LoginLicense\MyExternalEvent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LoginLicense\MyExternalEventDisable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LoginLicense\MyExternalEventEnable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LoginLicense\Runtime\DirectTokenSource.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LoginLicense\Runtime\LicenseOptions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LoginLicense\Runtime\LicenseRuntime.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LoginLicense\Runtime\LicenseSession.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LoginLicense\Verify\EmbeddedPublicKeys.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LoginLicense\Verify\LicenseTokenVerifier.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LoginLicense\Verify\VerifiedLicense.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Request\Request.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Request\RequestHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\BeginUI\AboutUsForm.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\BeginUI\AboutUsForm.Designer.cs">
+      <DependentUpon>AboutUsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)UI\BeginUI\AboutUsVNForm.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\BeginUI\AboutUsVNForm.Designer.cs">
+      <DependentUpon>AboutUsVNForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)UI\BeginUI\FormMessage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\BeginUI\FormMessage.Designer.cs">
+      <DependentUpon>FormMessage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)UI\BeginUI\InformationForm.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\BeginUI\InformationForm.Designer.cs">
+      <DependentUpon>InformationForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)UI\BeginUI\LoginForm.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\BeginUI\LoginForm.Designer.cs">
+      <DependentUpon>LoginForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)UI\FormTopmostHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ultis\Common.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ultis\Define.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ultis\DirectoryUtils.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ultis\Global.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ultis\IO.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ultis\ParameterUtils.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ultis\RevitUtils.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="$(MSBuildThisFileDirectory)LoginLicense\img\close.png" />
+    <Content Include="$(MSBuildThisFileDirectory)LoginLicense\img\Email.png" />
+    <Content Include="$(MSBuildThisFileDirectory)LoginLicense\img\Lock.png" />
+    <Content Include="$(MSBuildThisFileDirectory)LoginLicense\img\LogoLicense.png" />
+    <Content Include="$(MSBuildThisFileDirectory)LoginLicense\Resources\logo dai Flash BIM Large.png" />
+    <Content Include="$(MSBuildThisFileDirectory)LoginLicense\Resources\LogoLicense.png" />
+    <Content Include="$(MSBuildThisFileDirectory)LoginLicense\Resources\LogoLicense1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)UI\BeginUI\AboutUsForm.resx">
+      <DependentUpon>AboutUsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)UI\BeginUI\AboutUsVNForm.resx">
+      <DependentUpon>AboutUsVNForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)UI\BeginUI\FormMessage.resx">
+      <DependentUpon>FormMessage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)UI\BeginUI\InformationForm.resx">
+      <DependentUpon>InformationForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)UI\BeginUI\LoginForm.resx">
+      <DependentUpon>LoginForm.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+</Project>

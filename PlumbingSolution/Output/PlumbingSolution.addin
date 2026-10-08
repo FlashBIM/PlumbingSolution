@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RevitAddIns>
+  <AddIn Type="Application">
+    <Name>PlumbingSolution</Name>
+    <Assembly>PlumbingSolution\PlumbingSolution.dll</Assembly>
+    <FullClassName>PlumbingSolution.App</FullClassName>
+    <ClientId>aa652485-85bb-455a-a039-8e93f1fa1294</ClientId>
+    <VendorId>00de36d0-f3bd-4536-81e8-ece5df5eda8f</VendorId>
+    <VendorDescription>PlumbingSolution</VendorDescription>
+  </AddIn>
+</RevitAddIns>
