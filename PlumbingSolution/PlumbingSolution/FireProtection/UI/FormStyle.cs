@@ -79,11 +79,13 @@ namespace PlumbingSolution.FireProtection.UI
                     t.BorderStyle = BorderStyle.FixedSingle;
                     t.BackColor = Color.White;
                     t.ForeColor = Text;
+                    CenterInCell(t);
                     break;
 
                 case ComboBox cb:
                     cb.BackColor = Color.White;
                     cb.ForeColor = Text;
+                    CenterInCell(cb);
                     break;
 
                 case Label l:
@@ -107,6 +109,16 @@ namespace PlumbingSolution.FireProtection.UI
                 case Panel _:
                     c.BackColor = Color.Transparent;
                     break;
+            }
+        }
+
+        // Ô nhập Dock=Fill trong hàng cao bị dính lên mép trên, lệch với nhãn đã căn giữa: neo trái-phải để căn giữa dọc.
+        private static void CenterInCell(Control c)
+        {
+            if (c.Parent is TableLayoutPanel && c.Dock == DockStyle.Fill && !(c is TextBox t && t.Multiline))
+            {
+                c.Dock = DockStyle.None;
+                c.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             }
         }
 
