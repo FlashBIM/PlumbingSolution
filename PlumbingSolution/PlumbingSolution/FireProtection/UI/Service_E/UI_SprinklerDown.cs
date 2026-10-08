@@ -115,23 +115,35 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
             AppUtils.ff(rbtnOptions2);
             AppUtils.ff(rbtnOptions3);
             AppUtils.ff(rbtnOptions4);
+            AppUtils.ff(rbtnOptions5);
+            AppUtils.ff(rbtnOptions6);
+            AppUtils.ff(tbL1);
+            AppUtils.ff(tbL2);
+            AppUtils.ff(rbtnByDistance);
+            AppUtils.ff(rbtnByMep);
 
-            if (rbtnOptions1.Checked)
-                tbC4L2.Enabled = true;
-            else
-                tbC4L2.Enabled = false;
-
-            if (rbtnOptions4.Checked)
-            {
-                ckbConnectCo90.Checked = true;
-                ckbConnectCo90.Enabled = false;
-            }
-            else
-                ckbConnectCo90.Enabled = true;
+            RadioButtonCheckedChange();
         }
 
 
         public bool isTeeTap = false;
+
+        /// <summary>Type 5/6: L1 (mm) - By Distance: tâm ống chính tới tâm ống đứng; By MEP: mép ống đứng tới mép đối tượng.</summary>
+        public double L1_ => ParseMm(tbL1);
+
+        /// <summary>Type 5/6 By Distance: khoảng đứng giữa hai ống ngang (mm).</summary>
+        public double L2_ => ParseMm(tbL2);
+
+        /// <summary>Type 5/6: đo theo đối tượng MEP chọn thêm (duct, cable tray...) thay vì L1/L2 nhập tay.</summary>
+        public bool IsByMep => rbtnByMep.Checked;
+
+        /// <summary>Pipe Type chọn trên form (Type 5/6 dùng cho các ống nối, co theo Routing Preferences của type này).</summary>
+        public ElementId PipeTypeIdC3 => (cboC3PipeType.SelectedItem as ObjectItem)?.ObjectId ?? ElementId.InvalidElementId;
+
+        private static double ParseMm(System.Windows.Forms.TextBox tb)
+        {
+            return double.TryParse(tb.Text.Trim(), out double v) ? v : double.MinValue;
+        }
 
         public double PipeSizeC3
         {
@@ -212,9 +224,35 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
             AppUtils.sa(rbtnOptions4);
             AppUtils.sa(ckbConnectCo90);
             AppUtils.sa(tbC4L2);
+            AppUtils.sa(rbtnOptions5);
+            AppUtils.sa(rbtnOptions6);
+            AppUtils.sa(tbL1);
+            AppUtils.sa(tbL2);
+            AppUtils.sa(rbtnByDistance);
+            AppUtils.sa(rbtnByMep);
 
             if (Height_ == double.MinValue)
                 return;
+
+            if (rbtnOptions5.Checked || rbtnOptions6.Checked)
+            {
+                string error = null;
+                if (PipeTypeIdC3 == ElementId.InvalidElementId)
+                    error = "Select a Pipe Type.";
+                else if (cboC3PipeSize.SelectedItem == null || PipeSizeC3 == double.MaxValue)
+                    error = "Select a Pipe Size.";
+                else if (L1_ <= 0)
+                    error = "L1 must be greater than 0.";
+                else if (!IsByMep && L2_ <= 0)
+                    error = "L2 must be greater than 0.";
+                else if (rbtnOptions6.Checked && Height_ <= 0)
+                    error = "A must be greater than 0.";
+                if (error != null)
+                {
+                    MessageBox.Show(this, error, "Pendent Sprinkler", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+            }
 
             isTeeTap = !ckbConnectCo90.Checked;
 
@@ -238,6 +276,21 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
                 SetFocus();
                 MakeRequest(RequestId.SprinklerDownType4_RUN);
             }
+            else if (rbtnOptions5.Checked)
+            {
+                SetFocus();
+                MakeRequest(RequestId.SprinklerDownType5_RUN);
+            }
+            else if (rbtnOptions6.Checked)
+            {
+                SetFocus();
+                MakeRequest(RequestId.SprinklerDownType6_RUN);
+            }
+        }
+
+        private void rbtnOptions5_CheckedChanged(object sender, EventArgs e)
+        {
+            RadioButtonCheckedChange();
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -320,14 +373,25 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
                 this.picPreview.Image = System.Drawing.Image.FromFile(Path.Combine(folder, "Phuongan2.png"));
             else if (rbtnOptions4.Checked)
                 this.picPreview.Image = System.Drawing.Image.FromFile(Path.Combine(_previewFolder, "A_Dau phun huong xuong_Type 4.jpg"));
+            else if (rbtnOptions5.Checked || rbtnOptions6.Checked)
+            {
+                string name = (rbtnOptions5.Checked ? "Pendent_Type5" : "Pendent_Type6") + (IsByMep ? "_MEP" : "") + ".png";
+                string file = Path.Combine(Common.GetPreviewFolder(), "PlumbingSolution", name);
+                if (File.Exists(file))
+                    this.picPreview.Image = System.Drawing.Image.FromFile(file);
+            }
         }
 
         private void RadioButtonCheckedChange()
         {
-            if (rbtnOptions1.Checked)
-                tbC4L2.Enabled = true;
-            else
-                tbC4L2.Enabled = false;
+            bool type56 = rbtnOptions5.Checked || rbtnOptions6.Checked;
+
+            // A: Type 1 (chiều cao) và Type 6 (đoạn đứng trên ống chính). L1/L2 và cách đo chỉ cho Type 5/6;
+            // By Pick MEP thì L2 cố định 20 mm dưới đáy đối tượng nên khoá ô L2.
+            tbC4L2.Enabled = rbtnOptions1.Checked || rbtnOptions6.Checked;
+            tbL1.Enabled = type56;
+            tbL2.Enabled = type56 && !rbtnByMep.Checked;
+            grpMethod.Enabled = type56;
 
             if (rbtnOptions4.Checked)
             {
@@ -336,7 +400,8 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
             }
             else
             {
-                ckbConnectCo90.Enabled = true;
+                // Type 5/6 tự đặt co khi điểm nối nằm ở đầu ống chính, tee/tap khi nằm giữa ống.
+                ckbConnectCo90.Enabled = !type56;
             }
 
             // Family Elbow chỉ dùng cho Phương án 5 cũ của Dirit (đã bỏ theo sheet Fire Protection);

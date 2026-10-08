@@ -80,6 +80,7 @@ namespace PlumbingSolution.FireProtection.RequestForm
         SprinklerDownType3_RUN,
         SprinklerDownType4_RUN,
         SprinklerDownType5_RUN,
+        SprinklerDownType6_RUN,
 
         //Service E2
         FlexSprinker_RUN,

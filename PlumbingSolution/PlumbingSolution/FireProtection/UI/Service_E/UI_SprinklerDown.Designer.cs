@@ -48,6 +48,17 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
             this.ckbConnectCo90 = new System.Windows.Forms.CheckBox();
             this.picPreview = new System.Windows.Forms.PictureBox();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
+            this.rbtnOptions5 = new System.Windows.Forms.RadioButton();
+            this.rbtnOptions6 = new System.Windows.Forms.RadioButton();
+            this.grpParameters = new System.Windows.Forms.GroupBox();
+            this.lblL1 = new System.Windows.Forms.Label();
+            this.tbL1 = new System.Windows.Forms.TextBox();
+            this.lblL2 = new System.Windows.Forms.Label();
+            this.tbL2 = new System.Windows.Forms.TextBox();
+            this.grpMethod = new System.Windows.Forms.GroupBox();
+            this.tlpMethod = new System.Windows.Forms.TableLayoutPanel();
+            this.rbtnByDistance = new System.Windows.Forms.RadioButton();
+            this.rbtnByMep = new System.Windows.Forms.RadioButton();
             this.label3 = new System.Windows.Forms.Label();
             this.tbC4L2 = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
@@ -62,6 +73,9 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
             this.tableLayoutPanel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picPreview)).BeginInit();
             this.tableLayoutPanel6.SuspendLayout();
+            this.grpParameters.SuspendLayout();
+            this.grpMethod.SuspendLayout();
+            this.tlpMethod.SuspendLayout();
             this.tableLayoutPanel7.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -130,18 +144,20 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.Controls.Add(this.groupBox2, 1, 1);
             this.tableLayoutPanel2.Controls.Add(this.groupBox1, 1, 0);
-            this.tableLayoutPanel2.Controls.Add(this.ckbConnectCo90, 1, 4);
+            this.tableLayoutPanel2.Controls.Add(this.ckbConnectCo90, 1, 5);
             this.tableLayoutPanel2.Controls.Add(this.picPreview, 0, 0);
-            this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel6, 1, 3);
+            this.tableLayoutPanel2.Controls.Add(this.grpParameters, 1, 3);
+            this.tableLayoutPanel2.Controls.Add(this.grpMethod, 1, 4);
             this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel7, 1, 2);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 3);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 5;
+            this.tableLayoutPanel2.RowCount = 6;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 0F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 92F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 56F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
             this.tableLayoutPanel2.Size = new System.Drawing.Size(509, 278);
             this.tableLayoutPanel2.TabIndex = 2;
@@ -167,6 +183,8 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
             this.tableLayoutPanel5.Controls.Add(this.rbtnOptions3, 1, 0);
             this.tableLayoutPanel5.Controls.Add(this.rbtnOptions2, 0, 1);
             this.tableLayoutPanel5.Controls.Add(this.rbtnOptions4, 1, 1);
+            this.tableLayoutPanel5.Controls.Add(this.rbtnOptions5, 2, 0);
+            this.tableLayoutPanel5.Controls.Add(this.rbtnOptions6, 2, 1);
             this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel5.Location = new System.Drawing.Point(3, 16);
             this.tableLayoutPanel5.Name = "tableLayoutPanel5";
@@ -310,24 +328,131 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
             this.picPreview.Dock = System.Windows.Forms.DockStyle.Fill;
             this.picPreview.Location = new System.Drawing.Point(3, 3);
             this.picPreview.Name = "picPreview";
-            this.tableLayoutPanel2.SetRowSpan(this.picPreview, 5);
+            this.tableLayoutPanel2.SetRowSpan(this.picPreview, 6);
             this.picPreview.Size = new System.Drawing.Size(194, 272);
             this.picPreview.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.picPreview.TabIndex = 3;
             this.picPreview.TabStop = false;
             // 
+            // 
+            // rbtnOptions5
+            // 
+            this.rbtnOptions5.AutoSize = true;
+            this.rbtnOptions5.Margin = new System.Windows.Forms.Padding(5);
+            this.rbtnOptions5.Name = "rbtnOptions5";
+            this.rbtnOptions5.TabIndex = 5;
+            this.rbtnOptions5.Text = "Type 5";
+            this.rbtnOptions5.UseVisualStyleBackColor = true;
+            this.rbtnOptions5.CheckedChanged += new System.EventHandler(this.rbtnOptions5_CheckedChanged);
+            // 
+            // rbtnOptions6
+            // 
+            this.rbtnOptions6.AutoSize = true;
+            this.rbtnOptions6.Margin = new System.Windows.Forms.Padding(5);
+            this.rbtnOptions6.Name = "rbtnOptions6";
+            this.rbtnOptions6.TabIndex = 6;
+            this.rbtnOptions6.Text = "Type 6";
+            this.rbtnOptions6.UseVisualStyleBackColor = true;
+            this.rbtnOptions6.CheckedChanged += new System.EventHandler(this.rbtnOptions5_CheckedChanged);
+            // 
+            // grpParameters
+            // 
+            this.grpParameters.Controls.Add(this.tableLayoutPanel6);
+            this.grpParameters.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.grpParameters.Name = "grpParameters";
+            this.grpParameters.TabIndex = 4;
+            this.grpParameters.TabStop = false;
+            this.grpParameters.Text = "Parameters";
+            // 
+            // lblL1
+            // 
+            this.lblL1.AutoSize = true;
+            this.lblL1.Margin = new System.Windows.Forms.Padding(5);
+            this.lblL1.Name = "lblL1";
+            this.lblL1.Text = "L1";
+            // 
+            // tbL1
+            // 
+            this.tbL1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tbL1.Margin = new System.Windows.Forms.Padding(5);
+            this.tbL1.Name = "tbL1";
+            this.tbL1.Text = "500";
+            this.tbL1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tbC4L2_KeyPress);
+            // 
+            // lblL2
+            // 
+            this.lblL2.AutoSize = true;
+            this.lblL2.Margin = new System.Windows.Forms.Padding(5);
+            this.lblL2.Name = "lblL2";
+            this.lblL2.Text = "L2";
+            // 
+            // tbL2
+            // 
+            this.tbL2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tbL2.Margin = new System.Windows.Forms.Padding(5);
+            this.tbL2.Name = "tbL2";
+            this.tbL2.Text = "300";
+            this.tbL2.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tbC4L2_KeyPress);
+            // 
+            // grpMethod
+            // 
+            this.grpMethod.Controls.Add(this.tlpMethod);
+            this.grpMethod.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.grpMethod.Name = "grpMethod";
+            this.grpMethod.TabIndex = 5;
+            this.grpMethod.TabStop = false;
+            this.grpMethod.Text = "Type 5 / 6 Option";
+            // 
+            // tlpMethod
+            // 
+            this.tlpMethod.ColumnCount = 2;
+            this.tlpMethod.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpMethod.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpMethod.Controls.Add(this.rbtnByDistance, 0, 0);
+            this.tlpMethod.Controls.Add(this.rbtnByMep, 1, 0);
+            this.tlpMethod.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpMethod.Name = "tlpMethod";
+            this.tlpMethod.RowCount = 1;
+            this.tlpMethod.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            // 
+            // rbtnByDistance
+            // 
+            this.rbtnByDistance.AutoSize = true;
+            this.rbtnByDistance.Checked = true;
+            this.rbtnByDistance.Margin = new System.Windows.Forms.Padding(5);
+            this.rbtnByDistance.Name = "rbtnByDistance";
+            this.rbtnByDistance.TabStop = true;
+            this.rbtnByDistance.Text = "By Distance";
+            this.rbtnByDistance.UseVisualStyleBackColor = true;
+            this.rbtnByDistance.CheckedChanged += new System.EventHandler(this.rbtnOptions5_CheckedChanged);
+            // 
+            // rbtnByMep
+            // 
+            this.rbtnByMep.AutoSize = true;
+            this.rbtnByMep.Margin = new System.Windows.Forms.Padding(5);
+            this.rbtnByMep.Name = "rbtnByMep";
+            this.rbtnByMep.Text = "By Pick MEP Elements";
+            this.rbtnByMep.UseVisualStyleBackColor = true;
+            // 
             // tableLayoutPanel6
             // 
-            this.tableLayoutPanel6.ColumnCount = 2;
-            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
-            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel6.Controls.Add(this.label3, 0, 0);
-            this.tableLayoutPanel6.Controls.Add(this.tbC4L2, 1, 0);
+            this.tableLayoutPanel6.ColumnCount = 4;
+            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 34F));
+            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 34F));
+            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel6.Controls.Add(this.lblL1, 0, 0);
+            this.tableLayoutPanel6.Controls.Add(this.tbL1, 1, 0);
+            this.tableLayoutPanel6.Controls.Add(this.lblL2, 2, 0);
+            this.tableLayoutPanel6.Controls.Add(this.tbL2, 3, 0);
+            this.tableLayoutPanel6.Controls.Add(this.label3, 0, 1);
+            this.tableLayoutPanel6.Controls.Add(this.tbC4L2, 1, 1);
             this.tableLayoutPanel6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel6.Location = new System.Drawing.Point(203, 210);
             this.tableLayoutPanel6.Name = "tableLayoutPanel6";
-            this.tableLayoutPanel6.RowCount = 1;
-            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel6.RowCount = 2;
+            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel6.Size = new System.Drawing.Size(303, 29);
             this.tableLayoutPanel6.TabIndex = 4;
             // 
@@ -346,6 +471,7 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
             this.tbC4L2.Location = new System.Drawing.Point(85, 5);
             this.tbC4L2.Margin = new System.Windows.Forms.Padding(5);
             this.tbC4L2.Name = "tbC4L2";
+            this.tbC4L2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tbC4L2.Size = new System.Drawing.Size(213, 20);
             this.tbC4L2.TabIndex = 3;
             this.tbC4L2.Text = "200";
@@ -395,7 +521,7 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(187)))), ((int)(((byte)(226)))), ((int)(((byte)(252)))));
-            this.ClientSize = new System.Drawing.Size(515, 290);
+            this.ClientSize = new System.Drawing.Size(515, 410);
             this.Controls.Add(this.tableLayoutPanel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -416,6 +542,10 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
             ((System.ComponentModel.ISupportInitialize)(this.picPreview)).EndInit();
             this.tableLayoutPanel6.ResumeLayout(false);
             this.tableLayoutPanel6.PerformLayout();
+            this.grpParameters.ResumeLayout(false);
+            this.tlpMethod.ResumeLayout(false);
+            this.tlpMethod.PerformLayout();
+            this.grpMethod.ResumeLayout(false);
             this.tableLayoutPanel7.ResumeLayout(false);
             this.tableLayoutPanel7.PerformLayout();
             this.ResumeLayout(false);
@@ -448,5 +578,16 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel7;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ComboBox cbbElbow;
+        private System.Windows.Forms.RadioButton rbtnOptions5;
+        private System.Windows.Forms.RadioButton rbtnOptions6;
+        private System.Windows.Forms.GroupBox grpParameters;
+        private System.Windows.Forms.Label lblL1;
+        private System.Windows.Forms.TextBox tbL1;
+        private System.Windows.Forms.Label lblL2;
+        private System.Windows.Forms.TextBox tbL2;
+        private System.Windows.Forms.GroupBox grpMethod;
+        private System.Windows.Forms.TableLayoutPanel tlpMethod;
+        private System.Windows.Forms.RadioButton rbtnByDistance;
+        private System.Windows.Forms.RadioButton rbtnByMep;
     }
 }

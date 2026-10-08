@@ -28,6 +28,7 @@
                     <Directory Id="PreviewDir" Name="Preview">
                       <Directory Id="PreviewFireDir" Name="DIRIT FIRE" />
                       <Directory Id="PreviewMech2Dir" Name="DIRIT MECH 2" />
+                      <Directory Id="PreviewPsDir" Name="PlumbingSolution" />
                     </Directory>
                   </Directory>
                   <Directory Id="LanguageDir" Name="Language" />
@@ -150,6 +151,16 @@
                        KeyPath="yes" />
         <RemoveFolder Id="RemovePipeFittingsDir" Directory="PipeFittingsDir" On="uninstall" />
         <RemoveFolder Id="RemoveFamilyDir" Directory="FamilyDir" On="uninstall" />
+      </Component>
+      <!-- Ảnh minh hoạ của PlumbingSolution (Pendent Type 5/6). -->
+      <Component Id="PreviewPs" Guid="{0C7746A0-15BE-42FC-8101-87D8B9B34472}" Directory="PreviewPsDir">
+        <File Id="PreviewPs_0" Source="$(var.SourceRoot)\Icon\Preview\PlumbingSolution\Pendent_Type5.png" />
+        <File Id="PreviewPs_1" Source="$(var.SourceRoot)\Icon\Preview\PlumbingSolution\Pendent_Type5_MEP.png" />
+        <File Id="PreviewPs_2" Source="$(var.SourceRoot)\Icon\Preview\PlumbingSolution\Pendent_Type6.png" />
+        <File Id="PreviewPs_3" Source="$(var.SourceRoot)\Icon\Preview\PlumbingSolution\Pendent_Type6_MEP.png" />
+        <RegistryValue Root="HKCU" Key="Software\FlashBim\PlumbingSolution2024" Name="PreviewPs" Type="integer" Value="1"
+                       KeyPath="yes" />
+        <RemoveFolder Id="RemovePreviewPsDir" Directory="PreviewPsDir" On="uninstall" />
       </Component>
     </ComponentGroup>
   </Fragment>
