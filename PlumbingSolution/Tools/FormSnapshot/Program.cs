@@ -96,6 +96,18 @@ internal static class Program
                     bmp.Save(file, ImageFormat.Png);
                 }
                 Console.WriteLine("saved " + file + " " + f.Size);
+
+                TabControl tabs = All(f).OfType<TabControl>().FirstOrDefault();
+                for (int i = 1; tabs != null && i < tabs.TabCount; i++)
+                {
+                    tabs.SelectedIndex = i;
+                    Application.DoEvents();
+                    using (var bmp = new Bitmap(f.Width, f.Height))
+                    {
+                        f.DrawToBitmap(bmp, new Rectangle(Point.Empty, f.Size));
+                        bmp.Save(Path.ChangeExtension(file, null) + "_tab" + (i + 1) + ".png", ImageFormat.Png);
+                    }
+                }
                 f.Close();
             }
             catch (Exception ex)

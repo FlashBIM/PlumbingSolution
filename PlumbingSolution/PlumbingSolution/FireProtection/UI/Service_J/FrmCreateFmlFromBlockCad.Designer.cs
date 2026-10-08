@@ -1,6 +1,6 @@
 using PlumbingSolution.FireProtection.UI.Service_J;
 
-namespace WinFormsDesignHostLink
+namespace PlumbingSolution.FireProtection.UI.Service_J
 {
     partial class FrmCreateFmlFromBlockCad
     {
@@ -133,7 +133,7 @@ namespace WinFormsDesignHostLink
             this.btnRun.Name = "btnRun";
             this.btnRun.Size = new System.Drawing.Size(80, 29);
             this.btnRun.TabIndex = 0;
-            this.btnRun.Text = "Thực thi";
+            this.btnRun.Text = "OK";
             this.btnRun.UseVisualStyleBackColor = true;
             this.btnRun.Click += new System.EventHandler(this.btnRun_Click);
             // 
@@ -170,7 +170,7 @@ namespace WinFormsDesignHostLink
             this.tab1.Padding = new System.Windows.Forms.Padding(3);
             this.tab1.Size = new System.Drawing.Size(391, 428);
             this.tab1.TabIndex = 0;
-            this.tab1.Text = "Thiết lập";
+            this.tab1.Text = "Setup";
             // 
             // tableLayoutPanel2
             // 
@@ -200,7 +200,7 @@ namespace WinFormsDesignHostLink
             this.groupBox5.Size = new System.Drawing.Size(372, 90);
             this.groupBox5.TabIndex = 5;
             this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "Chọn Link CAD";
+            this.groupBox5.Text = "CAD Link";
             // 
             // tableLayoutPanel7
             // 
@@ -240,7 +240,7 @@ namespace WinFormsDesignHostLink
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(74, 13);
             this.label6.TabIndex = 5;
-            this.label6.Text = "Tên Link CAD";
+            this.label6.Text = "CAD Link Name";
             // 
             // btnExploreCAD
             // 
@@ -250,7 +250,7 @@ namespace WinFormsDesignHostLink
             this.btnExploreCAD.Name = "btnExploreCAD";
             this.btnExploreCAD.Size = new System.Drawing.Size(206, 31);
             this.btnExploreCAD.TabIndex = 6;
-            this.btnExploreCAD.Text = "Xử lý link CAD";
+            this.btnExploreCAD.Text = "Process CAD Link";
             this.btnExploreCAD.UseVisualStyleBackColor = true;
             this.btnExploreCAD.Click += new System.EventHandler(this.btnExploreCAD_Click);
             // 
@@ -264,7 +264,7 @@ namespace WinFormsDesignHostLink
             this.groupBox2.Size = new System.Drawing.Size(372, 190);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Lựa chọn Family";
+            this.groupBox2.Text = "Family";
             // 
             // tableLayoutPanel3
             // 
@@ -331,7 +331,7 @@ namespace WinFormsDesignHostLink
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(74, 13);
             this.label4.TabIndex = 3;
-            this.label4.Text = "Cao độ Family";
+            this.label4.Text = "Family Elevation";
             // 
             // cbbFamily
             // 
@@ -386,7 +386,7 @@ namespace WinFormsDesignHostLink
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(88, 13);
             this.label7.TabIndex = 8;
-            this.label7.Text = "Danh mục Family";
+            this.label7.Text = "Family Category";
             // 
             // cbbCategoryFamily
             // 
@@ -409,7 +409,7 @@ namespace WinFormsDesignHostLink
             this.grbBlock.Size = new System.Drawing.Size(372, 110);
             this.grbBlock.TabIndex = 0;
             this.grbBlock.TabStop = false;
-            this.grbBlock.Text = "Chọn Block";
+            this.grbBlock.Text = "Block";
             // 
             // tableLayoutPanel4
             // 
@@ -440,7 +440,7 @@ namespace WinFormsDesignHostLink
             this.rbtnPickBlockFromList.Name = "rbtnPickBlockFromList";
             this.rbtnPickBlockFromList.Size = new System.Drawing.Size(115, 17);
             this.rbtnPickBlockFromList.TabIndex = 0;
-            this.rbtnPickBlockFromList.Text = "Chọn từ danh sách";
+            this.rbtnPickBlockFromList.Text = "From List";
             this.rbtnPickBlockFromList.UseVisualStyleBackColor = true;
             // 
             // rbtnPickBlock
@@ -452,7 +452,7 @@ namespace WinFormsDesignHostLink
             this.rbtnPickBlock.Size = new System.Drawing.Size(102, 17);
             this.rbtnPickBlock.TabIndex = 1;
             this.rbtnPickBlock.TabStop = true;
-            this.rbtnPickBlock.Text = "Pick chọn block";
+            this.rbtnPickBlock.Text = "Pick Block";
             this.rbtnPickBlock.UseVisualStyleBackColor = true;
             // 
             // cbbBlockName
@@ -494,7 +494,7 @@ namespace WinFormsDesignHostLink
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(55, 13);
             this.label5.TabIndex = 5;
-            this.label5.Text = "Tên block";
+            this.label5.Text = "Block Name";
             // 
             // tab2
             // 
@@ -504,7 +504,7 @@ namespace WinFormsDesignHostLink
             this.tab2.Padding = new System.Windows.Forms.Padding(3);
             this.tab2.Size = new System.Drawing.Size(391, 428);
             this.tab2.TabIndex = 1;
-            this.tab2.Text = "Cài đặt";
+            this.tab2.Text = "Settings";
             this.tab2.UseVisualStyleBackColor = true;
             // 
             // tableLayoutPanel8
@@ -535,7 +535,7 @@ namespace WinFormsDesignHostLink
             this.grbStructure.Size = new System.Drawing.Size(372, 80);
             this.grbStructure.TabIndex = 5;
             this.grbStructure.TabStop = false;
-            this.grbStructure.Text = "Đối tượng xây dựng";
+            this.grbStructure.Text = "Host Elements";
             // 
             // tableLayoutPanel9
             // 
@@ -576,7 +576,7 @@ namespace WinFormsDesignHostLink
             this.rbtnProjectElement.Name = "rbtnProjectElement";
             this.rbtnProjectElement.Size = new System.Drawing.Size(107, 17);
             this.rbtnProjectElement.TabIndex = 1;
-            this.rbtnProjectElement.Text = "Đối tượng Project";
+            this.rbtnProjectElement.Text = "Project Elements";
             this.rbtnProjectElement.UseVisualStyleBackColor = true;
             // 
             // groupBox1
@@ -589,7 +589,7 @@ namespace WinFormsDesignHostLink
             this.groupBox1.Size = new System.Drawing.Size(372, 80);
             this.groupBox1.TabIndex = 3;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Thiết lập cao độ";
+            this.groupBox1.Text = "Elevation";
             // 
             // tableLayoutPanel10
             // 
@@ -619,7 +619,7 @@ namespace WinFormsDesignHostLink
             this.rbtnCeilingElevation.Size = new System.Drawing.Size(108, 17);
             this.rbtnCeilingElevation.TabIndex = 5;
             this.rbtnCeilingElevation.TabStop = true;
-            this.rbtnCeilingElevation.Text = "Theo cao độ trần";
+            this.rbtnCeilingElevation.Text = "Ceiling Elevation";
             this.rbtnCeilingElevation.UseVisualStyleBackColor = true;
             this.rbtnCeilingElevation.CheckedChanged += new System.EventHandler(this.rbtnCeilingElevation_CheckedChanged);
             // 
@@ -632,7 +632,7 @@ namespace WinFormsDesignHostLink
             this.rbtnFloorElevation.Size = new System.Drawing.Size(128, 17);
             this.rbtnFloorElevation.TabIndex = 4;
             this.rbtnFloorElevation.TabStop = true;
-            this.rbtnFloorElevation.Text = "Theo cao độ đáy sàn";
+            this.rbtnFloorElevation.Text = "Floor Bottom Elevation";
             this.rbtnFloorElevation.UseVisualStyleBackColor = true;
             this.rbtnFloorElevation.CheckedChanged += new System.EventHandler(this.rbtnFloorElevation_CheckedChanged);
             // 
@@ -644,7 +644,7 @@ namespace WinFormsDesignHostLink
             this.rbtnManualElevation.Name = "rbtnManualElevation";
             this.rbtnManualElevation.Size = new System.Drawing.Size(87, 17);
             this.rbtnManualElevation.TabIndex = 1;
-            this.rbtnManualElevation.Text = "Cao độ tự do";
+            this.rbtnManualElevation.Text = "Manual Elevation";
             this.rbtnManualElevation.UseVisualStyleBackColor = true;
             this.rbtnManualElevation.CheckedChanged += new System.EventHandler(this.rbtnManualElevation_CheckedChanged);
             // 
@@ -657,7 +657,7 @@ namespace WinFormsDesignHostLink
             this.rbtnFaceElevation.Size = new System.Drawing.Size(125, 17);
             this.rbtnFaceElevation.TabIndex = 3;
             this.rbtnFaceElevation.TabStop = true;
-            this.rbtnFaceElevation.Text = "Family tựa mặt phẳng";
+            this.rbtnFaceElevation.Text = "Face-based Family";
             this.rbtnFaceElevation.UseVisualStyleBackColor = true;
             this.rbtnFaceElevation.CheckedChanged += new System.EventHandler(this.rbtnFaceElevation_CheckedChanged);
             // 
@@ -669,7 +669,7 @@ namespace WinFormsDesignHostLink
             this.btnLink.Name = "btnLink";
             this.btnLink.Size = new System.Drawing.Size(173, 21);
             this.btnLink.TabIndex = 5;
-            this.btnLink.Text = "Đối tượng Link";
+            this.btnLink.Text = "Link Elements";
             this.btnLink.UseVisualStyleBackColor = true;
             this.btnLink.Click += new System.EventHandler(this.btnLink_Click);
             // 
@@ -684,7 +684,7 @@ namespace WinFormsDesignHostLink
             this.MaximizeBox = false;
             this.Name = "FrmCreateFmlFromBlockCad";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Family tự động";
+            this.Text = "Select Block";
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel5.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);

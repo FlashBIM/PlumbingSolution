@@ -122,7 +122,7 @@ namespace PlumbingSolution.FireProtection.UI.Service_J
             this.btnRun.Name = "btnRun";
             this.btnRun.Size = new System.Drawing.Size(80, 29);
             this.btnRun.TabIndex = 0;
-            this.btnRun.Text = "Thực thi";
+            this.btnRun.Text = "OK";
             this.btnRun.UseVisualStyleBackColor = true;
             this.btnRun.Click += new System.EventHandler(this.btnRun_Click);
             // 
@@ -159,7 +159,7 @@ namespace PlumbingSolution.FireProtection.UI.Service_J
             this.tab1.Padding = new System.Windows.Forms.Padding(3);
             this.tab1.Size = new System.Drawing.Size(391, 279);
             this.tab1.TabIndex = 0;
-            this.tab1.Text = "Thiết lập";
+            this.tab1.Text = "Setup";
             // 
             // tableLayoutPanel2
             // 
@@ -203,7 +203,7 @@ namespace PlumbingSolution.FireProtection.UI.Service_J
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(127, 13);
             this.label8.TabIndex = 6;
-            this.label8.Text = "Chọn Block từ danh sách";
+            this.label8.Text = "Block from List";
             // 
             // tbLinkCadName
             // 
@@ -234,7 +234,7 @@ namespace PlumbingSolution.FireProtection.UI.Service_J
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(74, 13);
             this.label6.TabIndex = 5;
-            this.label6.Text = "Tên Link CAD";
+            this.label6.Text = "CAD Link Name";
             // 
             // groupBox2
             // 
@@ -246,7 +246,7 @@ namespace PlumbingSolution.FireProtection.UI.Service_J
             this.groupBox2.Size = new System.Drawing.Size(372, 190);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Lựa chọn Family";
+            this.groupBox2.Text = "Family";
             // 
             // tableLayoutPanel3
             // 
@@ -313,7 +313,7 @@ namespace PlumbingSolution.FireProtection.UI.Service_J
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(74, 13);
             this.label4.TabIndex = 3;
-            this.label4.Text = "Cao độ Family";
+            this.label4.Text = "Family Elevation";
             // 
             // cbbFamily
             // 
@@ -368,7 +368,7 @@ namespace PlumbingSolution.FireProtection.UI.Service_J
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(88, 13);
             this.label7.TabIndex = 8;
-            this.label7.Text = "Danh mục Family";
+            this.label7.Text = "Family Category";
             // 
             // cbbCategoryFamily
             // 
@@ -390,7 +390,7 @@ namespace PlumbingSolution.FireProtection.UI.Service_J
             this.tab2.Padding = new System.Windows.Forms.Padding(3);
             this.tab2.Size = new System.Drawing.Size(391, 279);
             this.tab2.TabIndex = 1;
-            this.tab2.Text = "Cài đặt";
+            this.tab2.Text = "Settings";
             this.tab2.UseVisualStyleBackColor = true;
             // 
             // tableLayoutPanel8
@@ -421,7 +421,7 @@ namespace PlumbingSolution.FireProtection.UI.Service_J
             this.grbStructure.Size = new System.Drawing.Size(372, 80);
             this.grbStructure.TabIndex = 5;
             this.grbStructure.TabStop = false;
-            this.grbStructure.Text = "Đối tượng xây dựng";
+            this.grbStructure.Text = "Host Elements";
             // 
             // tableLayoutPanel9
             // 
@@ -462,7 +462,7 @@ namespace PlumbingSolution.FireProtection.UI.Service_J
             this.rbtnProjectElement.Name = "rbtnProjectElement";
             this.rbtnProjectElement.Size = new System.Drawing.Size(107, 17);
             this.rbtnProjectElement.TabIndex = 1;
-            this.rbtnProjectElement.Text = "Đối tượng Project";
+            this.rbtnProjectElement.Text = "Project Elements";
             this.rbtnProjectElement.UseVisualStyleBackColor = true;
             // 
             // groupBox1
@@ -475,7 +475,7 @@ namespace PlumbingSolution.FireProtection.UI.Service_J
             this.groupBox1.Size = new System.Drawing.Size(372, 80);
             this.groupBox1.TabIndex = 3;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Thiết lập cao độ";
+            this.groupBox1.Text = "Elevation";
             // 
             // tableLayoutPanel10
             // 
@@ -505,7 +505,7 @@ namespace PlumbingSolution.FireProtection.UI.Service_J
             this.rbtnCeilingElevation.Size = new System.Drawing.Size(108, 17);
             this.rbtnCeilingElevation.TabIndex = 5;
             this.rbtnCeilingElevation.TabStop = true;
-            this.rbtnCeilingElevation.Text = "Theo cao độ trần";
+            this.rbtnCeilingElevation.Text = "Ceiling Elevation";
             this.rbtnCeilingElevation.UseVisualStyleBackColor = true;
             this.rbtnCeilingElevation.CheckedChanged += new System.EventHandler(this.rbtnCeilingElevation_CheckedChanged);
             // 
@@ -518,7 +518,7 @@ namespace PlumbingSolution.FireProtection.UI.Service_J
             this.rbtnFloorElevation.Size = new System.Drawing.Size(128, 17);
             this.rbtnFloorElevation.TabIndex = 4;
             this.rbtnFloorElevation.TabStop = true;
-            this.rbtnFloorElevation.Text = "Theo cao độ đáy sàn";
+            this.rbtnFloorElevation.Text = "Floor Bottom Elevation";
             this.rbtnFloorElevation.UseVisualStyleBackColor = true;
             this.rbtnFloorElevation.CheckedChanged += new System.EventHandler(this.rbtnFloorElevation_CheckedChanged);
             // 
@@ -530,7 +530,7 @@ namespace PlumbingSolution.FireProtection.UI.Service_J
             this.rbtnManualElevation.Name = "rbtnManualElevation";
             this.rbtnManualElevation.Size = new System.Drawing.Size(87, 17);
             this.rbtnManualElevation.TabIndex = 1;
-            this.rbtnManualElevation.Text = "Cao độ tự do";
+            this.rbtnManualElevation.Text = "Manual Elevation";
             this.rbtnManualElevation.UseVisualStyleBackColor = true;
             this.rbtnManualElevation.CheckedChanged += new System.EventHandler(this.rbtnManualElevation_CheckedChanged);
             // 
@@ -543,7 +543,7 @@ namespace PlumbingSolution.FireProtection.UI.Service_J
             this.rbtnFaceElevation.Size = new System.Drawing.Size(125, 17);
             this.rbtnFaceElevation.TabIndex = 3;
             this.rbtnFaceElevation.TabStop = true;
-            this.rbtnFaceElevation.Text = "Family tựa mặt phẳng";
+            this.rbtnFaceElevation.Text = "Face-based Family";
             this.rbtnFaceElevation.UseVisualStyleBackColor = true;
             this.rbtnFaceElevation.CheckedChanged += new System.EventHandler(this.rbtnFaceElevation_CheckedChanged);
             // 
@@ -554,7 +554,7 @@ namespace PlumbingSolution.FireProtection.UI.Service_J
             this.btnLink.Name = "btnLink";
             this.btnLink.Size = new System.Drawing.Size(177, 25);
             this.btnLink.TabIndex = 5;
-            this.btnLink.Text = "Đối tượng Link";
+            this.btnLink.Text = "Link Elements";
             this.btnLink.UseVisualStyleBackColor = true;
             this.btnLink.Click += new System.EventHandler(this.btnLink_Click);
             // 
@@ -568,7 +568,7 @@ namespace PlumbingSolution.FireProtection.UI.Service_J
             this.MaximizeBox = false;
             this.Name = "FrmCreateFmlFromBasePoint";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Family tự động";
+            this.Text = "Place Sprinkler";
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel5.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);

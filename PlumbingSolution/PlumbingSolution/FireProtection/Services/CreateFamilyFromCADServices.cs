@@ -82,7 +82,7 @@ namespace PlumbingSolution.FireProtection.Services
                 }
                 catch (Exception ex)
                 {
-                    IO.ShowWarning("Phân tách file DWG không thành công, đã xảy ra lỗi!");
+                    IO.ShowWarning("Failed to explode the DWG file.");
                     return false;
                 }
             }
@@ -109,7 +109,7 @@ namespace PlumbingSolution.FireProtection.Services
                 }
                 catch (Exception ex)
                 {
-                    IO.ShowWarning("Phân tách file DWG không thành công, đã xảy ra lỗi!");
+                    IO.ShowWarning("Failed to explode the DWG file.");
                     return false;
                 }
             }
@@ -181,7 +181,7 @@ namespace PlumbingSolution.FireProtection.Services
                 List<ElementId> ids = new List<ElementId>();
                 List<FamilyInstanceCreationData> datas = new List<FamilyInstanceCreationData>();
 
-                FrmProcessbar progressBar = new FrmProcessbar("Quá trình tạo Family", Define.MessageFinish, DiritIconTool.Mep);
+                FrmProcessbar progressBar = new FrmProcessbar("Creating Families", Define.MessageFinish, DiritIconTool.Mep);
                 Process process = Process.GetCurrentProcess();
 
                 if (TryGetFamilySymbol(settingData, out FamilySymbol symbol))
@@ -193,7 +193,7 @@ namespace PlumbingSolution.FireProtection.Services
                             view3D = CreateIsolateView3D(settingData, level, locations, out ids);
                             if (view3D == null)
                             {
-                                IO.ShowWarning("Không thể tạo view3D để quét trần/sàn");
+                                IO.ShowWarning("Cannot create a 3D view to scan ceilings/floors.");
                                 return;
                             }
                         }
@@ -384,7 +384,7 @@ namespace PlumbingSolution.FireProtection.Services
                 {
                     if (symbol.Family.FamilyPlacementType == FamilyPlacementType.WorkPlaneBased && settingData.ElevationType != ElevationType.ByFace)
                     {
-                        IO.ShowWarning("Family đã chọn được đặt bằng face. Vui lòng thiết lập lại");
+                        IO.ShowWarning("The selected family is placed by face. Please change the settings.");
                         return false;
                     }
 

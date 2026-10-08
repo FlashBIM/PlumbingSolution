@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace WinFormsDesignHostLink
+namespace PlumbingSolution.FireProtection.UI.Service_J
 {
     public partial class FrnSelectedLink : System.Windows.Forms.Form
     {

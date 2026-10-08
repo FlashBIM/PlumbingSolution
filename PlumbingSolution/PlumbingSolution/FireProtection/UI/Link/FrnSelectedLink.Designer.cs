@@ -1,4 +1,4 @@
-namespace WinFormsDesignHostLink
+namespace PlumbingSolution.FireProtection.UI.Service_J
 {
     partial class FrnSelectedLink
     {
@@ -124,7 +124,7 @@ namespace WinFormsDesignHostLink
             this.btnAll.Name = "btnAll";
             this.btnAll.Size = new System.Drawing.Size(80, 30);
             this.btnAll.TabIndex = 0;
-            this.btnAll.Text = "Tất cả";
+            this.btnAll.Text = "All";
             this.btnAll.UseVisualStyleBackColor = true;
             this.btnAll.Click += new System.EventHandler(this.btnAll_Click);
             // 
@@ -136,7 +136,7 @@ namespace WinFormsDesignHostLink
             this.btnUnCheck.Name = "btnUnCheck";
             this.btnUnCheck.Size = new System.Drawing.Size(80, 30);
             this.btnUnCheck.TabIndex = 1;
-            this.btnUnCheck.Text = "Bỏ chọn";
+            this.btnUnCheck.Text = "Uncheck";
             this.btnUnCheck.UseVisualStyleBackColor = true;
             this.btnUnCheck.Click += new System.EventHandler(this.btnUnCheck_Click);
             // 
@@ -148,7 +148,7 @@ namespace WinFormsDesignHostLink
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(80, 30);
             this.btnOK.TabIndex = 3;
-            this.btnOK.Text = "Chọn";
+            this.btnOK.Text = "Select";
             this.btnOK.UseVisualStyleBackColor = true;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
             // 
@@ -162,7 +162,7 @@ namespace WinFormsDesignHostLink
             this.MinimizeBox = false;
             this.TopMost = true;
             this.Name = "FrnSelectedLink";
-            this.Text = "Chọn Link";
+            this.Text = "Select Link";
             this.StartPosition= System.Windows.Forms.FormStartPosition.CenterScreen;
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);

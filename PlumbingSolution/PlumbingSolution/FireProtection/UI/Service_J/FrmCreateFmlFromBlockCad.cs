@@ -15,7 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace WinFormsDesignHostLink
+namespace PlumbingSolution.FireProtection.UI.Service_J
 {
     public partial class FrmCreateFmlFromBlockCad : System.Windows.Forms.Form
     {
@@ -357,13 +357,13 @@ namespace WinFormsDesignHostLink
         {
             if (tbLinkCadName.Text.Trim().Length == 0)
             {
-                IO.ShowWarning("Chọn link CAD để tiếp tục");
+                IO.ShowWarning("Select a CAD link to continue.");
                 return false;
             }
 
             if (rbtnManualElevation.Checked && tbElevation.Text.Trim().Length == 0)
             {
-                IO.ShowWarning("Nhập cao độ để tiếp tục");
+                IO.ShowWarning("Enter an elevation to continue.");
                 tbElevation.Focus();
                 return false;
             }
@@ -372,7 +372,7 @@ namespace WinFormsDesignHostLink
                 cbbFamilyType.SelectedItem == null ||
                 cbbLevel.SelectedItem == null)
             {
-                IO.ShowWarning("Input không hợp lệ");
+                IO.ShowWarning("Invalid input.");
                 return false;
             }
 
@@ -380,20 +380,20 @@ namespace WinFormsDesignHostLink
             {
                 if (rbtnFaceElevation.Checked && family.FamilyPlacementType != FamilyPlacementType.WorkPlaneBased)
                 {
-                    IO.ShowWarning("Family ko hợp lệ cho loại family tựa mặt phẳng");
+                    IO.ShowWarning("This family cannot be used for face-based placement.");
                     return false;
                 }
 
                 if (!rbtnFaceElevation.Checked && family.FamilyPlacementType == FamilyPlacementType.WorkPlaneBased)
                 {
-                    IO.ShowWarning("Family đã chọn thuộc loại family tựa mặt phẳng, Chọn thiết lập Famliy tựa mặt phẳng để tiếp tục ");
+                    IO.ShowWarning("The selected family is face-based. Choose \"Face-based family\" to continue.");
                     return false;
                 }
             }
 
             if (grbStructure.Enabled && rbtnLinkElement.Checked && _settingData.SelectedLinks.Count == 0)
             {
-                IO.ShowWarning("Chọn Revit Link để tiếp tục");
+                IO.ShowWarning("Select a Revit link to continue.");
                 return false;
             }
 
