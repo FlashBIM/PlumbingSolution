@@ -1,11 +1,12 @@
 using Autodesk.Revit.UI;
+using PlumbingSolution.FireProtection.Command.Fire;
 using PlumbingSolution.FireProtection.Command.Modify;
 
 namespace PlumbingSolution.FireProtection.RequestForm
 {
     /// <summary>
-    /// ExternalEvent của các form đầu phun (ghép từ RequestHandler của Dirit, chỉ giữ các
-    /// nhánh đầu phun). Ánh xạ Type2/Type3 bị đảo y như bản gốc Dirit — form gửi
+    /// ExternalEvent của các form Fire Protection (ghép từ RequestHandler của Dirit, chỉ giữ các
+    /// nhánh đầu phun và ống nhánh FP). Ánh xạ Type2/Type3 bị đảo y như bản gốc Dirit — form gửi
     /// Type3_RUN cho radio "Phương án 2" và ngược lại.
     /// </summary>
     public class RequestHandler : IExternalEventHandler
@@ -42,6 +43,10 @@ namespace PlumbingSolution.FireProtection.RequestForm
 
                 case RequestId.TwinSprinker_RUN:
                     CmdTwinSprinkler.Process();
+                    break;
+
+                case RequestId.CreateBranchPipeFire:
+                    CmdCreateBranchPipeFire.Process();
                     break;
             }
         }

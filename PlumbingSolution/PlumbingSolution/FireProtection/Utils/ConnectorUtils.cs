@@ -188,5 +188,130 @@ namespace PlumbingSolution.FireProtection.Ultis
                 }
             }
         }
+    
+
+        public static void DisconnectFrom(FamilyInstance fittingWye, out Connector connectedSt, out Connector connectedEnd, out Element eleSt, out Element eleEnd)
+        {
+            connectedSt = null;
+            connectedEnd = null;
+            eleSt = null;
+            eleEnd = null;
+            if (fittingWye != null)
+            {
+                Common.GetInformationConectorWye(fittingWye, null, out Connector conSt, out Connector conEnd, out Connector conNhanhWye);
+
+                if (conSt != null && conSt.IsConnected)
+                {
+                    foreach (Connector item in conSt.AllRefs)
+                    {
+                        if (item != null && item.IsConnectedTo(conSt))
+                        {
+                            conSt.DisconnectFrom(item);
+
+                            if (item != null && item.Owner != null && item.Owner.Id != fittingWye.Id)
+                            {
+                                connectedSt = item;
+                                eleSt = item.Owner;
+                            }
+                        }
+                    }
+                }
+
+                if (conEnd != null && conEnd.IsConnected)
+                {
+                    foreach (Connector item in conEnd.AllRefs)
+                    {
+                        if (item != null && item.IsConnectedTo(conEnd))
+                        {
+                            conEnd.DisconnectFrom(item);
+
+                            if (item != null && item.Owner != null && item.Owner.Id != fittingWye.Id)
+                            {
+                                connectedEnd = item;
+                                eleEnd = item.Owner;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        public static List<Connector> ToList(ConnectorManager connectorManager)
+        {
+            List<Connector> retval = new List<Connector>();
+
+            if (connectorManager != null)
+            {
+                foreach (Connector con in connectorManager.Connectors)
+                {
+                    if (con != null)
+                        retval.Add(con);
+                }
+            }
+
+            return retval;
+        }
+
+        public static Element GetElementConnectedWithConnector(Connector con)
+        {
+            if (con != null && con.IsConnected)
+            {
+                Element main = con.Owner as Element;
+
+                foreach (Connector item in con.AllRefs)
+                {
+                    Element ele = item.Owner;
+                    if (null != ele && main.Id != ele.Id && (ele is FamilyInstance || ele is MEPCurve))
+                    {
+                        if (ele.Category.Id.ToInt() != (int)BuiltInCategory.OST_DuctInsulations
+                               && ele.Category.Id.ToInt() != (int)BuiltInCategory.OST_PipeInsulations
+                               && ele.Category.Id.ToInt() != (int)BuiltInCategory.OST_DuctLinings)
+                            return ele;
+                    }
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Lấy ra connector gần nhất và xa nhất với 1 điểm cho trước
+        /// </summary>
+        /// <param name="point"></param>
+        /// <param name="pipe"></param>
+        /// <param name="outFarest"></param>
+        /// <returns></returns>
+        public static Connector GetConnectorNearest(XYZ point, MEPCurve pipe, out Connector outFarest)
+        {
+            Connector retval = null;
+            outFarest = null;
+
+            if (point != null && pipe != null)
+            {
+                ConnectorManager connectorManager = pipe.ConnectorManager;
+
+                double max = double.MaxValue;
+                double min = double.MinValue;
+
+                foreach (Connector item in connectorManager.Connectors)
+                {
+                    double distance = item.Origin.DistanceTo(point);
+
+                    // lấy connector gần nhất
+                    if (distance < max)
+                    {
+                        max = distance;
+                        retval = item;
+                    }
+                    // lấy connector xa nhất
+                    if (distance > min)
+                    {
+                        min = distance;
+                        outFarest = item;
+                    }
+                }
+            }
+
+            return retval;
+        }
     }
 }

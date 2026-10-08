@@ -44,6 +44,7 @@ internal static class Program
             Tuple.Create("UI_TwinSprinkler", @"DIRIT FIRE\Twin sprinkler_1.jpg"),
             Tuple.Create("FrmCreateFmlFromBasePoint", ""),
             Tuple.Create("FrmCreateFmlFromBlockCad", ""),
+            Tuple.Create("FrmCreateBranchPipeFire", ""),
         };
 
         int failures = 0;

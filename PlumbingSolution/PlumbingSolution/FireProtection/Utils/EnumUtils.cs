@@ -8,4 +8,12 @@ namespace PlumbingSolution.FireProtection.Ultis
         Gen,
         Mep
     }
+
+
+    public enum TypeConnection
+    {
+        ELBOW90,
+        ELBOW45,
+        SIPHON
+    }
 }

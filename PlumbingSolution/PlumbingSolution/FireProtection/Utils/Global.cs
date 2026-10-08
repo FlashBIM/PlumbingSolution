@@ -17,6 +17,9 @@ namespace PlumbingSolution.FireProtection.Ultis
         public static Autodesk.Revit.Creation.Application AppCreation = null;
 
         public static UIDocument UIDoc = null;
+    
+
+        public static Document Doc = null;
     }
 
     public class WindowHandle : IWin32Window

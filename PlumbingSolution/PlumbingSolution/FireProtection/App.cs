@@ -5,6 +5,7 @@ using Autodesk.Revit.UI;
 using PlumbingSolution.FireProtection.RequestForm;
 using PlumbingSolution.FireProtection.Services;
 using PlumbingSolution.FireProtection.UI.Service_E;
+using PlumbingSolution.FireProtection.UI.Service_J;
 using PlumbingSolution.FireProtection.Ultis;
 using PlumbingSolution.FireProtection.Utils;
 
@@ -26,6 +27,7 @@ namespace PlumbingSolution.FireProtection
         public static UI_SprinklerDown m_SprinklerDownForm = null;
         public static UI_FlexSprinkler m_FlexSprinklerForm = null;
         public static UI_TwinSprinkler m_TwinSprinklerForm = null;
+        public static FrmCreateBranchPipeFire m_CreateBranchPipeFireFrm = null;
 
         private static void EnsureRevitWindow()
         {
@@ -105,6 +107,29 @@ namespace PlumbingSolution.FireProtection
                 }
 
                 DisplayService.SetFocus(new HandleRef(null, m_FlexSprinklerForm.Handle));
+                return true;
+            }
+            catch (Exception ex)
+            {
+                IO.LogException(ex);
+                return false;
+            }
+        }
+
+        public static bool ShowCreateBranchPipeFireForm(UIApplication uiapp)
+        {
+            try
+            {
+                EnsureRevitWindow();
+                if (m_CreateBranchPipeFireFrm == null || m_CreateBranchPipeFireFrm.IsDisposed)
+                {
+                    RequestHandler handler = new RequestHandler();
+                    ExternalEvent exEvent = ExternalEvent.Create(handler);
+                    m_CreateBranchPipeFireFrm = new FrmCreateBranchPipeFire(exEvent, handler);
+                    m_CreateBranchPipeFireFrm.Show(hWndRevit);
+                }
+
+                DisplayService.SetFocus(new HandleRef(null, m_CreateBranchPipeFireFrm.Handle));
                 return true;
             }
             catch (Exception ex)

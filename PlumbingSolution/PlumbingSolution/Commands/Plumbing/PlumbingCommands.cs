@@ -6,9 +6,6 @@ namespace PlumbingSolution.Commands.Plumbing
     [Transaction(TransactionMode.Manual)]
     public class CmdHosereelConnect : PlumbingCommandBase { protected override string Title => "Hosereel Connect"; }
 
-    [Transaction(TransactionMode.Manual)]
-    public class CmdCreateBranch : PlumbingCommandBase { protected override string Title => "Create Branch"; }
-
     // ---- Panel Pipe Connect ----
     [Transaction(TransactionMode.Manual)]
     public class CmdVerticalPipe : PlumbingCommandBase { protected override string Title => "Vertical Pipe"; }

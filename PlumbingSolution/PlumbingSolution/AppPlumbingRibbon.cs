@@ -3,6 +3,7 @@ using System.IO;
 using System.Windows.Media.Imaging;
 using Autodesk.Revit.UI;
 using PlumbingSolution.Commands.Plumbing;
+using PlumbingSolution.FireProtection.Command.Fire;
 using PlumbingSolution.FireProtection.Command.Fire.DiritCAD.Service_J;
 using PlumbingSolution.FireProtection.Command.Fire.DiritConnectSprayHead.Service_E;
 using PlumbingSolution.FireProtection.Command.Modify;
@@ -43,7 +44,8 @@ namespace PlumbingSolution
             place.AddPushButton(NewPlumbingButton("PlaceSprinklerAuto", "Place Sprinkler", typeof(CmdCreateFmlFromBasePoint), assemblyPath, iconFolder));
             place.AddPushButton(NewPlumbingButton("SelectBlock", "Select Block", typeof(CmdCreateFmlFromBlockCad), assemblyPath, iconFolder));
             panel0.AddItem(NewPlumbingButton("HosereelConnect", "Hosereel\nConnect", typeof(CmdHosereelConnect), assemblyPath, iconFolder));
-            panel0.AddItem(NewPlumbingButton("CreateBranch", "Create\nBranch", typeof(CmdCreateBranch), assemblyPath, iconFolder));
+            // Create Branch = "Ống nhánh FP" của Dirit.
+            panel0.AddItem(NewPlumbingButton("CreateBranch", "Create\nBranch", typeof(CmdCreateBranchPipeFire), assemblyPath, iconFolder));
 
             Autodesk.Revit.UI.RibbonPanel panel1 = app.CreateRibbonPanel(tabName, "Pipe Connect");
             panel1.AddItem(NewPlumbingButton("VerticalPipe", "Vertical\nPipe", typeof(CmdVerticalPipe), assemblyPath, iconFolder));
