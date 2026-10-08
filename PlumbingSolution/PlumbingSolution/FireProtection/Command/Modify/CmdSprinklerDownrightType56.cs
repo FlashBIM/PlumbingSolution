@@ -210,7 +210,9 @@ namespace PlumbingSolution.FireProtection.Command.Modify
             pts.Add(new XYZ(headPt.X, headPt.Y, zLow));
             pts.Add(headPt);
 
-            ElementId systemTypeId = main.get_Parameter(BuiltInParameter.RBS_PIPING_SYSTEM_TYPE_PARAM).AsElementId();
+            ElementId systemTypeId = main.get_Parameter(BuiltInParameter.RBS_PIPING_SYSTEM_TYPE_PARAM)?.AsElementId();
+            if (systemTypeId == null || systemTypeId == ElementId.InvalidElementId)
+                systemTypeId = new FilteredElementCollector(doc).OfClass(typeof(PipingSystemType)).FirstElementId();
             ElementId levelId = main.ReferenceLevel.Id;
 
             var pipes = new List<Pipe>();
