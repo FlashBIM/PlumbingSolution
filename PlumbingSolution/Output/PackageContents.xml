@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ApplicationPackage SchemaVersion="1.0" AutodeskProduct="Revit" Name="Plumbing Solution" Description="Plumbing Solution tools for Revit" AppVersion="1.0.0" ProductType="Application" SupportedLocales="Enu" AppNameSpace="appstore.exchange.autodesk.com" Author=" Flash BIM" ProductCode="{E84F57FF-48DD-4987-A1FF-4563054EF066}" UpgradeCode="{630FD382-FF75-4F2F-8F30-FE38F937C298}">
+  <CompanyDetails Name=" Flash BIM" Email="support@flashbim.com" />
+  <RuntimeRequirements OS="Win64" Platform="Revit" SeriesMin="R2024" SeriesMax="R2024" />
+  <Components Description="Parts 2024">
+    <RuntimeRequirements OS="Win64" Platform="Revit" SeriesMin="R2024" SeriesMax="R2024" />
+    <ComponentEntry AppName="PlumbingSolution" Version="1.0.0" ModuleName="./Contents/2024/PlumbingSolution.addin" AppDescription="Plumbing Solution tools for Revit" />
+  </Components>
+</ApplicationPackage>

@@ -1,0 +1,15 @@
+<!--
+  MSI PlumbingSolution Revit 2024 bang WiX v5 - chi can .NET SDK (dotnet build), khong can Visual Studio.
+  Truoc do phai co PlumbingSolution.dll trong Output\2024\Release_2024 (msbuild PlumbingSolution2024.csproj -p:Configuration=Release_2024).
+    dotnet build PlumbingSolution_Installer_2024.wixproj -c Release -p:MsiVersion=1.0.5
+  Khong nam trong PlumbingSolution.sln: build solution trong VS khong dung toi project nay.
+-->
+<Project Sdk="WixToolset.Sdk/5.0.2">
+  <PropertyGroup>
+    <OutputName>PlumbingSolution_Installer_2024</OutputName>
+    <InstallerPlatform>x64</InstallerPlatform>
+    <!-- MSI so sanh 3 so dau de nang cap: moi lan build phai tang (GitHub Actions truyen 1.0.<so lan chay>). -->
+    <MsiVersion Condition="'$(MsiVersion)' == ''">1.0.1</MsiVersion>
+    <DefineConstants>MsiVersion=$(MsiVersion);SourceRoot=$(MSBuildProjectDirectory)\..;BuildDir=$(MSBuildProjectDirectory)\..\Output\2024\Release_2024</DefineConstants>
+  </PropertyGroup>
+</Project>

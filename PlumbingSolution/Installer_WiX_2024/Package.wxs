@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Bo cai PlumbingSolution Revit 2024 bang WiX (build duoc khong can Visual Studio: dotnet build).
+  Bo cuc file (cai cho rieng user, khong can quyen admin):
+    %AppData%\Autodesk\ApplicationPlugins\PlumbingSolution.bundle\PackageContents.xml
+    ...\PlumbingSolution.bundle\Contents\2024\PlumbingSolution.addin
+    ...\PlumbingSolution.bundle\Contents\2024\PlumbingSolution\PlumbingSolution.dll, Newtonsoft.Json.dll, hwid.dll
+    ...\PlumbingSolution.bundle\Contents\2024\PlumbingSolution\Icon\*.png
+  UpgradeCode rieng cua PlumbingSolution (KHONG dung chung voi SmartTag, neu khong cai ban nay se go SmartTag).
+  Giu co dinh UpgradeCode: cai MSI moi se tu go moi ban cu hon.
+  CANH BAO: them / doi file add-in thi PHAI sua o day.
+-->
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+  <Package Name="Plumbing Solution 2024" Manufacturer="FlashBim" Version="$(var.MsiVersion)" Language="1033"
+           UpgradeCode="{30E0D4EC-90DF-484D-BA93-CFBFC4A71A6F}" Scope="perUser">
+    <MajorUpgrade AllowSameVersionUpgrades="yes"
+                  DowngradeErrorMessage="A newer version of PlumbingSolution 2024 is already installed." />
+    <MediaTemplate EmbedCab="yes" />
+
+    <StandardDirectory Id="AppDataFolder">
+      <Directory Id="AutodeskDir" Name="Autodesk">
+        <Directory Id="PluginsDir" Name="ApplicationPlugins">
+          <Directory Id="BundleDir" Name="PlumbingSolution.bundle">
+            <Directory Id="ContentsDir" Name="Contents">
+              <Directory Id="YearDir" Name="2024">
+                <Directory Id="AddinDir" Name="PlumbingSolution">
+                  <Directory Id="IconDir" Name="Icon" />
+                </Directory>
+              </Directory>
+            </Directory>
+          </Directory>
+        </Directory>
+      </Directory>
+    </StandardDirectory>
+
+    <Feature Id="Main" Title="Plumbing Solution 2024">
+      <ComponentGroupRef Id="AddinFiles" />
+    </Feature>
+  </Package>
+
+  <!--
+    Cai vao ho so user (AppData) thi Windows Installer bat: moi component lay mot gia tri HKCU lam KeyPath (ICE38) va
+    moi thu muc tao ra phai co RemoveFolder (ICE64). RemoveFolder chi xoa thu muc RONG, nen Autodesk\ApplicationPlugins
+    cua add-in khac khong bi dung toi.
+    GUID component CO DINH (WIX0230: component co file + KeyPath registry khong tu sinh GUID duoc) - dung doi.
+  -->
+  <Fragment>
+    <ComponentGroup Id="AddinFiles">
+      <Component Id="BundleFiles" Guid="{F72E77D4-D9A4-4C8C-8EDE-43CFB166D11F}" Directory="BundleDir">
+        <File Id="PackageContents" Source="$(var.SourceRoot)\Output\PackageContents.xml" />
+        <RegistryValue Root="HKCU" Key="Software\FlashBim\PlumbingSolution2024" Name="Bundle" Type="integer" Value="1"
+                       KeyPath="yes" />
+        <RemoveFolder Id="RemoveAutodeskDir" Directory="AutodeskDir" On="uninstall" />
+        <RemoveFolder Id="RemovePluginsDir" Directory="PluginsDir" On="uninstall" />
+        <RemoveFolder Id="RemoveBundleDir" Directory="BundleDir" On="uninstall" />
+        <RemoveFolder Id="RemoveContentsDir" Directory="ContentsDir" On="uninstall" />
+      </Component>
+
+      <Component Id="AddinManifest" Guid="{3D50DA2B-5233-44C0-97FB-E935D1876BF1}" Directory="YearDir">
+        <File Id="PlumbingSolutionAddin" Source="$(var.SourceRoot)\Output\PlumbingSolution.addin" />
+        <RegistryValue Root="HKCU" Key="Software\FlashBim\PlumbingSolution2024" Name="Addin" Type="integer" Value="1"
+                       KeyPath="yes" />
+        <RemoveFolder Id="RemoveYearDir" Directory="YearDir" On="uninstall" />
+      </Component>
+
+      <Component Id="AddinAssemblies" Guid="{0D5D2388-B368-437B-92FE-1DDA669C3779}" Directory="AddinDir">
+        <File Id="PlumbingSolutionDll" Source="$(var.BuildDir)\PlumbingSolution.dll" />
+        <File Id="NewtonsoftJsonDll" Source="$(var.BuildDir)\Newtonsoft.Json.dll" />
+        <!-- Thieu hwid.dll thi add-in khoa sach (HwidExpectedHash.cs). -->
+        <File Id="HwidDll" Source="$(var.BuildDir)\hwid.dll" />
+        <RegistryValue Root="HKCU" Key="Software\FlashBim\PlumbingSolution2024" Name="Assemblies" Type="integer" Value="1"
+                       KeyPath="yes" />
+        <RemoveFolder Id="RemoveAddinDir" Directory="AddinDir" On="uninstall" />
+      </Component>
+
+      <Component Id="AddinIcons" Guid="{43F17ABC-A52A-4C8B-84A4-83A819386ADE}" Directory="IconDir">
+        <File Id="IconAbout" Source="$(var.SourceRoot)\Icon\About.psd-01.png" />
+        <File Id="IconLicense" Source="$(var.SourceRoot)\Icon\Lincense.psd-01.png" />
+        <File Id="IconSignin" Source="$(var.SourceRoot)\Icon\Signin.psd-01.png" />
+        <File Id="IconLogo" Source="$(var.SourceRoot)\Icon\logo dai Flash BIM.png" />
+        <RegistryValue Root="HKCU" Key="Software\FlashBim\PlumbingSolution2024" Name="Icons" Type="integer" Value="1"
+                       KeyPath="yes" />
+        <RemoveFolder Id="RemoveIconDir" Directory="IconDir" On="uninstall" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+</Wix>
