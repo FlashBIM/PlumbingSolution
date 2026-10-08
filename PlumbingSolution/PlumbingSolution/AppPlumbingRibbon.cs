@@ -3,6 +3,7 @@ using System.IO;
 using System.Windows.Media.Imaging;
 using Autodesk.Revit.UI;
 using PlumbingSolution.Commands.Plumbing;
+using PlumbingSolution.FireProtection.Command.Drain.DiritVerticalPipe.Service_A;
 using PlumbingSolution.FireProtection.Command.Fire;
 using PlumbingSolution.FireProtection.Command.Fire.DiritCAD.Service_J;
 using PlumbingSolution.FireProtection.Command.Fire.DiritConnectSprayHead.Service_E;
@@ -48,7 +49,8 @@ namespace PlumbingSolution
             panel0.AddItem(NewPlumbingButton("CreateBranch", "Create\nBranch", typeof(CmdCreateBranchPipeFire), assemblyPath, iconFolder));
 
             Autodesk.Revit.UI.RibbonPanel panel1 = app.CreateRibbonPanel(tabName, "Pipe Connect");
-            panel1.AddItem(NewPlumbingButton("VerticalPipe", "Vertical\nPipe", typeof(CmdVerticalPipe), assemblyPath, iconFolder));
+            // Vertical Pipe = "Đặt ống đứng" (panel Riser, tab Drain của Dirit).
+            panel1.AddItem(NewPlumbingButton("VerticalPipe", "Vertical\nPipe", typeof(DiritPlaceVerticalPipeCommand), assemblyPath, iconFolder));
             panel1.AddItem(NewPlumbingButton("ConnectPipe", "Connect\nPipe", typeof(CmdConnectPipe), assemblyPath, iconFolder));
             panel1.AddItem(NewPlumbingButton("ParallelPipe", "Parallel\nPipe", typeof(CmdParallelPipe), assemblyPath, iconFolder));
             panel1.AddItem(NewPlumbingButton("ChangeConnect", "Change\nConnect", typeof(CmdChangeConnect), assemblyPath, iconFolder));

@@ -45,6 +45,7 @@ internal static class Program
             Tuple.Create("FrmCreateFmlFromBasePoint", ""),
             Tuple.Create("FrmCreateFmlFromBlockCad", ""),
             Tuple.Create("FrmCreateBranchPipeFire", ""),
+            Tuple.Create("UI_PlaceVerticalPipe", ""),
         };
 
         int failures = 0;
@@ -53,7 +54,7 @@ internal static class Program
             string file = Path.Combine(outDir, shot.Item1 + (styled ? "" : "_old") + ".png");
             try
             {
-                Type t = asm.GetType("PlumbingSolution.FireProtection.UI.Service_E." + shot.Item1) ?? asm.GetType("PlumbingSolution.FireProtection.UI.Service_J." + shot.Item1, true);
+                Type t = asm.GetTypes().First(x => x.Name == shot.Item1 && typeof(Form).IsAssignableFrom(x));
                 Form f = (Form)FormatterServices.GetUninitializedObject(t);
                 typeof(Form).GetConstructor(Type.EmptyTypes).Invoke(f, null);
                 t.GetMethod("InitializeComponent", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(f, null);

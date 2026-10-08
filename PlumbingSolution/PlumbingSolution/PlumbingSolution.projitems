@@ -16,6 +16,13 @@
     <Compile Include="$(MSBuildThisFileDirectory)Commands\Plumbing\PlumbingCommandBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Commands\Plumbing\PlumbingCommands.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FireProtection\App.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Command\Drain\DiritVerticalPipe\Service_A\DiritPlaceVerticalPipeCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\UI\Service_A\UI_PlaceVerticalPipe.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\UI\Service_A\UI_PlaceVerticalPipe.Designer.cs">
+      <DependentUpon>UI_PlaceVerticalPipe.cs</DependentUpon>
+    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Command\Drain\CmdConnectE45.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Command\Fire\CmdCreateBranchPipeFire.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Command\Fire\DiritCAD\Service_J\CmdCreateFmlFromBasePoint.cs" />
@@ -183,6 +190,9 @@
     <Content Include="$(MSBuildThisFileDirectory)LoginLicense\Resources\LogoLicense1.png" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)FireProtection\UI\Service_A\UI_PlaceVerticalPipe.resx">
+      <DependentUpon>UI_PlaceVerticalPipe.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)FireProtection\UI\Service_E\UI_ConnectSprinkle.resx">
       <DependentUpon>UI_ConnectSprinkle.cs</DependentUpon>
     </EmbeddedResource>
