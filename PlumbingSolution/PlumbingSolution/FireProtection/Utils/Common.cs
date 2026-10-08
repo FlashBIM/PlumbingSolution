@@ -1070,6 +1070,693 @@ namespace PlumbingSolution.FireProtection.Ultis
               ? fi.MEPModel.ConnectorManager
               : mc.ConnectorManager;
         }
+    
+
+        public static XYZ GetVector45Degree(Line line, XYZ point)
+        {
+            if (line == null || point == null)
+                return null;
+
+            Line lineCopy = line.Clone() as Line;
+
+            XYZ pointProject = Common.GetPointProjectOnLine(lineCopy.Clone() as Line, point);
+
+            XYZ vector = (point - pointProject).Normalize();
+
+            XYZ point1 = Common.GetPointOnVector(line.Origin, line.Direction.Negate(), 100 / 304.8);
+
+            XYZ point2 = Common.GetPointOnVector(point1, vector, 100 / 304.8);
+
+            return (point2 - line.Origin).Normalize();
+        }
+
+        public static XYZ GetVector90Degree(Line line, XYZ point)
+        {
+            if (line == null || point == null)
+                return null;
+
+            Line lineCopy = line.Clone() as Line;
+
+            XYZ pointProject = Common.GetPointProjectOnLine(lineCopy, point);
+
+            return (point - pointProject).Normalize();
+        }
+
+        /// <summary>
+        /// project a point onto plane
+        /// </summary>
+        public static XYZ GetPointProjectOnPlane(Plane plane, XYZ point)
+        {
+            plane.Project(point, out UV uv1, out double d);
+            XYZ projectedPoint = plane.Origin + (uv1.U * plane.XVec) + (uv1.V * plane.YVec);
+            return projectedPoint;
+        }
+
+        public static bool IsBetweenLine(Line line, XYZ pointCheck)
+        {
+            if (line != null && line.IsBound == true && pointCheck != null)
+            {
+                XYZ st = line.GetEndPoint(0);
+                XYZ end = line.GetEndPoint(1);
+
+                if (st.IsAlmostEqualTo(pointCheck)
+               || end.IsAlmostEqualTo(pointCheck))
+                    return false;
+
+                XYZ vec1 = (pointCheck - st).Normalize();
+
+                XYZ vec2 = (pointCheck - end).Normalize();
+
+                if (vec1.DotProduct(vec2) < 0)
+                    return true;
+            }
+
+            return false;
+        }
+
+        public static Line GetLineExtend(Line line, double valueExtend)
+        {
+            XYZ p1 = line.GetEndPoint(0);
+            p1 = GetPointOnVector(p1, line.Direction.Negate(), valueExtend);
+
+            XYZ p2 = line.GetEndPoint(1);
+            p2 = GetPointOnVector(p2, line.Direction, valueExtend);
+
+            if (p1.IsAlmostEqualTo(p2))
+                return null;
+
+            return Line.CreateBound(p1, p2);
+        }
+
+        /// <summary>
+        /// Get line project on plane
+        /// </summary>
+        /// <param name="plane"></param>
+        /// <param name="line"></param>
+        /// <returns></returns>
+        public static Line GetLineProjectOnPlane(Plane plane, Line line)
+        {
+            Line lineProject = null;
+            XYZ p1 = GetPointProjectOnPlane(plane, line.GetEndPoint(0));
+            XYZ p2 = GetPointProjectOnPlane(plane, line.GetEndPoint(1));
+            lineProject = Line.CreateBound(p1, p2);
+            return lineProject;
+        }
+
+        public static XYZ GetPointProjectOnLine(Line line, XYZ point, bool isMakeUnbound = true)
+        {
+            if (line != null && point != null)
+            {
+                Line lineCopy = line.Clone() as Line;
+
+                if (isMakeUnbound)
+                    lineCopy.MakeUnbound();
+
+                IntersectionResult intersectionResult = lineCopy.Project(point);
+                if (intersectionResult != null)
+                {
+                    return intersectionResult.XYZPoint;
+                }
+            }
+
+            return null;
+        }
+
+        public static XYZ Intersection(Plane plane, Line line)
+        {
+            UV uv1, uv2;
+            plane.Project(line.Origin, out uv1, out double d);
+            plane.Project(line.Origin + line.Direction, out uv2, out double b);
+
+            XYZ xyz1 = plane.Origin + (uv1.U * plane.XVec) + (uv1.V * plane.YVec);
+            XYZ xyz2 = plane.Origin + (uv2.U * plane.XVec) + (uv2.V * plane.YVec);
+
+            Line projectedLine = Line.CreateUnbound(xyz1, xyz2 - xyz1);
+
+#if Debug_2027 || Release_2027 || Release_2026
+    // --- CẤU HÌNH CHO REVIT 2026+ ---
+    var intersectResult = line.Intersect(projectedLine, CurveIntersectResultOption.Detailed);
+    if (intersectResult.Result != SetComparisonResult.Disjoint)
+        return intersectResult.GetOverlaps()[0].Point;
+#else
+            // --- CẤU HÌNH CHO CÁC BẢN CŨ HƠN ---
+            IntersectionResultArray iResult = new IntersectionResultArray();
+            SetComparisonResult setComparisonResult = line.Intersect(projectedLine, out iResult);
+
+            if (setComparisonResult != SetComparisonResult.Disjoint)
+                return iResult.get_Item(0).XYZPoint;
+#endif
+            return null;
+        }
+
+        public static XYZ GetCenterElement(Element ele)
+        {
+            if (ele == null)
+                return null;
+
+            // Get bounding box
+            var bb = ele.get_BoundingBox(null);
+            if (bb == null)
+            {
+                // Get location
+                Location lc = ele.Location;
+                if (lc == null)
+                    return null;
+
+                if (lc is LocationPoint)
+                {
+                    // Get location point
+                    LocationPoint lcP = lc as LocationPoint;
+                    if (lc == null)
+                        return null;
+
+                    // Point center
+                    var centerP = lcP.Point;
+                    return new XYZ(centerP.X, centerP.Y, centerP.Z);
+                }
+                else if (lc is LocationCurve)
+                {
+                    // Get location curve
+                    LocationCurve lcCurve = lc as LocationCurve;
+                    if (lcCurve == null)
+                        return null;
+
+                    // Point center
+                    var centerP = (lcCurve.Curve.GetEndPoint(1) + lcCurve.Curve.GetEndPoint(0)) / 2;
+                    return new XYZ(centerP.X, centerP.Y, centerP.Z);
+                }
+            }
+            else
+            {
+                XYZ max = bb.Transform.OfPoint(bb.Max);
+                XYZ min = bb.Transform.OfPoint(bb.Min);
+
+                // Point center
+                var centerP = (max + min) / 2;
+                return centerP;
+            }
+
+            return null;
+        }
+
+        public static XYZ LineIntersection(Curve line1, Curve line2, bool isUnbound = false)
+        {
+            if (line1 != null && line2 != null)
+            {
+                Line lineCopy1 = line1.Clone() as Line;
+                Line lineCopy2 = line2.Clone() as Line;
+
+                if (isUnbound)
+                {
+                    lineCopy1.MakeUnbound();
+                    lineCopy1.MakeUnbound();
+                }
+
+#if Debug_2027 || Release_2027 || Release_2026
+    // --- CẤU HÌNH CHO REVIT 2026+ ---
+    var intersectResult = lineCopy1.Intersect(lineCopy2, CurveIntersectResultOption.Detailed);
+    if (intersectResult.Result != SetComparisonResult.Disjoint)
+        return intersectResult.GetOverlaps()[0].Point;
+#else
+                // --- CẤU HÌNH CHO CÁC BẢN CŨ HƠN ---
+                SetComparisonResult setComparisonResult = lineCopy1.Intersect(lineCopy2, out IntersectionResultArray iResult);
+
+                if (setComparisonResult != SetComparisonResult.Disjoint)
+                    return iResult.get_Item(0).XYZPoint;
+#endif
+            }
+
+            return null;
+        }
+
+        public static List<string> GetSizes(Document doc, PipeType pipeType)
+        {
+            if (pipeType != null)
+            {
+                List<string> allSizes = new List<string>();
+
+                try
+                {
+                    if (pipeType.RoutingPreferenceManager != null)
+                    {
+                        Segment CurrentSegment = null;
+                        int count = pipeType.RoutingPreferenceManager.GetNumberOfRules(RoutingPreferenceRuleGroupType.Segments);
+
+                        for (int i = 0; i < count; i++)
+                        {
+                            var rule = pipeType.RoutingPreferenceManager.GetRule(RoutingPreferenceRuleGroupType.Segments, i);
+
+                            CurrentSegment = doc.GetElement(rule.MEPPartId) as PipeSegment;
+                        }
+
+                        if (CurrentSegment != null)
+                        {
+                            foreach (var mepsize in CurrentSegment.GetSizes())
+                            {
+                                if (mepsize == null)
+                                    continue;
+#if Debug_2020 || Debug_2021  || Release_2020 || Release_2021 || Bundle_2020 || Bundle_2021
+                                double size = UnitUtils.ConvertFromInternalUnits(mepsize.NominalDiameter, DisplayUnitType.DUT_MILLIMETERS);
+#else
+                                double size = UnitUtils.ConvertFromInternalUnits(mepsize.NominalDiameter, UnitTypeId.Millimeters);
+#endif
+                                size = Math.Round(size, 7);
+
+                                allSizes.Add(size.ToString());
+                            }
+                        }
+                    }
+                    return allSizes;
+                }
+                catch (Exception ex)
+                {
+                    IO.LogException(ex);
+                }
+            }
+
+            return new List<string>();
+        }
+
+        public static List<double> GetPipeSizes(Document doc, PipeType pipeType)
+        {
+            if (pipeType != null)
+            {
+                List<double> allSizes = new List<double>();
+
+                try
+                {
+                    RoutingPreferenceManager routingPreferenceManager = null;
+
+                    routingPreferenceManager = pipeType.RoutingPreferenceManager;
+
+                    if (routingPreferenceManager != null)
+                    {
+                        Segment CurrentSegment = null;
+                        int count = routingPreferenceManager.GetNumberOfRules(RoutingPreferenceRuleGroupType.Segments);
+
+                        for (int i = 0; i < count; i++)
+                        {
+                            var rule = routingPreferenceManager.GetRule(RoutingPreferenceRuleGroupType.Segments, i);
+
+                            CurrentSegment = doc.GetElement(rule.MEPPartId) as PipeSegment;
+                        }
+
+                        if (CurrentSegment != null)
+                        {
+                            foreach (var mepsize in CurrentSegment.GetSizes())
+                            {
+                                if (mepsize == null)
+                                    continue;
+
+                                //double size = UnitUtils.ConvertFromInternalUnits(, DisplayUnitType.DUT_MILLIMETERS);
+
+                                //size = Math.Round(size, 7);
+
+                                allSizes.Add(mepsize.NominalDiameter);
+                            }
+                        }
+                    }
+                    return allSizes;
+                }
+                catch (Exception ex)
+                {
+                    IO.LogException(ex);
+                }
+            }
+
+            return new List<double>();
+        }
+
+        public static List<Element> AllComponentsOnPipeTruss(Document document, ElementId elementMainId, bool addFirst = false, List<Element> rmvElement = null)
+        {
+            List<Element> components = new List<Element>();
+            Element eleMain = document.GetElement(elementMainId);
+            List<Element> rmvElement_1 = null;
+            if (addFirst == true)
+            {
+                rmvElement_1 = new List<Element> { eleMain };
+                components.Add(eleMain);
+            }
+            else
+            {
+                if (rmvElement == null)
+                    rmvElement = new List<Element>();
+
+                rmvElement_1 = new List<Element>(rmvElement);
+            }
+            if (eleMain != null)
+            {
+                List<Connector> connectors = new List<Connector>();
+                if (eleMain is MEPCurve processMEPCurve && processMEPCurve.ConnectorManager != null)
+                {
+                    foreach (Connector connector in processMEPCurve.ConnectorManager.Connectors)
+                    {
+                        //if (connector.ConnectorType != ConnectorType.End)
+                        //    continue;
+                        connectors.Add(connector);
+                    }
+                }
+                else if (eleMain is FamilyInstance fmlIns && fmlIns.MEPModel.ConnectorManager != null)
+                {
+                    foreach (Connector connector in fmlIns.MEPModel.ConnectorManager.Connectors)
+                    {
+                        //if (connector.ConnectorType != ConnectorType.End && connector.IsConnected == true)
+                        //    continue;
+                        connectors.Add(connector);
+                    }
+                }
+
+                if (connectors.Count > 0)
+                {
+                    foreach (Connector cnt1 in connectors)
+                    {
+                        foreach (Connector cnt2 in cnt1.AllRefs)
+                        {
+                            Element eleCheck = cnt2.Owner;
+                            if (null != eleCheck && (eleCheck is MEPCurve || eleCheck is FamilyInstance))
+                            {
+                                if (rmvElement_1 != null && rmvElement_1.Any(item => item.Id == eleCheck.Id))
+                                    continue;
+                                else
+                                {
+                                    components.Add(eleCheck);
+                                    List<Element> rmvElement_2 = new List<Element>(rmvElement_1);
+                                    rmvElement_2.Add(eleCheck);
+
+                                    components.AddRange(AllComponentsOnPipeTruss(document, eleCheck.Id, false, rmvElement_2));
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return components;
+        }
+
+        public static void RotateLine(Document doc, FamilyInstance wye, Line axisLine)
+        {
+            GetInformationConectorWye(wye, null, out Connector connector2, out Connector connector3, out Connector conTee);
+
+            Line rotateLine = Line.CreateBound(connector2.Origin, connector3.Origin);
+
+            if (GeometryUtils.IsParallel(axisLine.Direction, rotateLine.Direction))
+                return;
+
+            XYZ vector = rotateLine.Direction.CrossProduct(axisLine.Direction);
+            XYZ intersection = GeometryUtils.GetUnBoundIntersection(rotateLine, axisLine);
+
+            if (intersection != null)
+            {
+                double angle = rotateLine.Direction.AngleTo(axisLine.Direction);
+
+                Line line = Line.CreateUnbound(intersection, vector);
+
+                ElementTransformUtils.RotateElement(doc, wye.Id, line, angle);
+                doc.Regenerate();
+            }
+            else
+            {
+                intersection = (connector2.Origin + connector3.Origin) / 2;
+                double angle = rotateLine.Direction.AngleTo(axisLine.Direction);
+
+                Line line = Line.CreateUnbound(intersection, vector);
+
+                ElementTransformUtils.RotateElement(doc, wye.Id, line, angle);
+                doc.Regenerate();
+            }
+        }
+
+        public static ConnectorProfileType GetShape(MEPCurve mep)
+        {
+            ConnectorProfileType ductShape
+              = ConnectorProfileType.Invalid;
+
+            foreach (Connector c
+              in mep.ConnectorManager.Connectors)
+            {
+                if (c.ConnectorType == ConnectorType.End)
+                {
+                    ductShape = c.Shape;
+                    break;
+                }
+            }
+            return ductShape;
+        }
+
+        public static void GetInfo(FamilyInstance fitting, XYZ vector, out Connector main1, out Connector main2, out Connector tee)
+        {
+            //Get fitting info
+            main1 = null;
+            main2 = null;
+            tee = null;
+            Rotate45Utils.mc(fitting, vector, out main1, out main2);
+
+            foreach (Connector c in fitting.MEPModel.ConnectorManager.Connectors)
+            {
+                if (c.Id != main1.Id && c.Id != main2.Id)
+                {
+                    tee = c;
+                    break;
+                }
+            }
+        }
+
+        public static Element Clone(Element element)
+        {
+            //Create new pipe
+            var newPlace = new XYZ(0, 0, 0);
+            var elemIds = ElementTransformUtils.CopyElement(
+              Global.UIDoc.Document, element.Id, newPlace);
+
+            var clone = Global.UIDoc.Document.GetElement(elemIds.ToList()[0]);
+
+            return clone;
+        }
+
+        public static void DisconnectFrom(Pipe pipe)
+        {
+            if (pipe != null)
+            {
+                Connector con1 = pipe.ConnectorManager.Lookup(0);
+                Connector con2 = pipe.ConnectorManager.Lookup(1);
+
+                if (con1 != null && con1.IsConnected)
+                {
+                    foreach (Connector item in con1.AllRefs)
+                    {
+                        if (item != null && item.IsConnectedTo(con1))
+                        {
+                            con1.DisconnectFrom(item);
+                        }
+                    }
+                }
+
+                if (con2 != null && con2.IsConnected)
+                {
+                    foreach (Connector item in con2.AllRefs)
+                    {
+                        if (item != null && item.IsConnectedTo(con2))
+                        {
+                            con2.DisconnectFrom(item);
+                        }
+                    }
+                }
+            }
+        }
+
+        public static List<Connector> GetConnectionNearest(Element mep1, Element mep2)
+        {
+            try
+            {
+                Curve curve1 = GetCurve(mep1);
+                Curve curve2 = GetCurve(mep2);
+
+                XYZ start1 = curve1.GetEndPoint(0);
+                XYZ end1 = curve1.GetEndPoint(1);
+
+                XYZ start2 = curve2.GetEndPoint(0);
+                XYZ end2 = curve2.GetEndPoint(1);
+
+                Connector c1 = null;
+                Connector c2 = null;
+
+                if (start1.DistanceTo(start2) < end1.DistanceTo(start2))
+                {
+                    c1 = GetConnectorClosestTo(mep1, start1);
+                }
+                else
+                {
+                    c1 = GetConnectorClosestTo(mep1, end1);
+                }
+
+                if (start2.DistanceTo(start1) < end2.DistanceTo(start1))
+                {
+                    c2 = GetConnectorClosestTo(mep2, start2);
+                }
+                else
+                {
+                    c2 = GetConnectorClosestTo(mep2, end2);
+                }
+
+                if (c1 == null || c2 == null)
+                    return null;
+
+                List<Connector> connectors = new List<Connector>() { c1, c2 };
+
+                return connectors;
+            }
+            catch (System.Exception ex)
+            {
+                return null;
+            }
+        }
+
+        public static void DisconnectFrom(FamilyInstance fittingWye, out Connector connectedSt, out Connector connectedEnd, out Element eleSt, out Element eleEnd)
+        {
+            connectedSt = null;
+            connectedEnd = null;
+            eleSt = null;
+            eleEnd = null;
+            if (fittingWye != null)
+            {
+                GetInformationConectorWye(fittingWye, null, out Connector conSt, out Connector conEnd, out Connector conNhanhWye);
+
+                if (conSt != null && conSt.IsConnected)
+                {
+                    foreach (Connector item in conSt.AllRefs)
+                    {
+                        if (item != null && item.IsConnectedTo(conSt))
+                        {
+                            conSt.DisconnectFrom(item);
+
+                            if (item != null && item.Owner != null)
+                            {
+                                connectedSt = item;
+                                eleSt = item.Owner;
+                            }
+                        }
+                    }
+                }
+
+                if (conEnd != null && conEnd.IsConnected)
+                {
+                    foreach (Connector item in conEnd.AllRefs)
+                    {
+                        if (item != null && item.IsConnectedTo(conEnd))
+                        {
+                            conEnd.DisconnectFrom(item);
+
+                            if (item != null && item.Owner != null)
+                            {
+                                connectedEnd = item;
+                                eleEnd = item.Owner;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// project a point onto plane
+        /// </summary>
+        public static XYZ GetPointProjectOnPlane(PlanarFace planarFace, XYZ point)
+        {
+            Plane plane = Plane.CreateByNormalAndOrigin(planarFace.FaceNormal, planarFace.Origin);
+
+            plane.Project(point, out UV uv1, out double d);
+            XYZ projectedPoint = plane.Origin + (uv1.U * plane.XVec) + (uv1.V * plane.YVec);
+            return projectedPoint;
+        }
+
+        public static XYZ GetPointProjectOnPlane(Plane plane, XYZ point, XYZ vectorAlong, double Tolerance = 1.0e-5)
+        {
+            if (vectorAlong != null)
+            {
+                // Calculate t parameter for intersection
+                double numerator = plane.Normal.DotProduct(plane.Origin - point);
+                double denominator = plane.Normal.DotProduct(vectorAlong);
+
+                if (Math.Abs(denominator) < Tolerance)
+                {
+                    return null; // The vector is parallel to the plane
+                }
+
+                double t = numerator / denominator;
+
+                // Calculate projected point
+                return point + vectorAlong * t;
+            }
+            else
+            {
+                plane.Project(point, out UV uv1, out double d);
+                XYZ projectedPoint = plane.Origin + (uv1.U * plane.XVec) + (uv1.V * plane.YVec);
+                return projectedPoint;
+            }
+        }
+
+        /// Tìm giao điểm của 2 curve
+        /// Chú ý line unbound không sử dụng được
+        /// </summary>
+        /// <param name="c1"></param>
+        /// <param name="c2"></param>
+        /// <returns></returns>
+        public static XYZ Intersection(Curve c1, Curve c2)
+        {
+            if (!c1.IsBound || !c2.IsBound)
+                return null;
+
+            XYZ p1 = c1.GetEndPoint(0);
+            XYZ q1 = c1.GetEndPoint(1);
+            XYZ p2 = c2.GetEndPoint(0);
+            XYZ q2 = c2.GetEndPoint(1);
+            XYZ v1 = q1 - p1;
+            XYZ v2 = q2 - p2;
+            XYZ w = p2 - p1;
+            XYZ p5 = null;
+            double c = (v2.X * w.Y - v2.Y * w.X)
+                       / (v2.X * v1.Y - v2.Y * v1.X);
+            if (!double.IsInfinity(c) && !double.IsNaN(c))
+            {
+                double x = p1.X + c * v1.X;
+                double y = p1.Y + c * v1.Y;
+                p5 = new XYZ(x, y, 0);
+            }
+            return p5;
+        }
+
+        public static void RotateLine(Document doc, FamilyInstance fitting, Line axisSource, Line axisDestination)
+        {
+            if (doc == null || fitting == null || axisDestination == null || axisSource == null)
+                return;
+
+            if (GeometryUtils.IsParallel(axisSource.Direction, axisDestination.Direction))
+                return;
+
+            XYZ vector = axisDestination.Direction.CrossProduct(axisSource.Direction);
+            XYZ intersection = GeometryUtils.GetUnBoundIntersection(axisDestination, axisSource);
+
+            if (intersection != null)
+            {
+                double angle = axisDestination.Direction.AngleTo(axisSource.Direction);
+
+                Line line = Line.CreateUnbound(intersection, vector);
+
+                ElementTransformUtils.RotateElement(doc, fitting.Id, line, angle);
+                doc.Regenerate();
+            }
+            else
+            {
+                intersection = (axisDestination.GetEndPoint(0) + axisDestination.GetEndPoint(1)) / 2;
+                double angle = axisDestination.Direction.AngleTo(axisSource.Direction);
+
+                Line line = Line.CreateUnbound(intersection, vector);
+
+                ElementTransformUtils.RotateElement(doc, fitting.Id, line, angle);
+                doc.Regenerate();
+            }
+        }
     }
 
     public class ObjectItem

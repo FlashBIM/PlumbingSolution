@@ -90,5 +90,62 @@ namespace PlumbingSolution.FireProtection.Ultis
             }
             return true;
         }
+    
+
+        /// <summary>
+        /// return intersection of the 2 lines given that are unbound
+        /// </summary>
+        /// <param name="Line1"></param>
+        /// <param name="Line2"></param>
+        /// <returns></returns>
+        public static XYZ GetUnBoundIntersection(Line Line1, Line Line2)
+        {
+            if (Line1 != null && Line2 != null)
+            {
+                Curve ExtendedLine1 = Line.CreateUnbound(Line1.Origin, Line1.Direction);
+                Curve ExtendedLine2 = Line.CreateUnbound(Line2.Origin, Line2.Direction);
+                SetComparisonResult setComparisonResult;
+
+#if Debug_2027 || Release_2027 || Release_2026
+    // --- CẤU HÌNH CHO REVIT 2026+ ---
+    var intersectResult = ExtendedLine1.Intersect(ExtendedLine2, CurveIntersectResultOption.Detailed);
+    setComparisonResult = intersectResult.Result;
+
+    if (setComparisonResult != SetComparisonResult.Disjoint)
+    {
+        var overlaps = intersectResult.GetOverlaps();
+        if (overlaps != null && overlaps.Count > 0)
+        {
+            foreach (var result in overlaps)
+            {
+                if (result != null)
+                    return result.Point;
+            }
+        }
+    }
+#else
+                // --- CẤU HÌNH CHO CÁC BẢN CŨ HƠN ---
+                IntersectionResultArray resultArray;
+                setComparisonResult = ExtendedLine1.Intersect(ExtendedLine2, out resultArray);
+
+                if (resultArray != null && resultArray.Size > 0)
+                {
+                    foreach (IntersectionResult result in resultArray)
+                    {
+                        if (result != null)
+                            return result.XYZPoint;
+                    }
+                }
+#endif
+            }
+            return null;
+        }
+
+        public static bool IsParallel(XYZ first, XYZ second, double tolerance = 10e-3)
+        {
+            XYZ product = first.CrossProduct(second);
+            double length = product.GetLength();
+            return Common.IsEqual(length, 0, tolerance);
+        }
     }
 }
