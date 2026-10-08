@@ -55,10 +55,10 @@ internal static class Program
                 typeof(Form).GetConstructor(Type.EmptyTypes).Invoke(f, null);
                 t.GetMethod("InitializeComponent", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(f, null);
 
-                // Load gọi Revit API (danh sách Pipe Type...) - gỡ ra trước khi hiện form.
-                object key = typeof(Form).GetField("EVENT_LOAD", BindingFlags.Static | BindingFlags.NonPublic).GetValue(null);
-                var events = (EventHandlerList)typeof(Component).GetProperty("Events", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(f, null);
-                events.RemoveHandler(key, events[key]);
+                // Các handler (Load, đổi Pipe Type...) gọi Revit API - gỡ hết trước khi đụng tới control.
+                ClearEvents(f);
+                foreach (Control c in All(f))
+                    ClearEvents(c);
 
                 MethodInfo lang = t.GetMethod("SettingLanguage", BindingFlags.Instance | BindingFlags.NonPublic);
                 if (lang != null)
@@ -104,6 +104,12 @@ internal static class Program
             }
         }
         return failures;
+    }
+
+    private static void ClearEvents(Component c)
+    {
+        var events = (EventHandlerList)typeof(Component).GetProperty("Events", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(c, null);
+        typeof(EventHandlerList).GetField("head", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(events, null);
     }
 
     private static IEnumerable<Control> All(Control root)
