@@ -11,11 +11,6 @@ namespace PlumbingSolution.FireProtection
     public static class Define
     {
 
-        public static readonly string TabNameDrain = "DIRIT-DRAIN";
-        public static readonly string TabNameFire = "DIRIT-PE";
-        public static readonly string TabNameMep = "DIRIT-MECH-1";
-        public static readonly string TabNameMep2 = "DIRIT-MECH-2";
-
 
 
         public static readonly string MessageFinish = "";
