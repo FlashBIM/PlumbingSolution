@@ -1,0 +1,13 @@
+<!--
+  Công cụ nội bộ cho CI: chụp ảnh các form đầu phun (không cần Revit) để soát giao diện.
+  Không nằm trong PlumbingSolution.sln và không đi vào bộ cài.
+-->
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net48</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <LangVersion>7.3</LangVersion>
+    <ImplicitUsings>disable</ImplicitUsings>
+  </PropertyGroup>
+</Project>

@@ -93,6 +93,7 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
             keyControl.Add("Type2", rbtnOptions2);
             keyControl.Add("Type1", rbtnOptions1);
             keyControl.Add("Type3", rbtnOptions3);
+            keyControl.Add("Type4", rbtnOptions4);
             keyControl.Add("VerticalPipeType", label1);
             keyControl.Add("VerticalPipeDiameter", label2);
             keyControl.Add("OK", btnRun);
@@ -339,7 +340,7 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
             }
 
             // Family Elbow chỉ dùng cho Phương án 5 cũ của Dirit (đã bỏ theo sheet Fire Protection);
-            // giữ lại ô này cho chế độ Reducing Elbow sắp làm.
+            // hàng này đang ẩn trong Designer, giữ lại cho chế độ Reducing Elbow sắp làm.
             cbbElbow.Enabled = false;
 
             CheckPreviewSprinkerDown();

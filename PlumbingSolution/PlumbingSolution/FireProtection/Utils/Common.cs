@@ -29,43 +29,6 @@ namespace PlumbingSolution.FireProtection.Ultis
         public static double mmToFT = 0.0032808399;
         private const double _eps = 1.0e-9;
 
-
-        private static void DrawCustomBorder(object sender, PaintEventArgs e)
-        {
-            GroupBox groupBox = sender as GroupBox;
-            if (groupBox == null) return;
-
-            // Clear the default border
-            e.Graphics.Clear(groupBox.BackColor);
-
-            // Measure the text to adjust the border
-            Size textSize = TextRenderer.MeasureText(groupBox.Text, groupBox.Font);
-
-            // Define the rectangle for the border
-            System.Drawing.Rectangle borderRect = new System.Drawing.Rectangle(
-                0,
-                textSize.Height / 2,
-                groupBox.Width - 1,
-                groupBox.Height - textSize.Height / 2 - 1
-            );
-
-            // Draw the border
-            using (Pen borderPen = new Pen(System.Drawing.Color.Black)) // Change color as needed
-            {
-                e.Graphics.DrawRectangle(borderPen, borderRect);
-            }
-
-            // Draw the text
-            TextRenderer.DrawText(
-                e.Graphics,
-                groupBox.Text,
-                groupBox.Font,
-                new System.Drawing.Point(10, 0), // Adjust text position
-                groupBox.ForeColor,
-                groupBox.BackColor
-            );
-        }
-
         public static List<string> GetTextLanguage(List<string> keys)
         {
             List<(int, string)> values = new List<(int, string)>();
@@ -207,30 +170,10 @@ namespace PlumbingSolution.FireProtection.Ultis
             }
         }
 
+        /// <summary>Giao diện chung của form (nền trắng, nút teal...): xem UI/FormStyle.cs.</summary>
         public static void SettingTemplate(System.Windows.Forms.Form form)
         {
-            form.BackColor = System.Drawing.Color.FromArgb(187, 226, 252);
-            SettingTemplateItem(form.Controls, form.BackColor);
-        }
-
-        private static void SettingTemplateItem(System.Windows.Forms.Control.ControlCollection controls, System.Drawing.Color parentBack)
-        {
-            if (controls == null || controls.Count == 0) return;
-
-            foreach (System.Windows.Forms.Control item in controls)
-            {
-                if (item is TabPage)
-                    item.BackColor = System.Drawing.Color.FromArgb(187, 226, 252);
-
-                if (item is GroupBox groupBox)
-                {
-                    // Ensure the Paint event is registered only once
-                    groupBox.Paint -= DrawCustomBorder;
-                    groupBox.Paint += DrawCustomBorder;
-                }
-
-                SettingTemplateItem(item.Controls, item.BackColor);
-            }
+            PlumbingSolution.FireProtection.UI.FormStyle.Apply(form);
         }
 
 

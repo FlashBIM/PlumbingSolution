@@ -32,6 +32,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)FireProtection\RequestForm\Request.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FireProtection\RequestForm\RequestHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Services\DisplayService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\UI\FormStyle.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FireProtection\UI\ProcessBarForm\FrmProcessbar.xaml.cs">
       <DependentUpon>FrmProcessbar.xaml</DependentUpon>
     </Compile>
