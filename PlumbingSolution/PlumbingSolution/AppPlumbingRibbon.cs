@@ -3,6 +3,7 @@ using System.IO;
 using System.Windows.Media.Imaging;
 using Autodesk.Revit.UI;
 using PlumbingSolution.Commands.Plumbing;
+using PlumbingSolution.FireProtection.Command.Fire.DiritCAD.Service_J;
 using PlumbingSolution.FireProtection.Command.Fire.DiritConnectSprayHead.Service_E;
 using PlumbingSolution.FireProtection.Command.Modify;
 
@@ -33,7 +34,14 @@ namespace PlumbingSolution
             sprinkler.AddPushButton(NewPlumbingButton("FlexSprinkler", "Flex Sprinkler", typeof(FlexSprinklerCommand), assemblyPath, iconFolder));
             sprinkler.AddPushButton(NewPlumbingButton("TwinSprinkler", "Twin Sprinkler", typeof(CmdTwinSprinkler), assemblyPath, iconFolder));
             sprinkler.AddPushButton(NewPlumbingButton("DeleteConnection", "Delete Connection", typeof(CmdDeleteSprinker), assemblyPath, iconFolder));
-            panel0.AddItem(NewPlumbingButton("PlaceSprinkler", "Place\nSprinkler", typeof(CmdPlaceSprinkler), assemblyPath, iconFolder));
+            // Nút xổ "Place Sprinkler" = "Family Tự động" / "Family theo block" (panel CAD của Dirit).
+            PulldownButtonData placeData = new PulldownButtonData("PlaceSprinkler", "Place\nSprinkler");
+            placeData.ToolTip = "Place Sprinkler";
+            placeData.LargeImage = LoadIcon(iconFolder, PlumbingIconLarge);
+            placeData.Image = LoadIcon(iconFolder, PlumbingIconSmall);
+            PulldownButton place = (PulldownButton)panel0.AddItem(placeData);
+            place.AddPushButton(NewPlumbingButton("PlaceSprinklerAuto", "Place Sprinkler", typeof(CmdCreateFmlFromBasePoint), assemblyPath, iconFolder));
+            place.AddPushButton(NewPlumbingButton("SelectBlock", "Select Block", typeof(CmdCreateFmlFromBlockCad), assemblyPath, iconFolder));
             panel0.AddItem(NewPlumbingButton("HosereelConnect", "Hosereel\nConnect", typeof(CmdHosereelConnect), assemblyPath, iconFolder));
             panel0.AddItem(NewPlumbingButton("CreateBranch", "Create\nBranch", typeof(CmdCreateBranch), assemblyPath, iconFolder));
 

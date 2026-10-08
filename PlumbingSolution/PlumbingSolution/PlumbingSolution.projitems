@@ -16,6 +16,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Commands\Plumbing\PlumbingCommandBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Commands\Plumbing\PlumbingCommands.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FireProtection\App.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Command\Fire\DiritCAD\Service_J\CmdCreateFmlFromBasePoint.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Command\Fire\DiritCAD\Service_J\CmdCreateFmlFromBlockCad.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Command\Fire\DiritConnectSprayHead\Service_E\ConnectSprinklerCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Command\Fire\DiritConnectSprayHead\Service_E\FlexSprinklerCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Command\Fire\DiritConnectSprayHead\Service_E\SprinklerDownCommand.cs" />
@@ -27,12 +29,21 @@
     <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Command\Modify\TwinSprinklerProcess.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Define.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Extensions\ElementIdExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\ItemData\BlockData.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\ItemData\CreateFamilyFromCADSettingData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FireProtection\ItemData\FamilyCategoryData.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\ItemData\Hanger\ComponetDatas\DocumentData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FireProtection\ItemData\ItemFamilySymbol.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\ItemData\LinkCADData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FireProtection\RequestForm\Request.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FireProtection\RequestForm\RequestHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Services\CreateFamilyFromCADServices.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Services\DisplayService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FireProtection\UI\FormStyle.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\UI\Link\FrnSelectedLink.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\UI\Link\FrnSelectedLink.Designer.cs">
+      <DependentUpon>FrnSelectedLink.cs</DependentUpon>
+    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)FireProtection\UI\ProcessBarForm\FrmProcessbar.xaml.cs">
       <DependentUpon>FrmProcessbar.xaml</DependentUpon>
     </Compile>
@@ -52,18 +63,32 @@
     <Compile Include="$(MSBuildThisFileDirectory)FireProtection\UI\Service_E\UI_TwinSprinkler.Designer.cs">
       <DependentUpon>UI_TwinSprinkler.cs</DependentUpon>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\UI\Service_J\FrmCreateFmlFromBasePoint.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\UI\Service_J\FrmCreateFmlFromBasePoint.Designer.cs">
+      <DependentUpon>FrmCreateFmlFromBasePoint.cs</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\UI\Service_J\FrmCreateFmlFromBlockCad.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\UI\Service_J\FrmCreateFmlFromBlockCad.Designer.cs">
+      <DependentUpon>FrmCreateFmlFromBlockCad.cs</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\UI\Service_J\UI_CreateFamilyFromCAD.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Utils\AppUtils.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Utils\Common.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Utils\ConnectorUtils.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Utils\CopyUseDestination.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Utils\CreateFittingForMEPUtils.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Utils\DirectoryUtils.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Utils\DisableWarning.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Utils\EnumUtils.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Utils\Extension.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Utils\GeometryUtils.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Utils\Global.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Utils\IgnoreWarning.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Utils\IO.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Utils\MEPCurveFilter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Utils\ParameterUtils.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Utils\RevitUtils.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Utils\SelectionUtils.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Utils\StorageUtility.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)LoginLicense\Client\ActivationError.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)LoginLicense\Client\ActivationStore.cs" />

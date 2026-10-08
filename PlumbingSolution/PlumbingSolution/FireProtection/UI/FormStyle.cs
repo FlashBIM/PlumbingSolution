@@ -105,6 +105,18 @@ namespace PlumbingSolution.FireProtection.UI
                     tp.BackColor = Color.White;
                     break;
 
+                case DataGridView dg:
+                    dg.BackgroundColor = Color.White;
+                    dg.BorderStyle = BorderStyle.FixedSingle;
+                    dg.GridColor = Border;
+                    dg.EnableHeadersVisualStyles = false;
+                    dg.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
+                    dg.ColumnHeadersDefaultCellStyle.BackColor = Surface;
+                    dg.ColumnHeadersDefaultCellStyle.ForeColor = Text;
+                    dg.DefaultCellStyle.SelectionBackColor = Color.FromArgb(220, 240, 239);
+                    dg.DefaultCellStyle.SelectionForeColor = Text;
+                    break;
+
                 case TableLayoutPanel _:
                 case Panel _:
                     c.BackColor = Color.Transparent;
