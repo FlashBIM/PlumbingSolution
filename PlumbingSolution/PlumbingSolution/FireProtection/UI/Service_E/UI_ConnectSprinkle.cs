@@ -47,6 +47,7 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
             keyControl.Add("ElbowConnection", ckbConnectCo90);
             keyControl.Add("Type2", rbtnOptions2);
             keyControl.Add("Type1", rbtnOptions1);
+            keyControl.Add("Type3", rdnOption3);
             keyControl.Add("VerticalPipeType", label1);
             keyControl.Add("VerticalPipeDiameter", label2);
             keyControl.Add("OK", btnRun);

@@ -9,7 +9,8 @@
              WindowStartupLocation="CenterScreen"
              ResizeMode="NoResize"
              Loaded="Window_Loaded"
-             SourceInitialized="Window_SourceInitialized">
+             SourceInitialized="Window_SourceInitialized"
+             Background="White" FontFamily="Segoe UI" FontSize="12">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -20,7 +21,7 @@
         <ProgressBar x:Name="prgSingle" Grid.Row="0"
                      x:FieldModifier="public" Margin="0 10 0 0">
             <ProgressBar.Foreground>
-                <SolidColorBrush Color="#FFBBE2FC" />
+                <SolidColorBrush Color="#FF0F7C7B" />
             </ProgressBar.Foreground>
         </ProgressBar>
 

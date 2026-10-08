@@ -89,6 +89,8 @@ namespace PlumbingSolution.FireProtection.UI
                 case Label l:
                     l.ForeColor = TextMuted;
                     l.BackColor = Color.Transparent;
+                    if (l.Parent is TableLayoutPanel && l.Dock == DockStyle.None)
+                        l.Anchor = AnchorStyles.Left;
                     break;
 
                 case CheckBox _:

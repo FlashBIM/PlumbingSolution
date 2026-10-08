@@ -127,7 +127,7 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
             this.groupBox4.Size = new System.Drawing.Size(340, 110);
             this.groupBox4.TabIndex = 3;
             this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Các thiết lập khác";
+            this.groupBox4.Text = "Other Settings";
             // 
             // tableLayoutPanel6
             // 
@@ -186,7 +186,7 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(207, 20);
             this.label5.TabIndex = 0;
-            this.label5.Text = "Tham số M";
+            this.label5.Text = "M";
             // 
             // label6
             // 
@@ -197,7 +197,7 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(207, 20);
             this.label6.TabIndex = 1;
-            this.label6.Text = "Sử dụng kép ren";
+            this.label6.Text = "Use Nipple";
             // 
             // label7
             // 
@@ -208,7 +208,7 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(207, 21);
             this.label7.TabIndex = 2;
-            this.label7.Text = "Kết nối Elbow 90";
+            this.label7.Text = "Elbow 90";
             // 
             // chkVerticalTeeOffset
             // 
@@ -253,7 +253,7 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
             this.groupBox3.Size = new System.Drawing.Size(340, 50);
             this.groupBox3.TabIndex = 2;
             this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Các kích thước";
+            this.groupBox3.Text = "Parameters";
             // 
             // tableLayoutPanel5
             // 
@@ -328,7 +328,7 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
             this.groupBox2.Size = new System.Drawing.Size(340, 80);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Các kiểu kết nối";
+            this.groupBox2.Text = "Connection Type";
             // 
             // tableLayoutPanel4
             // 
@@ -360,7 +360,7 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
             this.rbC5Type5.Size = new System.Drawing.Size(101, 21);
             this.rbC5Type5.TabIndex = 4;
             this.rbC5Type5.TabStop = true;
-            this.rbC5Type5.Text = "Kiểu 5";
+            this.rbC5Type5.Text = "Type 5";
             this.rbC5Type5.UseVisualStyleBackColor = true;
             this.rbC5Type5.CheckedChanged += new System.EventHandler(this.rbC5Type5_CheckedChanged);
             // 
@@ -374,7 +374,7 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
             this.rbC5Type4.Size = new System.Drawing.Size(101, 21);
             this.rbC5Type4.TabIndex = 3;
             this.rbC5Type4.TabStop = true;
-            this.rbC5Type4.Text = "Kiểu 4";
+            this.rbC5Type4.Text = "Type 4";
             this.rbC5Type4.UseVisualStyleBackColor = true;
             this.rbC5Type4.CheckedChanged += new System.EventHandler(this.rbC5Type4_CheckedChanged);
             // 
@@ -388,7 +388,7 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
             this.rbC5Type3.Size = new System.Drawing.Size(102, 20);
             this.rbC5Type3.TabIndex = 2;
             this.rbC5Type3.TabStop = true;
-            this.rbC5Type3.Text = "Kiểu 3";
+            this.rbC5Type3.Text = "Type 3";
             this.rbC5Type3.UseVisualStyleBackColor = true;
             this.rbC5Type3.CheckedChanged += new System.EventHandler(this.rbC5Type3_CheckedChanged);
             // 
@@ -402,7 +402,7 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
             this.rbC5Type2.Size = new System.Drawing.Size(101, 20);
             this.rbC5Type2.TabIndex = 1;
             this.rbC5Type2.TabStop = true;
-            this.rbC5Type2.Text = "Kiểu 2";
+            this.rbC5Type2.Text = "Type 2";
             this.rbC5Type2.UseVisualStyleBackColor = true;
             this.rbC5Type2.CheckedChanged += new System.EventHandler(this.rbC5Type2_CheckedChanged);
             // 
@@ -417,7 +417,7 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
             this.rbC5Type1.Size = new System.Drawing.Size(101, 20);
             this.rbC5Type1.TabIndex = 0;
             this.rbC5Type1.TabStop = true;
-            this.rbC5Type1.Text = "Kiểu 1";
+            this.rbC5Type1.Text = "Type 1";
             this.rbC5Type1.UseVisualStyleBackColor = true;
             this.rbC5Type1.CheckedChanged += new System.EventHandler(this.rbC5Type1_CheckedChanged);
             // 
@@ -431,7 +431,7 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
             this.groupBox1.Size = new System.Drawing.Size(340, 80);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Chọn ống kết nối";
+            this.groupBox1.Text = "Vertical Pipe";
             // 
             // tableLayoutPanel3
             // 
@@ -471,7 +471,7 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(90, 20);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Loại ống";
+            this.label1.Text = "Pipe Type";
             // 
             // label2
             // 
@@ -482,7 +482,7 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(90, 21);
             this.label2.TabIndex = 1;
-            this.label2.Text = "Size ống";
+            this.label2.Text = "Pipe Size";
             // 
             // cboC5PipeType
             // 
@@ -574,7 +574,7 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
             this.MaximumSize = new System.Drawing.Size(642, 439);
             this.MinimumSize = new System.Drawing.Size(368, 439);
             this.Name = "UI_TwinSprinkler";
-            this.Text = "Cặp đầu phun";
+            this.Text = "Twin Sprinkler";
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.groupBox4.ResumeLayout(false);
