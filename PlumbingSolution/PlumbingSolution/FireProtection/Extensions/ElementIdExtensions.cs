@@ -16,4 +16,24 @@ namespace PlumbingSolution.FireProtection.Extensions
 #endif
         }
     }
+
+
+
+    public static class GeometryInstanceExtensions
+    {
+        public static string GetNameSymbol(this GeometryInstance geomInstance, Document doc)
+        {
+            if (geomInstance == null || doc == null)
+                return "";
+
+#if Release_2026 || Debug_2026 || Release_2025 || Debug_2025 || Release_2024 || Debug_2024 || Bundle_2024 || Bundle_2025|| Bundle_2026 || Release_2027 || Debug_2027 || Bundle_2027
+            Element element = doc.GetElement(geomInstance.GetSymbolGeometryId().SymbolId);
+            return element?.Name;
+
+#else
+            return geomInstance.Symbol.Name;
+
+#endif
+        }
+    }
 }

@@ -61,5 +61,16 @@ namespace PlumbingSolution.FireProtection.Utils
             string path = Path.Combine(temp_path, "AddinDiritLog", "log_exceptions.txt");
             AppendToFile(path, content);
         }
+    
+
+        public static void ShowInfo(string mess, string title = "Information")
+        {
+            System.Windows.MessageBox.Show(mess, title, MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        public static void ShowWarning(string mess, string title = "Warning")
+        {
+            System.Windows.MessageBox.Show(mess, title, MessageBoxButton.OK, MessageBoxImage.Warning);
+        }
     }
 }

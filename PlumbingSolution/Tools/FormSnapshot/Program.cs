@@ -42,6 +42,8 @@ internal static class Program
             Tuple.Create("UI_SprinklerDown", @"DIRIT FIRE\Phuongan1.png"),
             Tuple.Create("UI_FlexSprinkler", @"DIRIT FIRE\PhuongAnMem1.png"),
             Tuple.Create("UI_TwinSprinkler", @"DIRIT FIRE\Twin sprinkler_1.jpg"),
+            Tuple.Create("FrmCreateFmlFromBasePoint", ""),
+            Tuple.Create("FrmCreateFmlFromBlockCad", ""),
         };
 
         int failures = 0;
@@ -50,7 +52,7 @@ internal static class Program
             string file = Path.Combine(outDir, shot.Item1 + (styled ? "" : "_old") + ".png");
             try
             {
-                Type t = asm.GetType("PlumbingSolution.FireProtection.UI.Service_E." + shot.Item1, true);
+                Type t = asm.GetType("PlumbingSolution.FireProtection.UI.Service_E." + shot.Item1) ?? asm.GetType("PlumbingSolution.FireProtection.UI.Service_J." + shot.Item1, true);
                 Form f = (Form)FormatterServices.GetUninitializedObject(t);
                 typeof(Form).GetConstructor(Type.EmptyTypes).Invoke(f, null);
                 t.GetMethod("InitializeComponent", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(f, null);
@@ -71,7 +73,7 @@ internal static class Program
 
                 PictureBox pic = All(f).OfType<PictureBox>().FirstOrDefault();
                 string img = Path.Combine(iconDir, "Preview", shot.Item2);
-                if (pic != null && File.Exists(img))
+                if (pic != null && shot.Item2 != "" && File.Exists(img))
                     pic.Image = Image.FromFile(img);
 
                 foreach (ComboBox cb in All(f).OfType<ComboBox>())
