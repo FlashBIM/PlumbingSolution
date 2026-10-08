@@ -114,7 +114,6 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
             AppUtils.ff(rbtnOptions2);
             AppUtils.ff(rbtnOptions3);
             AppUtils.ff(rbtnOptions4);
-            AppUtils.ff(rbtnOptions5);
 
             if (rbtnOptions1.Checked)
                 tbC4L2.Enabled = true;
@@ -210,7 +209,6 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
             AppUtils.sa(rbtnOptions2);
             AppUtils.sa(rbtnOptions3);
             AppUtils.sa(rbtnOptions4);
-            AppUtils.sa(rbtnOptions5);
             AppUtils.sa(ckbConnectCo90);
             AppUtils.sa(tbC4L2);
 
@@ -239,11 +237,6 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
                 SetFocus();
                 MakeRequest(RequestId.SprinklerDownType4_RUN);
             }
-            else if (rbtnOptions5.Checked)
-            {
-                SetFocus();
-                MakeRequest(RequestId.SprinklerDownType5_RUN);
-            }
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -266,10 +259,6 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
             RadioButtonCheckedChange();
         }
 
-        private void rbtnOptions5_CheckedChanged(object sender, EventArgs e)
-        {
-            RadioButtonCheckedChange();
-        }
 
 
 
@@ -330,8 +319,6 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
                 this.picPreview.Image = System.Drawing.Image.FromFile(Path.Combine(folder, "Phuongan2.png"));
             else if (rbtnOptions4.Checked)
                 this.picPreview.Image = System.Drawing.Image.FromFile(Path.Combine(_previewFolder, "A_Dau phun huong xuong_Type 4.jpg"));
-            else if (rbtnOptions5.Checked)
-                this.picPreview.Image = System.Drawing.Image.FromFile(Path.Combine(_previewFolder, "A_Dau phun huong xuong_Type 5.jpg"));
         }
 
         private void RadioButtonCheckedChange()
@@ -351,9 +338,9 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
                 ckbConnectCo90.Enabled = true;
             }
 
-            if (rbtnOptions5.Checked)
-                cbbElbow.Enabled = true;
-            else cbbElbow.Enabled = false;
+            // Family Elbow chỉ dùng cho Phương án 5 cũ của Dirit (đã bỏ theo sheet Fire Protection);
+            // giữ lại ô này cho chế độ Reducing Elbow sắp làm.
+            cbbElbow.Enabled = false;
 
             CheckPreviewSprinkerDown();
         }

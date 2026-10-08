@@ -1517,16 +1517,21 @@ namespace PlumbingSolution.FireProtection.Command.Modify
                 if (App.m_SprinklerDownForm != null && App.m_SprinklerDownForm.IsDisposed == false)
                     App.m_SprinklerDownForm.Hide();
 
-                while (true)
+                // Chọn hết đầu phun --> Finish, rồi chọn hàng loạt ống chính --> Finish (bản Dirit chọn từng cặp
+                // 1 đầu phun - 1 ống trong vòng lặp). Mỗi đầu phun nối vào ống gần nhất, như Phương án 1-3.
+                List<FamilyInstance> selSprinklers = sr.SelectSprinklers();
+                if (selSprinklers == null || selSprinklers.Count == 0)
+                    return Result.Cancelled;
+
+                List<Pipe> selPipes = PickPipes();
+                if (selPipes == null || selPipes.Count == 0)
+                    return Result.Cancelled;
+
+                // Dùng chung cho cả lượt: đoạn ống mới sinh ra khi cắt ống chính được thêm vào để đầu phun sau còn tìm thấy.
+                List<ElementId> selPipeIds = selPipes.Where(item => item.Id != ElementId.InvalidElementId).Select(item => item.Id).ToList();
+
+                foreach (FamilyInstance sprinkler in selSprinklers)
                 {
-                    var sprinkler = Global.UIDoc.Document.GetElement(Global.UIDoc.Selection.PickObject(ObjectType.Element, new SprinklerFilter(), "Pick Sprinklers: ")) as FamilyInstance;
-                    if (sprinkler == null)
-                        return Result.Cancelled;
-
-                    var pipe = Global.UIDoc.Document.GetElement(Global.UIDoc.Selection.PickObject(ObjectType.Element, new MEPCurveFilter/*PipeFilter*/(), "Pick pipes: ")) as Pipe;
-
-                    // Get selected main pipe id
-                    List<ElementId> selPipeIds = new List<ElementId>() { pipe.Id };
 
                     // Process
 
@@ -1844,7 +1849,7 @@ namespace PlumbingSolution.FireProtection.Command.Modify
                             catch (System.Exception ex)
                             {
                                 reTrans.RollBack();
-                                break;
+                                continue;
                             }
 
                             // Connect vertical pipe 2 with sprinkler
@@ -1884,7 +1889,7 @@ namespace PlumbingSolution.FireProtection.Command.Modify
                     }
                     catch (Exception)
                     {
-                        break;
+                        continue;
                     }
                 }
             }
@@ -2476,177 +2481,6 @@ namespace PlumbingSolution.FireProtection.Command.Modify
                 {
                     App.m_SprinklerDownForm.Show(App.hWndRevit);
                 }
-                DisplayService.SetFocus(new HandleRef(null, App.m_SprinklerDownForm.Handle));
-            }
-
-            return Result.Succeeded;
-        }
-
-
-
-        public static Result ProcessType5()
-        {
-            try
-            {
-                if (App.m_SprinklerDownForm != null && App.m_SprinklerDownForm.IsDisposed == false)
-                    App.m_SprinklerDownForm.Hide();
-
-                // Process
-
-                try
-                {
-                    double invalidRadius_mm = App.m_SprinklerDownForm.MainPipeSprinklerDistance;
-                    double invalidRadius_ft = Common.mmToFT * invalidRadius_mm;
-
-                    while (true)
-                    {
-                        using (TransactionGroup trGr = new TransactionGroup(Global.UIDoc.Document, "SprinklerDown"))
-                        {
-                            trGr.Start();
-
-                            var sprinkler = Global.UIDoc.Document.GetElement(Global.UIDoc.Selection.PickObject(ObjectType.Element, new SprinklerFilter(), "Pick Sprinklers: ")) as FamilyInstance;
-                            if (sprinkler == null)
-                                return Result.Cancelled;
-
-                            var pipe = Global.UIDoc.Document.GetElement(Global.UIDoc.Selection.PickObject(ObjectType.Element, new MEPCurveFilter/*PipeFilter*/(), "Pick pipes: ")) as Pipe;
-
-                            HashSet<ElementId> listIdConnect = new HashSet<ElementId>();
-
-                            Transaction reTrans = new Transaction(Global.UIDoc.Document, "SPRINKLER_DOWN_RIGHT_TYPE_3");
-                            reTrans.Start();
-
-                            string dPercent = string.Empty;
-                            // Location sprinkler
-                            XYZ locSprinkler = (sprinkler.Location as LocationPoint).Point;
-                            XYZ locSprinkler1 = (sprinkler.Location as LocationPoint).Point;
-
-                            // Check valid connect
-                            ConnectorSet cntSetOfIns = sprinkler.MEPModel.ConnectorManager.Connectors;
-
-                            if (cntSetOfIns.Size == 0)
-                            {
-                                reTrans.RollBack();
-                                break;
-                            }
-
-                            List<Connector> lstConnectorSprinkler = cntSetOfIns?.Cast<Connector>().ToList();
-
-                            Connector cntOfIns_1 = Common.ToList(sprinkler.MEPModel.ConnectorManager.Connectors).OrderByDescending(x => x.Origin.Z).FirstOrDefault();
-
-                            if (cntOfIns_1.IsConnected == true)
-                            {
-                                reTrans.RollBack();
-                                break;
-                            }
-
-                            var curve = (pipe.Location as LocationCurve).Curve;
-
-                            var p0 = curve.GetEndPoint(0);
-                            var p1 = curve.GetEndPoint(1);
-
-                            var sprinker2d = Common.PointTo2D(locSprinkler);
-                            var p02d = Common.PointTo2D(p0);
-                            var p12d = Common.PointTo2D(p1);
-
-                            var resultPipe = Line.CreateUnbound((curve as Line).Origin, (curve as Line).Direction).Project(locSprinkler);
-
-                            XYZ pointProject = resultPipe.XYZPoint;
-                            XYZ pointProject2d = Common.PointTo2D(pointProject);
-
-                            var curve2d = RevitUtils.ProjectLineToPlane(curve as Line);
-                            curve2d.MakeUnbound();
-                            var result = curve2d.Project(pointProject2d);
-                            if (result != null)
-                            {
-                                XYZ vectorMove = (result.XYZPoint - sprinker2d).Normalize();
-                                ElementTransformUtils.MoveElement(Global.UIDoc.Document, sprinkler.Id, vectorMove * result.XYZPoint.DistanceTo(sprinker2d));
-                            }
-
-                            if (curve.GetEndPoint(0).DistanceTo(pointProject) < curve.GetEndPoint(1).DistanceTo(pointProject))
-                                (pipe.Location as LocationCurve).Curve = Line.CreateBound(pointProject, curve.GetEndPoint(1));
-                            else
-                                (pipe.Location as LocationCurve).Curve = Line.CreateBound(curve.GetEndPoint(0), pointProject);
-
-                            //Set pipe size
-                            var dPipeSizeFt = Common.mmToFT * App.m_SprinklerDownForm.PipeSizeC3;
-
-                            // Connect vertical pipe
-
-                            try
-                            {
-                                Pipe vertical_pipe = Pipe.Create(Global.UIDoc.Document, pipe.MEPSystem.GetTypeId(), pipe.GetTypeId(), pipe.ReferenceLevel.Id, cntOfIns_1.Origin, new XYZ(cntOfIns_1.Origin.X, cntOfIns_1.Origin.Y, pointProject.Z));
-                                vertical_pipe.LookupParameter("Diameter").Set(dPipeSizeFt);
-
-                                var c1Hor = Common.GetConnectorClosestTo(pipe, new XYZ(cntOfIns_1.Origin.X, cntOfIns_1.Origin.Y, pointProject.Z));
-                                var c2Ver = Common.GetConnectorClosestTo(vertical_pipe, new XYZ(cntOfIns_1.Origin.X, cntOfIns_1.Origin.Y, pointProject.Z));
-
-                                var elbow1 = Global.UIDoc.Document.Create.NewElbowFitting(c1Hor, c2Ver);
-                                listIdConnect.Add(elbow1.Id);
-
-                                Global.UIDoc.Document.Delete(vertical_pipe.Id);
-
-                                elbow1.ChangeTypeId(App.m_SprinklerDownForm.ElbowFamilySymbol.Id);
-
-                                Connector cElbowNotConnect = ConnectorUtils.GetConnectorNotConnnected(elbow1.MEPModel.ConnectorManager);
-                                Connector cElbowConnect = ConnectorUtils.GetConnectorConnnected(elbow1.MEPModel.ConnectorManager);
-                                Connector c2Sprinkler = Common.GetConnectorClosestTo(sprinkler, locSprinkler);
-
-                                var typeSprinkler = Global.UIDoc.Document.GetElement(sprinkler.GetTypeId());
-                                if (typeSprinkler != null)
-                                {
-                                    double radiusSprinkler = 0;
-                                    var paraConnection = typeSprinkler.LookupParameter("Connection");
-                                    if (paraConnection != null)
-                                        radiusSprinkler = paraConnection.AsDouble();
-
-                                    var paraRadius1 = elbow1.LookupParameter("Nominal Radius 1");
-                                    if (paraRadius1 != null)
-                                    {
-                                        paraRadius1.Set(radiusSprinkler / 2);
-                                        var paraRadius2 = elbow1.LookupParameter("Nominal Radius 2");
-                                        if (paraRadius2 != null)
-                                        {
-                                            paraRadius2.Set(dPipeSizeFt / 2);
-                                        }
-                                    }
-                                    else
-                                    {
-                                        cElbowConnect.Radius = dPipeSizeFt / 2;
-                                        cElbowNotConnect.Radius = radiusSprinkler / 2;
-                                    }
-                                }
-
-                                ElementTransformUtils.MoveElement(Global.UIDoc.Document, sprinkler.Id, cElbowNotConnect.Origin - c2Sprinkler.Origin);
-
-                                cElbowNotConnect.ConnectTo(c2Sprinkler);
-                            }
-                            catch (Exception)
-                            {
-                                reTrans.RollBack();
-                                break;
-                            }
-
-                            CmdDeleteSprinker.CreateSchema(sprinkler, listIdConnect.Select(x => x.ToInt().ToString()).ToList(), locSprinkler.Z);
-                            reTrans.Commit();
-
-                            trGr.Assimilate();
-                        }
-                    }
-                }
-                catch (Exception)
-                {
-                }
-            }
-            catch (Exception)
-            {
-            }
-            finally
-            {
-                if (App.m_SprinklerDownForm != null && App.m_SprinklerDownForm.IsDisposed == false)
-                {
-                    App.m_SprinklerDownForm.Show(App.hWndRevit);
-                }
-
                 DisplayService.SetFocus(new HandleRef(null, App.m_SprinklerDownForm.Handle));
             }
 

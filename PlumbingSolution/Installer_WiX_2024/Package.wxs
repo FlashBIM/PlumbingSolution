@@ -118,7 +118,6 @@
 
       <Component Id="PreviewMech2" Guid="{EC253D4C-9235-4ED5-A356-22CCF04EEF8F}" Directory="PreviewMech2Dir">
         <File Id="PreviewMech2_0" Source="$(var.SourceRoot)\Icon\Preview\DIRIT MECH 2\A_Dau phun huong xuong_Type 4.jpg" />
-        <File Id="PreviewMech2_1" Source="$(var.SourceRoot)\Icon\Preview\DIRIT MECH 2\A_Dau phun huong xuong_Type 5.jpg" />
         <RegistryValue Root="HKCU" Key="Software\FlashBim\PlumbingSolution2024" Name="PreviewMech2" Type="integer" Value="1"
                        KeyPath="yes" />
         <RemoveFolder Id="RemovePreviewMech2Dir" Directory="PreviewMech2Dir" On="uninstall" />

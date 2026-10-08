@@ -50,7 +50,6 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
             this.label3 = new System.Windows.Forms.Label();
             this.tbC4L2 = new System.Windows.Forms.TextBox();
-            this.rbtnOptions5 = new System.Windows.Forms.RadioButton();
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
             this.label4 = new System.Windows.Forms.Label();
             this.cbbElbow = new System.Windows.Forms.ComboBox();
@@ -167,7 +166,6 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
             this.tableLayoutPanel5.Controls.Add(this.rbtnOptions1, 0, 0);
             this.tableLayoutPanel5.Controls.Add(this.rbtnOptions3, 1, 0);
             this.tableLayoutPanel5.Controls.Add(this.rbtnOptions2, 0, 1);
-            this.tableLayoutPanel5.Controls.Add(this.rbtnOptions5, 2, 0);
             this.tableLayoutPanel5.Controls.Add(this.rbtnOptions4, 1, 1);
             this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel5.Location = new System.Drawing.Point(3, 16);
@@ -353,18 +351,6 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
             this.tbC4L2.Text = "200";
             this.tbC4L2.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tbC4L2_KeyPress);
             // 
-            // rbtnOptions5
-            // 
-            this.rbtnOptions5.AutoSize = true;
-            this.rbtnOptions5.Location = new System.Drawing.Point(203, 5);
-            this.rbtnOptions5.Margin = new System.Windows.Forms.Padding(5);
-            this.rbtnOptions5.Name = "rbtnOptions5";
-            this.rbtnOptions5.Size = new System.Drawing.Size(86, 17);
-            this.rbtnOptions5.TabIndex = 5;
-            this.rbtnOptions5.Text = "Phương án 5";
-            this.rbtnOptions5.UseVisualStyleBackColor = true;
-            this.rbtnOptions5.CheckedChanged += new System.EventHandler(this.rbtnOptions5_CheckedChanged);
-            // 
             // tableLayoutPanel7
             // 
             this.tableLayoutPanel7.ColumnCount = 2;
@@ -458,7 +444,6 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
         private System.Windows.Forms.TextBox tbC4L2;
         private System.Windows.Forms.CheckBox ckbConnectCo90;
         private System.Windows.Forms.RadioButton rbtnOptions4;
-        private System.Windows.Forms.RadioButton rbtnOptions5;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel7;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ComboBox cbbElbow;

@@ -36,10 +36,6 @@ namespace PlumbingSolution.FireProtection.RequestForm
                     CmdSprinklerDownright.ProcessType4();
                     break;
 
-                case RequestId.SprinklerDownType5_RUN:
-                    CmdSprinklerDownright.ProcessType5();
-                    break;
-
                 case RequestId.FlexSprinker_RUN:
                     CmdFlexSprinkler.Process();
                     break;
