@@ -32,7 +32,7 @@ jobs:
         run: |
           msbuild PlumbingSolution\PlumbingSolution2024\PlumbingSolution2024.csproj -restore -p:Configuration=Release_2024 -v:minimal -nologo "-flp:logfile=build.log;errorsonly"
           if ($LASTEXITCODE -ne 0) {
-            $errs = Select-String -Path build.log -Pattern ': error ' | ForEach-Object { ($_.Line -replace '^.*\\PlumbingSolution\\PlumbingSolution\\', '' -replace '\s*\[[^\]]*\]\s*$', '').Trim() } | Sort-Object -Unique
+            $errs = Select-String -Path build.log -Pattern ': error ' | ForEach-Object { ($_.Line -replace '\s*\[[^\]]*\]\s*$', '' -replace '^.*?\\PlumbingSolution\\PlumbingSolution\\PlumbingSolution\\', '').Trim() } | Sort-Object -Unique
             if (-not $errs) { $errs = Get-Content build.log -Tail 30 }
             $msg = ($errs | Select-Object -First 300) -join '%0A'
             if ($msg.Length -gt 60000) { $msg = $msg.Substring(0, 60000) }
