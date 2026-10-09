@@ -3,10 +3,12 @@ using System.IO;
 using System.Windows.Media.Imaging;
 using Autodesk.Revit.UI;
 using PlumbingSolution.Commands.Plumbing;
+using PlumbingSolution.FireProtection.Command.Drain;
 using PlumbingSolution.FireProtection.Command.Fire;
 using PlumbingSolution.FireProtection.Command.General;
 using PlumbingSolution.FireProtection.Command.Fire.DiritCAD.Service_J;
 using PlumbingSolution.FireProtection.Command.Fire.DiritConnectSprayHead.Service_E;
+using PlumbingSolution.FireProtection.Command.Mep.MainPipe;
 using PlumbingSolution.FireProtection.Command.Modify;
 
 namespace PlumbingSolution
@@ -51,8 +53,21 @@ namespace PlumbingSolution
             Autodesk.Revit.UI.RibbonPanel panel1 = app.CreateRibbonPanel(tabName, "Pipe Connect");
             // Vertical Pipe = tool "Vertical MEP" của Quick MEP.
             panel1.AddItem(NewPlumbingButton("VerticalPipe", "Vertical\nPipe", typeof(CmdPlaceVerticalMep), assemblyPath, iconFolder));
-            panel1.AddItem(NewPlumbingButton("ConnectPipe", "Connect\nPipe", typeof(CmdConnectPipe), assemblyPath, iconFolder));
-            panel1.AddItem(NewPlumbingButton("ParallelPipe", "Parallel\nPipe", typeof(CmdParallelPipe), assemblyPath, iconFolder));
+            // Connect Pipe = "Nối ngang Tê" + "Nối ngang Elbow" của Dirit (sheet Pipe Connect).
+            PulldownButton connect = NewPlumbingPulldown(panel1, "ConnectPipe", "Connect\nPipe", iconFolder);
+            connect.AddPushButton(NewPlumbingButton("BranchElbow45", "Branch - Elbow 45", typeof(CmdConnect1T1E45), assemblyPath, iconFolder));
+            connect.AddPushButton(NewPlumbingButton("BranchElbow90", "Branch - Elbow 90", typeof(CmdConnect1T1E90), assemblyPath, iconFolder));
+            connect.AddPushButton(NewPlumbingButton("BranchSameElevation", "Branch - Same Elevation", typeof(CmdConnectBranchSameElevation), assemblyPath, iconFolder));
+            connect.AddSeparator();
+            connect.AddPushButton(NewPlumbingButton("ElbowElbow45", "Elbow - Elbow 45", typeof(CmdConnectE45), assemblyPath, iconFolder));
+            connect.AddPushButton(NewPlumbingButton("ElbowElbow90", "Elbow - Elbow 90", typeof(CmdConnectE90), assemblyPath, iconFolder));
+            connect.AddPushButton(NewPlumbingButton("ElbowSameElevation", "Elbow - Same Elevation", typeof(CmdConnectElbowTypeSameElevation), assemblyPath, iconFolder));
+            // Parallel Pipe = "Nối song song" của Dirit.
+            PulldownButton parallel = NewPlumbingPulldown(panel1, "ParallelPipe", "Parallel\nPipe", iconFolder);
+            parallel.AddPushButton(NewPlumbingButton("ParallelElbow45", "Parallel - Elbow 45", typeof(CmdConnectParallel45Deg), assemblyPath, iconFolder));
+            parallel.AddPushButton(NewPlumbingButton("ParallelElbow90", "Parallel - Elbow 90", typeof(CmdConnectParallel90Deg), assemblyPath, iconFolder));
+            parallel.AddPushButton(NewPlumbingButton("ParallelSameHorizontal", "Parallel - Same - Horizontal", typeof(CmdConnectParallelSameElevation), assemblyPath, iconFolder));
+            parallel.AddPushButton(NewPlumbingButton("ParallelSameVertical", "Parallel - Same - Vertical", typeof(CmdConnectParallel), assemblyPath, iconFolder));
             panel1.AddItem(NewPlumbingButton("ChangeConnect", "Change\nConnect", typeof(CmdChangeConnect), assemblyPath, iconFolder));
             panel1.AddStackedItems(
                 NewPlumbingButton("BranchAlign", "Branch Align", typeof(CmdBranchAlign), assemblyPath, iconFolder),
@@ -90,6 +105,15 @@ namespace PlumbingSolution
             data.ToolTip = text.Replace("\n", " ");
             AddImages(data, iconFolder, PlumbingIconLarge, PlumbingIconSmall);
             return data;
+        }
+
+        private PulldownButton NewPlumbingPulldown(Autodesk.Revit.UI.RibbonPanel panel, string name, string text, string iconFolder)
+        {
+            PulldownButtonData data = new PulldownButtonData(name, text);
+            data.ToolTip = text.Replace("\n", " ");
+            data.LargeImage = LoadIcon(iconFolder, PlumbingIconLarge);
+            data.Image = LoadIcon(iconFolder, PlumbingIconSmall);
+            return (PulldownButton)panel.AddItem(data);
         }
 
         private static BitmapImage LoadIcon(string iconFolder, string fileName)

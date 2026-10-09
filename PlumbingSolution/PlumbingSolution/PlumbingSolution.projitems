@@ -25,6 +25,14 @@
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Utils\CommonUnit.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Command\Drain\CmdConnectE45.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Command\Drain\CmdConnect1T1E45.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Command\Drain\CmdConnect1T1E90.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Command\Drain\CmdConnectE90.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Command\Mep\MainPipe\CmdConnectElbowTypeSameElevation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Command\Fire\CmdConnectParallel45Deg.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Command\Fire\CmdConnectParallel90Deg.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Command\Fire\CmdConnectParallelSameElevation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Command\Fire\CmdConnectParallel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Command\Fire\CmdCreateBranchPipeFire.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Command\Fire\DiritCAD\Service_J\CmdCreateFmlFromBasePoint.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Command\Fire\DiritCAD\Service_J\CmdCreateFmlFromBlockCad.cs" />

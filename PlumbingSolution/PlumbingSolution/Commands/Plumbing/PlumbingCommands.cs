@@ -8,12 +8,6 @@ namespace PlumbingSolution.Commands.Plumbing
 
     // ---- Panel Pipe Connect ----
     [Transaction(TransactionMode.Manual)]
-    public class CmdConnectPipe : PlumbingCommandBase { protected override string Title => "Connect Pipe"; }
-
-    [Transaction(TransactionMode.Manual)]
-    public class CmdParallelPipe : PlumbingCommandBase { protected override string Title => "Parallel Pipe"; }
-
-    [Transaction(TransactionMode.Manual)]
     public class CmdChangeConnect : PlumbingCommandBase { protected override string Title => "Change Connect"; }
 
     [Transaction(TransactionMode.Manual)]

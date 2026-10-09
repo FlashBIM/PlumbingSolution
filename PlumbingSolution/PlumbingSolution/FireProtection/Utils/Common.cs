@@ -569,6 +569,13 @@ namespace PlumbingSolution.FireProtection.Ultis
             return result < 10e-5;
         }
 
+        public static bool IsPerpendicular(XYZ first, XYZ second, double tolerance = 1e-6)
+        {
+            double length = first.DotProduct(second);
+
+            return IsEqual(length, 0, tolerance);
+        }
+
         public static void RotateLineC2(Document doc, FamilyInstance wye, Line axisLine)
         {
             var lst = Common.ToList(wye.MEPModel.ConnectorManager.Connectors);

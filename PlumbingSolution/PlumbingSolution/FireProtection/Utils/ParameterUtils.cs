@@ -159,5 +159,85 @@ namespace PlumbingSolution.FireProtection.Ultis
             }
             return null;
         }
+
+        public static void SetHeightConnector(Connector connector, double value)
+        {
+            Element element = connector.Owner;
+            try
+            {
+                var param = ParameterUtils.GetAssociatedParameter(element, connector, BuiltInParameter.CONNECTOR_HEIGHT);
+
+                if (param != null &&
+                    !param.IsReadOnly &&
+                    param.StorageType == StorageType.Double)
+                {
+                    param.Set(value);
+                }
+                else
+                {
+                    connector.Height = value;
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+
+        public static void SetRadiusConnector(Connector connector, double value)
+        {
+            Element element = connector.Owner;
+            try
+            {
+                var param = ParameterUtils.GetAssociatedParameter(element, connector, BuiltInParameter.CONNECTOR_DIAMETER);
+
+                if (param != null &&
+                    !param.IsReadOnly &&
+                    param.StorageType == StorageType.Double)
+                {
+                    param.Set(value * 2);
+                }
+                else
+                {
+                    param = ParameterUtils.GetAssociatedParameter(element, connector, BuiltInParameter.CONNECTOR_RADIUS);
+
+                    if (param != null &&
+                        !param.IsReadOnly &&
+                        param.StorageType == StorageType.Double)
+                    {
+                        param.Set(value);
+                    }
+                    else
+                    {
+                        connector.Radius = value;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+
+        public static void SetWidthConnector(Connector connector, double value)
+        {
+            Element element = connector.Owner;
+            try
+            {
+                var param = ParameterUtils.GetAssociatedParameter(element, connector, BuiltInParameter.CONNECTOR_WIDTH);
+
+                if (param != null &&
+                    !param.IsReadOnly &&
+                    param.StorageType == StorageType.Double)
+                {
+                    param.Set(value);
+                }
+                else
+                {
+                    connector.Width = value;
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+        }
     }
 }
