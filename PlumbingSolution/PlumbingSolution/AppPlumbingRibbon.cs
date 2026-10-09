@@ -30,13 +30,14 @@ namespace PlumbingSolution
             // (không đồng bộ theo tool dùng gần nhất).
             SplitButtonData sprinklerData = new SplitButtonData("PendentSprinkler", "Pendent\nSprinkler");
             SplitButton sprinkler = (SplitButton)panel0.AddItem(sprinklerData);
-            sprinkler.IsSynchronizedWithCurrentItem = false;
-            PushButton pendent = sprinkler.AddPushButton(NewPlumbingButton("PendentSprinklerDown", "Pendent\nSprinkler", typeof(SprinklerDownCommand), assemblyPath, iconFolder));
-            sprinkler.CurrentButton = pendent;
+            // Nút thêm đầu tiên là nút hiện ở phần trên. Không gán CurrentButton: Revit cấm gán khi
+            // IsSynchronizedWithCurrentItem = false (lỗi khởi động v1.0.60), nên tắt đồng bộ SAU khi thêm nút.
+            sprinkler.AddPushButton(NewPlumbingButton("PendentSprinklerDown", "Pendent\nSprinkler", typeof(SprinklerDownCommand), assemblyPath, iconFolder));
             sprinkler.AddPushButton(NewPlumbingButton("UprightSprinkler", "Upright Sprinkler", typeof(ConnectSprinklerCommand), assemblyPath, iconFolder));
             sprinkler.AddPushButton(NewPlumbingButton("FlexSprinkler", "Flex Sprinkler", typeof(FlexSprinklerCommand), assemblyPath, iconFolder));
             sprinkler.AddPushButton(NewPlumbingButton("TwinSprinkler", "Twin Sprinkler", typeof(CmdTwinSprinkler), assemblyPath, iconFolder));
             sprinkler.AddPushButton(NewPlumbingButton("DeleteConnection", "Delete Connection", typeof(CmdDeleteSprinker), assemblyPath, iconFolder));
+            sprinkler.IsSynchronizedWithCurrentItem = false;
             // Nút xổ "Place Sprinkler" = "Family Tự động" / "Family theo block" (panel CAD của Dirit).
             PulldownButtonData placeData = new PulldownButtonData("PlaceSprinkler", "Place\nSprinkler");
             placeData.ToolTip = "Place Sprinkler";
