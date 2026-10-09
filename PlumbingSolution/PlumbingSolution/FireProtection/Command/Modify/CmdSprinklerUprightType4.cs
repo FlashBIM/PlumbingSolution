@@ -119,6 +119,22 @@ namespace PlumbingSolution.FireProtection.Command.Modify
             int done = 0;
             var skipped = new List<string>();
 
+            // Elbow Connection: đầu phun gần đầu ống chính còn hở thì nối bằng co, cắt bỏ đoạn thừa (như Type 1-3).
+            // Điểm nối dự kiến của mọi đầu phun để không cắt mất đoạn ống mà đầu phun khác còn cần nối vào.
+            bool elbowAtFreeEnd = App.m_ConnectSprinkleForm?.isElbow == true;
+            var tees = new List<XYZ>();
+            if (elbowAtFreeEnd)
+            {
+                foreach (FamilyInstance s in sprinklers)
+                {
+                    Type4Plan plan;
+                    Pipe m;
+                    PlanType4(doc, s, mainIds, pipeTypeId, sizeFt, out plan, out m);
+                    if (plan.Tee != null)
+                        tees.Add(plan.Tee);
+                }
+            }
+
             using (TransactionGroup group = new TransactionGroup(doc, "Upright Sprinkler Type 4"))
             {
                 group.Start();
@@ -132,7 +148,7 @@ namespace PlumbingSolution.FireProtection.Command.Modify
                         try
                         {
                             var created = new List<ElementId>();
-                            reason = ConnectType4(doc, sprinkler, mainIds, pipeTypeId, sizeFt, aFt, created);
+                            reason = ConnectType4(doc, sprinkler, mainIds, pipeTypeId, sizeFt, aFt, elbowAtFreeEnd, tees, created);
                             if (reason == null)
                             {
                                 CmdDeleteSprinker.CreateSchema(sprinkler, created.Select(x => x.ToInt().ToString()).ToList());
@@ -210,7 +226,8 @@ namespace PlumbingSolution.FireProtection.Command.Modify
 
         /// <summary>Nối một đầu phun. Trả về null nếu thành công, ngược lại là lý do bỏ qua.</summary>
         private static string ConnectType4(Document doc, FamilyInstance sprinkler, List<ElementId> mainIds,
-                                           ElementId pipeTypeId, double sizeFt, double aFt, List<ElementId> created)
+                                           ElementId pipeTypeId, double sizeFt, double aFt, bool elbowAtFreeEnd,
+                                           IList<XYZ> otherTees, List<ElementId> created)
         {
             Type4Plan plan;
             Pipe main;
@@ -244,7 +261,7 @@ namespace PlumbingSolution.FireProtection.Command.Modify
                 created.Add(elbow.Id);
             }
 
-            CmdSprinklerDownright.ConnectToMain(doc, main, plan.Tee, pipes[0], mainIds, created);
+            CmdSprinklerDownright.ConnectToMain(doc, main, plan.Tee, pipes[0], mainIds, created, elbowAtFreeEnd, otherTees);
 
             Connector last = CmdSprinklerDownright.ConnectorAt(pipes[pipes.Count - 1], plan.Head);
             if (Math.Abs(last.Radius - head.Radius) < 1e-6)

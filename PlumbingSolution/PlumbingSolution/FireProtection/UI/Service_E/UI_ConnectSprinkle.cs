@@ -220,6 +220,7 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
                     return;
                 }
 
+                isElbow = ckbConnectCo90.Checked;
                 SetFocus();
                 MakeRequest(RequestId.SprinklerUpType4_RUN);
                 return;
@@ -267,12 +268,12 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
             UpdateOptionState();
         }
 
-        // A chỉ dùng cho Type 4 (và mờ hẳn khi tích Preview); Type 4 tự đặt co ở đầu ống chính / tee giữa ống nên khoá Elbow 90.
+        // A chỉ dùng cho Type 4 (và mờ hẳn khi tích Preview). Elbow Connection dùng cho mọi type: đầu phun gần đầu ống chính
+        // còn hở thì nối bằng co, cắt bỏ đoạn thừa, thay vì tee để lại đoạn cụt.
         private void UpdateOptionState()
         {
             ckbPreview.Enabled = rbtnOptions4.Checked;
             lblA.Enabled = tbA.Enabled = rbtnOptions4.Checked && !ckbPreview.Checked;
-            ckbConnectCo90.Enabled = !rbtnOptions4.Checked;
 
             string folder = Common.GetFirePreviewFolder();
             string type3 = Path.Combine(Common.GetPreviewFolder(), "PlumbingSolution", "Upright_Type3.png");
