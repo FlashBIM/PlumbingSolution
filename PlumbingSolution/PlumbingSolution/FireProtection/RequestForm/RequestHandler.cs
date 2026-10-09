@@ -58,6 +58,10 @@ namespace PlumbingSolution.FireProtection.RequestForm
                     CmdTwinSprinkler.Process();
                     break;
 
+                case RequestId.TwinSprinkerType6_RUN:
+                    TwinSprinklerType6.Process();
+                    break;
+
                 case RequestId.CreateBranchPipeFire:
                     CmdCreateBranchPipeFire.Process();
                     break;

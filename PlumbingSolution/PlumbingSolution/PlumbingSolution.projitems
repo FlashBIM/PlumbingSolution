@@ -58,6 +58,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Command\Modify\CmdSprinklerUprightType4.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Command\Modify\UprightType4Preview.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Command\Modify\CmdTwinSprinkler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Command\Modify\CmdTwinSprinklerType6.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Command\Modify\CmdTwoLevelSmart.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Command\Modify\TwinSprinklerProcess.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Define.cs" />
@@ -101,6 +102,9 @@
       <DependentUpon>UI_SprinklerDown.cs</DependentUpon>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)FireProtection\UI\Service_E\UI_TwinSprinkler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\UI\Service_E\UI_TwinSprinkler.Type6.cs">
+      <DependentUpon>UI_TwinSprinkler.cs</DependentUpon>
+    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)FireProtection\UI\Service_E\UI_TwinSprinkler.Designer.cs">
       <DependentUpon>UI_TwinSprinkler.cs</DependentUpon>
     </Compile>

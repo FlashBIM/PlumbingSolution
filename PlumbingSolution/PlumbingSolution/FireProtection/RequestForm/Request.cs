@@ -87,6 +87,7 @@ namespace PlumbingSolution.FireProtection.RequestForm
         FlexSprinker_RUN,
 
         TwinSprinker_RUN,
+        TwinSprinkerType6_RUN,
 
         //Service H1
         PlaceValve,
