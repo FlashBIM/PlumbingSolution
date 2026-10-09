@@ -80,6 +80,22 @@ namespace PlumbingSolution.FireProtection.Command.Modify
                 // Đoạn ống chính mới sinh ra khi cắt để đặt tee cũng phải được đầu phun sau tìm thấy.
                 List<ElementId> mainIds = mainPipes.Select(p => p.Id).ToList();
 
+                // Elbow Connection: đầu phun gần đầu ống chính còn hở thì nối bằng co, cắt đoạn thừa (như Type 1-3).
+                // Điểm nối dự kiến của mọi đầu phun để không cắt mất đoạn ống mà đầu phun khác còn cần nối vào.
+                bool elbowAtFreeEnd = !form.isTeeTap;
+                var tees = new List<XYZ>();
+                if (elbowAtFreeEnd)
+                {
+                    foreach (FamilyInstance s in sprinklers)
+                    {
+                        Connector c = s.MEPModel?.ConnectorManager?.Connectors.Cast<Connector>()
+                                       .OrderByDescending(x => x.Origin.Z).FirstOrDefault();
+                        Pipe m = c == null ? null : NearestMainPipe(doc, mainIds, c.Origin);
+                        if (m != null)
+                            tees.Add(((Line)((LocationCurve)m.Location).Curve).Project(c.Origin).XYZPoint);
+                    }
+                }
+
                 using (TransactionGroup group = new TransactionGroup(doc, isType6 ? "Pendent Sprinkler Type 6" : "Pendent Sprinkler Type 5"))
                 {
                     group.Start();
@@ -94,7 +110,7 @@ namespace PlumbingSolution.FireProtection.Command.Modify
                             {
                                 var created = new List<ElementId>();
                                 reason = ConnectOne(doc, sprinkler, mainIds, obstacles, isType6, form.IsByMep, form.IsAuto,
-                                                    pipeTypeId, sizeFt, l1Ft, l2Ft, aFt, created);
+                                                    pipeTypeId, sizeFt, l1Ft, l2Ft, aFt, elbowAtFreeEnd, tees, created);
                                 if (reason == null)
                                 {
                                     CmdDeleteSprinker.CreateSchema(sprinkler, created.Select(x => x.ToInt().ToString()).ToList());
@@ -149,7 +165,7 @@ namespace PlumbingSolution.FireProtection.Command.Modify
         private static string ConnectOne(Document doc, FamilyInstance sprinkler, List<ElementId> mainIds,
                                          List<Element> obstacles, bool isType6, bool byMep, bool auto,
                                          ElementId pipeTypeId, double sizeFt, double l1Ft, double l2Ft, double aFt,
-                                         List<ElementId> created)
+                                         bool elbowAtFreeEnd, IList<XYZ> otherTees, List<ElementId> created)
         {
             Connector head = sprinkler.MEPModel?.ConnectorManager?.Connectors.Cast<Connector>()
                                       .OrderByDescending(c => c.Origin.Z).FirstOrDefault();
@@ -245,7 +261,7 @@ namespace PlumbingSolution.FireProtection.Command.Modify
                 created.Add(elbow.Id);
             }
 
-            ConnectToMain(doc, main, tee, pipes[0], mainIds, created);
+            ConnectToMain(doc, main, tee, pipes[0], mainIds, created, elbowAtFreeEnd, otherTees);
 
             Connector last = ConnectorAt(pipes[pipes.Count - 1], headPt);
             if (Math.Abs(last.Radius - head.Radius) < 1e-6)

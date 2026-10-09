@@ -405,8 +405,8 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
             }
             else
             {
-                // Type 5/6 tự đặt co khi điểm nối nằm ở đầu ống chính, tee/tap khi nằm giữa ống.
-                ckbConnectCo90.Enabled = !type56;
+                // Elbow Connection dùng cho cả Type 5/6: đầu phun gần đầu ống chính còn hở thì nối bằng co, cắt đoạn thừa.
+                ckbConnectCo90.Enabled = true;
             }
 
             // Family Elbow chỉ dùng cho Phương án 5 cũ của Dirit (đã bỏ theo sheet Fire Protection);
