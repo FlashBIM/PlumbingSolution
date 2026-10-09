@@ -96,6 +96,8 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
 
             // Method: như Pendent Type 5/6 (không có By Distance).
             var tlpMethod = Grid(2, 1);
+            tlpMethod.ColumnStyles[0].Width = 62F;
+            tlpMethod.ColumnStyles[1].Width = 38F;
             rbT6ByMep = Radio("rbT6ByMep", "By Pick MEP Elements", true);
             rbT6Auto = Radio("rbT6Auto", "Auto", false);
             tlpMethod.Controls.Add(rbT6ByMep, 0, 0);
@@ -325,7 +327,7 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
 
         private static RadioButton Radio(string name, string text, bool check)
         {
-            return new RadioButton { Name = name, Text = text, Checked = check, AutoSize = true, Margin = new Padding(3) };
+            return new RadioButton { Name = name, Text = text, Checked = check, AutoSize = true, Margin = new Padding(3), UseMnemonic = false };
         }
     }
 }
