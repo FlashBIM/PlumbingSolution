@@ -56,6 +56,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Command\Modify\CmdSprinklerDownrightType56.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Command\Modify\CmdSprinklerUpright.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Command\Modify\CmdSprinklerUprightType4.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Command\Modify\UprightType4Preview.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Command\Modify\CmdTwinSprinkler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Command\Modify\CmdTwoLevelSmart.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Command\Modify\TwinSprinklerProcess.cs" />
