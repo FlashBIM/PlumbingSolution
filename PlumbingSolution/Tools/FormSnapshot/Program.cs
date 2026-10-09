@@ -45,7 +45,7 @@ internal static class Program
             Tuple.Create("FrmCreateFmlFromBasePoint", ""),
             Tuple.Create("FrmCreateFmlFromBlockCad", ""),
             Tuple.Create("FrmCreateBranchPipeFire", ""),
-            Tuple.Create("UI_PlaceVerticalPipe", ""),
+            Tuple.Create("VerticalMEPForm", ""),
         };
 
         int failures = 0;
@@ -55,7 +55,7 @@ internal static class Program
             try
             {
                 // Không dùng asm.GetTypes(): nhiều type tham chiếu Revit API, không nạp được ngoài Revit.
-                Type t = new[] { "Service_E", "Service_J", "Service_A", "DiritFire" }
+                Type t = new[] { "Service_E", "Service_J", "GeneralUI", "DiritFire" }
                     .Select(ns => asm.GetType("PlumbingSolution.FireProtection.UI." + ns + "." + shot.Item1))
                     .FirstOrDefault(x => x != null) ?? throw new TypeLoadException(shot.Item1);
                 Form f = (Form)FormatterServices.GetUninitializedObject(t);

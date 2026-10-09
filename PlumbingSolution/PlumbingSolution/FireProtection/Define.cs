@@ -18,5 +18,8 @@ namespace PlumbingSolution.FireProtection
 
         public static readonly string FolderLanguage = "Language";
         public static readonly string FileLanguage = "Language.csv";
+
+        public const string UnitMM = "MM";
+        public const string UnitInch = "INCH";
     }
 }

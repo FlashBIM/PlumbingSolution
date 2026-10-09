@@ -1,21 +1,25 @@
-﻿using PlumbingSolution.LoginLicense.Gate;
-using PlumbingSolution.FireProtection.Services;
-using PlumbingSolution.FireProtection.UI.Service_A;
-using PlumbingSolution.FireProtection.Ultis;
-using PlumbingSolution.FireProtection.Utils;
-using Autodesk.Revit.Attributes;
+﻿using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.DB.Electrical;
 using Autodesk.Revit.DB.Plumbing;
 using Autodesk.Revit.UI;
 using Autodesk.Revit.UI.Selection;
+using PlumbingSolution.LoginLicense.Gate;
+using PlumbingSolution.FireProtection.Services;
+using PlumbingSolution.FireProtection.UI.GeneralUI;
+using PlumbingSolution.FireProtection.Ultis;
+using PlumbingSolution.FireProtection.Utils;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace PlumbingSolution.FireProtection.Command.Drain.DiritVerticalPipe.Service_A
+namespace PlumbingSolution.FireProtection.Command.General
 {
     [Transaction(TransactionMode.Manual)]
-    public class DiritPlaceVerticalPipeCommand : IExternalCommand
+    public class CmdPlaceVerticalMep : IExternalCommand
     {
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {
@@ -27,21 +31,22 @@ namespace PlumbingSolution.FireProtection.Command.Drain.DiritVerticalPipe.Servic
             if (!LicenseGate.IsToolAllowed(this))
                 return Result.Cancelled;
 
-            if (App.ShowPlaceVerticalPipeForm() == false)
+            if (App.ShowVerticalMEPForm() == false)
             {
                 return Result.Cancelled;
             }
+
             return Result.Succeeded;
         }
 
         public static Result Process()
         {
-            var verticalMEPForm = App.m_PlaceVerticalPipeForm;
+            var verticalMEPForm = App.m_VerticalMEPForm;
 
             if (verticalMEPForm != null && verticalMEPForm.IsDisposed == false)
                 verticalMEPForm.Hide();
 
-            Transaction tran = new Transaction(Global.UIDoc.Document, "CreateVerticalPipe");
+            Transaction tran = new Transaction(Global.UIDoc.Document, "Vertical Pipe");
 
             try
             {
@@ -132,9 +137,8 @@ namespace PlumbingSolution.FireProtection.Command.Drain.DiritVerticalPipe.Servic
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                IO.LogException(ex);
             }
             finally
             {
@@ -147,7 +151,7 @@ namespace PlumbingSolution.FireProtection.Command.Drain.DiritVerticalPipe.Servic
             return Result.Succeeded;
         }
 
-        private static void ce(UI_PlaceVerticalPipe form, out double startZ, out double endZ)
+        private static void ce(VerticalMEPForm form, out double startZ, out double endZ)
         {
             var top = Global.UIDoc.Document.GetElement(form.LevelTopId) as Level;
             var bottom = Global.UIDoc.Document.GetElement(form.LevelBottomId) as Level;

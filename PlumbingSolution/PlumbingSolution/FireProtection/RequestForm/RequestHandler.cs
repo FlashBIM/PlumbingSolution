@@ -1,5 +1,5 @@
 using Autodesk.Revit.UI;
-using PlumbingSolution.FireProtection.Command.Drain.DiritVerticalPipe.Service_A;
+using PlumbingSolution.FireProtection.Command.General;
 using PlumbingSolution.FireProtection.Command.Fire;
 using PlumbingSolution.FireProtection.Command.Modify;
 
@@ -59,7 +59,7 @@ namespace PlumbingSolution.FireProtection.RequestForm
                     break;
 
                 case RequestId.PlaceVerticalPipe:
-                    DiritPlaceVerticalPipeCommand.Process();
+                    CmdPlaceVerticalMep.Process();
                     break;
             }
         }

@@ -24,7 +24,7 @@ using TextBox = System.Windows.Forms.TextBox;
 
 namespace PlumbingSolution.FireProtection.Ultis
 {
-    public static class Common
+    public static partial class Common
     {
         public static double mmToFT = 0.0032808399;
         private const double _eps = 1.0e-9;

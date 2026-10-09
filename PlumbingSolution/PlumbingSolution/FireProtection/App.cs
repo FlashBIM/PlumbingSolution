@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 using Autodesk.Revit.UI;
 using PlumbingSolution.FireProtection.RequestForm;
 using PlumbingSolution.FireProtection.Services;
-using PlumbingSolution.FireProtection.UI.Service_A;
+using PlumbingSolution.FireProtection.UI.GeneralUI;
 using PlumbingSolution.FireProtection.UI.Service_E;
 using PlumbingSolution.FireProtection.UI.Service_J;
 using PlumbingSolution.FireProtection.Ultis;
@@ -28,7 +28,7 @@ namespace PlumbingSolution.FireProtection
         public static UI_SprinklerDown m_SprinklerDownForm = null;
         public static UI_FlexSprinkler m_FlexSprinklerForm = null;
         public static UI_TwinSprinkler m_TwinSprinklerForm = null;
-        public static UI_PlaceVerticalPipe m_PlaceVerticalPipeForm = null;
+        public static VerticalMEPForm m_VerticalMEPForm = null;
         public static FrmCreateBranchPipeFire m_CreateBranchPipeFireFrm = null;
 
         private static void EnsureRevitWindow()
@@ -168,24 +168,24 @@ namespace PlumbingSolution.FireProtection
             }
         }
 
-        public static bool ShowPlaceVerticalPipeForm()
+        public static bool ShowVerticalMEPForm()
         {
             try
             {
                 EnsureRevitWindow();
-                if (m_PlaceVerticalPipeForm == null || m_PlaceVerticalPipeForm.IsDisposed)
+                if (m_VerticalMEPForm == null || m_VerticalMEPForm.IsDisposed)
                 {
                     RequestHandler handler = new RequestHandler();
                     ExternalEvent exEvent = ExternalEvent.Create(handler);
-                    m_PlaceVerticalPipeForm = new UI_PlaceVerticalPipe(exEvent, handler);
-                    m_PlaceVerticalPipeForm.Show(hWndRevit);
+                    m_VerticalMEPForm = new VerticalMEPForm(exEvent, handler);
+                    m_VerticalMEPForm.Show(hWndRevit);
                 }
-                else if (Common.IsFormSameOpen(m_PlaceVerticalPipeForm.Name))
+                else if (Common.IsFormSameOpen(m_VerticalMEPForm.Name))
                 {
                     return false;
                 }
 
-                DisplayService.SetFocus(new HandleRef(null, m_PlaceVerticalPipeForm.Handle));
+                DisplayService.SetFocus(new HandleRef(null, m_VerticalMEPForm.Handle));
                 return true;
             }
             catch (Exception ex)
