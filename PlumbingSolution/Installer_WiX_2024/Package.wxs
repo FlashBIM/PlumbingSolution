@@ -169,6 +169,7 @@
         <File Id="PreviewPs_12" Source="$(var.SourceRoot)\Icon\Preview\PlumbingSolution\ConnectPipe_Parallel_Elbow90.png" />
         <File Id="PreviewPs_13" Source="$(var.SourceRoot)\Icon\Preview\PlumbingSolution\ConnectPipe_Parallel_SameElevation_Horizontal.png" />
         <File Id="PreviewPs_14" Source="$(var.SourceRoot)\Icon\Preview\PlumbingSolution\ConnectPipe_Parallel_SameElevation_Vertical.png" />
+        <File Id="PreviewPs_15" Source="$(var.SourceRoot)\Icon\Preview\PlumbingSolution\Upright_Type3.png" />
         <RegistryValue Root="HKCU" Key="Software\FlashBim\PlumbingSolution2024" Name="PreviewPs" Type="integer" Value="1"
                        KeyPath="yes" />
         <RemoveFolder Id="RemovePreviewPsDir" Directory="PreviewPsDir" On="uninstall" />

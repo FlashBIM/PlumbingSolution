@@ -262,9 +262,12 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
             ckbConnectCo90.Enabled = !rbtnOptions4.Checked;
 
             string folder = Common.GetFirePreviewFolder();
+            string type3 = Path.Combine(Common.GetPreviewFolder(), "PlumbingSolution", "Upright_Type3.png");
             string type4 = Path.Combine(Common.GetPreviewFolder(), "PlumbingSolution", "Upright_Type4.png");
             if (rbtnOptions1.Checked)
                 this.picPreview.Image = System.Drawing.Image.FromFile(Path.Combine(folder, "Phuonganlen1.png"));
+            else if (rdnOption3.Checked && File.Exists(type3))
+                this.picPreview.Image = System.Drawing.Image.FromFile(type3);
             else if (rbtnOptions4.Checked && File.Exists(type4))
                 this.picPreview.Image = System.Drawing.Image.FromFile(type4);
             else
