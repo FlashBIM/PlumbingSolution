@@ -72,6 +72,7 @@ namespace PlumbingSolution.FireProtection.RequestForm
 
         //Service E1
         SprinklerUp_Aplly,
+        SprinklerUpType4_RUN,
 
         //Service E2
         SprinklerDownType1_RUN,
