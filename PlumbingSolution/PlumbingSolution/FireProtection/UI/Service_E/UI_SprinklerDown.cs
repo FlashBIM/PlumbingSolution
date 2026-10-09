@@ -118,10 +118,10 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
             AppUtils.ff(rbtnOptions5);
             AppUtils.ff(rbtnOptions6);
             AppUtils.ff(tbL1);
-            AppUtils.ff(tbL2);
-            AppUtils.ff(rbtnByDistance);
             AppUtils.ff(rbtnByMep);
             AppUtils.ff(rbtnAuto);
+            if (!rbtnByMep.Checked && !rbtnAuto.Checked)   // lần lưu cũ còn chọn By Distance (đã bỏ)
+                rbtnByMep.Checked = true;
 
             RadioButtonCheckedChange();
         }
@@ -129,16 +129,13 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
 
         public bool isTeeTap = false;
 
-        /// <summary>Type 5/6: L1 (mm) - By Distance: tâm ống chính tới tâm ống đứng; By MEP: mép ống đứng tới mép đối tượng.</summary>
+        /// <summary>Type 5/6: L1 (mm) = khe hở từ mép ống đứng tới mép vật cản (duct, cable tray...).</summary>
         public double L1_ => ParseMm(tbL1);
 
-        /// <summary>Type 5/6 By Distance: khoảng đứng giữa hai ống ngang (mm).</summary>
-        public double L2_ => ParseMm(tbL2);
-
-        /// <summary>Type 5/6: đo theo đối tượng MEP chọn thêm (duct, cable tray...) thay vì L1/L2 nhập tay.</summary>
+        /// <summary>Type 5/6: vật cản do người dùng chọn (duct, cable tray...).</summary>
         public bool IsByMep => rbtnByMep.Checked;
 
-        /// <summary>Type 5/6: tự dò duct / cable tray / ống... cắt ngang tuyến; không thấy vật cản thì dùng L1/L2 như By Distance.</summary>
+        /// <summary>Type 5/6: tự dò duct / cable tray / ống... cắt ngang tuyến thay vì chọn.</summary>
         public bool IsAuto => rbtnAuto.Checked;
 
         /// <summary>Pipe Type chọn trên form (Type 5/6 dùng cho các ống nối, co theo Routing Preferences của type này).</summary>
@@ -231,8 +228,6 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
             AppUtils.sa(rbtnOptions5);
             AppUtils.sa(rbtnOptions6);
             AppUtils.sa(tbL1);
-            AppUtils.sa(tbL2);
-            AppUtils.sa(rbtnByDistance);
             AppUtils.sa(rbtnByMep);
             AppUtils.sa(rbtnAuto);
 
@@ -248,8 +243,6 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
                     error = "Select a Pipe Size.";
                 else if (L1_ <= 0)
                     error = "L1 must be greater than 0.";
-                else if (!IsByMep && L2_ <= 0)
-                    error = "L2 must be greater than 0.";
                 else if (rbtnOptions6.Checked && Height_ <= 0)
                     error = "A must be greater than 0.";
                 if (error != null)
@@ -380,7 +373,7 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
                 this.picPreview.Image = System.Drawing.Image.FromFile(Path.Combine(_previewFolder, "A_Dau phun huong xuong_Type 4.jpg"));
             else if (rbtnOptions5.Checked || rbtnOptions6.Checked)
             {
-                string name = (rbtnOptions5.Checked ? "Pendent_Type5" : "Pendent_Type6") + (IsByMep || IsAuto ? "_MEP" : "") + ".png";
+                string name = (rbtnOptions5.Checked ? "Pendent_Type5" : "Pendent_Type6") + "_MEP.png";
                 string file = Path.Combine(Common.GetPreviewFolder(), "PlumbingSolution", name);
                 if (File.Exists(file))
                     this.picPreview.Image = System.Drawing.Image.FromFile(file);
@@ -392,10 +385,9 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
             bool type56 = rbtnOptions5.Checked || rbtnOptions6.Checked;
 
             // A: Type 1 (chiều cao) và Type 6 (đoạn đứng trên ống chính). L1/L2 và cách đo chỉ cho Type 5/6;
-            // By Pick MEP thì L2 cố định 20 mm dưới đáy đối tượng nên khoá ô L2; Auto vẫn cần L2 khi không dò thấy vật cản.
+            // Type 5/6 luôn đo theo vật cản: ống dưới cách đáy vật cản 20 mm nên không có L2.
             tbC4L2.Enabled = rbtnOptions1.Checked || rbtnOptions6.Checked;
             tbL1.Enabled = type56;
-            tbL2.Enabled = type56 && !rbtnByMep.Checked;
             grpMethod.Enabled = type56;
 
             if (rbtnOptions4.Checked)
