@@ -1,6 +1,5 @@
 ﻿using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
-using Autodesk.Revit.DB.Electrical;
 using Autodesk.Revit.DB.Plumbing;
 using Autodesk.Revit.UI;
 using Autodesk.Revit.UI.Selection;
@@ -75,55 +74,10 @@ namespace PlumbingSolution.FireProtection.Command.General
 
                         XYZ end = new XYZ(point.X, point.Y, endZ);
 
-                        ElementId systemTypeId = ElementId.InvalidElementId;
-                        if (verticalMEPForm.MEPType_ == MEPType.Pipe)
-                        {
-                            systemTypeId = verticalMEPForm.SystemType;
-                        }
-                        else if (verticalMEPForm.MEPType_ == MEPType.Round_Duct)
-                        {
-                            systemTypeId = verticalMEPForm.SystemType;
-                        }
-                        else if (verticalMEPForm.MEPType_ == MEPType.Oval_Duct || verticalMEPForm.MEPType_ == MEPType.Rectangular_Duct)
-                        {
-                            systemTypeId = verticalMEPForm.SystemType;
-                        }
-
-                        var mepNew = err(start, end, verticalMEPForm.FamilyType, systemTypeId, verticalMEPForm.LevelBottomId);
+                        var mepNew = err(start, end, verticalMEPForm.FamilyType, verticalMEPForm.SystemType, verticalMEPForm.LevelBottomId);
 
                         if (mepNew != null)
-                        {
-                            //Set parameter
-                            double height = 0; //inch
-                            double width = 0;
-                            if (verticalMEPForm.MEPType_ == MEPType.Pipe || verticalMEPForm.MEPType_ == MEPType.Round_Duct)
-                            {
-                                width = (verticalMEPForm.MEPSize_ as MEPSize).NominalDiameter;
-                                mepNew.LookupParameter("Diameter").Set(width);
-
-                                height = (verticalMEPForm.MEPSize_ as MEPSize).NominalDiameter;
-                            }
-                            else if (verticalMEPForm.MEPType_ == MEPType.Conduit)
-                            {
-                                width = (verticalMEPForm.MEPSize_ as ConduitSize).NominalDiameter;
-                                mepNew.LookupParameter("Diameter(Trade Size)").Set(width);
-
-                                height = (verticalMEPForm.MEPSize_ as ConduitSize).NominalDiameter;
-                            }
-                            else
-                            {
-                                width = verticalMEPForm.MEP_Width * Common.mmToFT;
-                                mepNew.LookupParameter("Width").Set(width);
-                                mepNew.LookupParameter("Height").Set(verticalMEPForm.MEP_Height * Common.mmToFT);
-
-                                height = verticalMEPForm.MEP_Height * Common.mmToFT;
-                            }
-
-                            if (verticalMEPForm.MEPType_ == MEPType.CableTray || verticalMEPForm.MEPType_ == MEPType.Conduit && verticalMEPForm.ServiceType != string.Empty)
-                            {
-                                mepNew.LookupParameter("Service Type").Set(verticalMEPForm.ServiceType);
-                            }
-                        }
+                            mepNew.LookupParameter("Diameter").Set((verticalMEPForm.MEPSize_ as MEPSize).NominalDiameter);
                         tran.Commit();
                     }
                     catch (System.Exception ex)
@@ -162,27 +116,7 @@ namespace PlumbingSolution.FireProtection.Command.General
 
         public static MEPCurve err(XYZ start, XYZ end, ElementId elementTypeId, ElementId systemTypeId, ElementId levelId)
         {
-            ElementType elementType = Global.UIDoc.Document.GetElement(elementTypeId) as ElementType;
-
-            MEPCurve mepCurve = null;
-
-            if (elementType is Autodesk.Revit.DB.Mechanical.DuctType)
-            {
-                mepCurve = Autodesk.Revit.DB.Mechanical.Duct.Create(Global.UIDoc.Document, systemTypeId, elementTypeId, levelId, start, end);
-            }
-            else if (elementType is PipeType)
-            {
-                mepCurve = Pipe.Create(Global.UIDoc.Document, systemTypeId, elementTypeId, levelId, start, end);
-            }
-            else if (elementType is CableTrayType)
-            {
-                mepCurve = CableTray.Create(Global.UIDoc.Document, elementTypeId, start, end, levelId);
-            }
-            else if (elementType is ConduitType)
-            {
-                mepCurve = Conduit.Create(Global.UIDoc.Document, elementTypeId, start, end, levelId);
-            }
-            return mepCurve;
+            return Pipe.Create(Global.UIDoc.Document, systemTypeId, elementTypeId, levelId, start, end);
         }
     }
 }

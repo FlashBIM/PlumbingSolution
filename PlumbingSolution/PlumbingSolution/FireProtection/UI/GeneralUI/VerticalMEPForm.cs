@@ -1,6 +1,4 @@
 ﻿using Autodesk.Revit.DB;
-using Autodesk.Revit.DB.Electrical;
-using Autodesk.Revit.DB.Mechanical;
 using Autodesk.Revit.DB.Plumbing;
 using Autodesk.Revit.UI;
 using Autodesk.Windows;
@@ -17,7 +15,8 @@ namespace PlumbingSolution.FireProtection.UI.GeneralUI
 {
     public partial class VerticalMEPForm : System.Windows.Forms.Form
     {
-        private MEPType m_MEPCurrent = MEPType.Pipe;
+        // Form chỉ đặt ống (Pipe); giữ tên nhóm "Pipe" cho các giá trị đã lưu (AppUtils.ff/sa).
+        private readonly MEPType m_MEPCurrent = MEPType.Pipe;
         private List<ElementId> FamilyTypes = new List<ElementId>();
         private List<ElementId> MEPSystemTypes = new List<ElementId>();
         private Segment CurrentSegment = null;
@@ -84,14 +83,6 @@ namespace PlumbingSolution.FireProtection.UI.GeneralUI
             }
         }
 
-        public MEPType MEPType_
-        {
-            get
-            {
-                return ParseMEPType(cboMEPObjects.SelectedItem.ToString());
-            }
-        }
-
         public ElementId FamilyType
         {
             get
@@ -105,73 +96,6 @@ namespace PlumbingSolution.FireProtection.UI.GeneralUI
             get
             {
                 return (cboSystemType.SelectedItem as ObjectItem).ObjectId;
-            }
-        }
-
-        public string ServiceType
-        {
-            get
-            {
-                return txtServiceType.Text.Trim();
-            }
-        }
-
-        public double MEP_Width
-        {
-            get
-            {
-                var value = cboWidth.Text.ToString().Trim();
-                if (_GlobalUnit == Define.UnitInch)
-                {
-                    double valueInMM = Common.FormatFractionInchToMilimeter(value);
-                    if (!double.IsNaN(valueInMM))
-                    {
-                        return valueInMM;
-                    }
-                    else
-                        return double.MaxValue;
-                }
-                else
-                {
-                    value = value.Replace(" mm", "");
-
-                    double dvalue = 0;
-                    if (value != string.Empty && double.TryParse(value, out dvalue) == false)
-                    {
-                        return double.MaxValue;
-                    }
-
-                    return dvalue;
-                }
-            }
-        }
-
-        public double MEP_Height
-        {
-            get
-            {
-                var value = cboHeight.Text.ToString().Trim();
-                if (_GlobalUnit == Define.UnitInch)
-                {
-                    double valueInMM = Common.FormatFractionInchToMilimeter(value);
-                    if (!double.IsNaN(valueInMM))
-                    {
-                        return valueInMM;
-                    }
-                    else
-                        return double.MaxValue;
-                }
-                else
-                {
-                    value = value.Replace(" mm", "");
-                    double dvalue = 0;
-                    if (value != string.Empty && double.TryParse(value, out dvalue) == false)
-                    {
-                        return double.MaxValue;
-                    }
-
-                    return dvalue;
-                }
             }
         }
 
@@ -223,17 +147,15 @@ namespace PlumbingSolution.FireProtection.UI.GeneralUI
         {
             Dictionary<string, System.Windows.Forms.Control> keyControl = new Dictionary<string, System.Windows.Forms.Control>();
             keyControl.Add("btnPlaceVerticalPipe", this);
-            keyControl.Add("MEPCategoryGroup", groupBox1);
-            keyControl.Add("MEPCategory", label1);
-            keyControl.Add("MEPType", label7);
+            keyControl.Add("PipeGroup", groupBox1);
+            keyControl.Add("PipeType", label7);
             keyControl.Add("SystemType", lblServiceType);
-            keyControl.Add("Width", lblWidth);
-            keyControl.Add("Height", lblHeight);
+            keyControl.Add("Diameter", label2);
             keyControl.Add("BaseTopElevation", groupBox2);
-            keyControl.Add("TopLevel", label4);
-            keyControl.Add("TopOffset", label3);
-            keyControl.Add("BaseLevel", label6);
-            keyControl.Add("BaseOffset", label5);
+            keyControl.Add("Level", lblLevel);
+            keyControl.Add("Offset", lblOffset);
+            keyControl.Add("Top", label4);
+            keyControl.Add("Base", label6);
             keyControl.Add("OK", btnOK);
             keyControl.Add("Cancel", btnCancel);
 
@@ -271,7 +193,7 @@ namespace PlumbingSolution.FireProtection.UI.GeneralUI
 
         private void VerticalMEPForm_Load(object sender, EventArgs e)
         {
-            AddMEPType();
+            DisplayType();
             AddTopLevel();
             AddBottomLevel();
 
@@ -346,15 +268,6 @@ namespace PlumbingSolution.FireProtection.UI.GeneralUI
             NumberCheck(sender, e, true);
         }
 
-        private void cboMEPObjects_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            m_MEPCurrent = ParseMEPType(cboMEPObjects.SelectedItem.ToString());
-
-            DisplayType();
-
-            AppUtils.ff(txtServiceType, null, m_MEPCurrent.ToString());
-        }
-
         private void cboFamilyType_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (cboFamilyType.SelectedItem == null)
@@ -381,85 +294,6 @@ namespace PlumbingSolution.FireProtection.UI.GeneralUI
                     if (CurrentSegment != null)
                         AddDiameter(CurrentSegment);
                 }
-
-                lblServiceType.Text = "System Type";
-
-                txtServiceType.Visible = false;
-                cboSystemType.Visible = true;
-
-                cboDiameter.Enabled = true;
-                cboWidth.Enabled = false;
-                cboHeight.Enabled = false;
-            }
-            else if (familyType is ConduitType)
-            {
-                var setings = ConduitSizeSettings.GetConduitSizeSettings(Global.UIDoc.Document);
-
-                var standardId = familyType.LookupParameter("Standard").AsElementId();
-
-                if (standardId != ElementId.InvalidElementId)
-                {
-                    var standard = Global.UIDoc.Document.GetElement(standardId) as ElementType;
-
-                    AddDiameter(setings, standard.Name);
-                }
-                lblServiceType.Text = "Service Type";
-
-                txtServiceType.Visible = true;
-                cboSystemType.Visible = false;
-
-                cboDiameter.Enabled = true;
-                cboWidth.Enabled = false;
-                cboHeight.Enabled = false;
-            }
-            else if (familyType is CableTrayType)
-            {
-                CableTraySizes sizes = CableTraySizes.GetCableTraySizes(Global.UIDoc.Document);
-
-                AddCableTraySizes(sizes);
-
-                lblServiceType.Text = "Service Type";
-
-                txtServiceType.Visible = true;
-                cboSystemType.Visible = false;
-
-                cboDiameter.Enabled = false;
-                cboWidth.Enabled = true;
-                cboHeight.Enabled = true;
-            }
-            else if (familyType is DuctType)
-            {
-                var settings = DuctSizeSettings.GetDuctSizeSettings(Global.UIDoc.Document);
-                DuctShape shape = DuctShape.Oval;
-
-                var familyName = familyType.LookupParameter("Family Name").AsString();
-
-                if (familyName.Contains("Rectangular"))
-                {
-                    shape = DuctShape.Rectangular;
-
-                    txtServiceType.Visible = false;
-                    cboSystemType.Visible = true;
-
-                    cboDiameter.Enabled = false;
-                    cboWidth.Enabled = true;
-                    cboHeight.Enabled = true;
-                }
-                else if (familyName.Contains("Round"))
-                {
-                    shape = DuctShape.Round;
-
-                    txtServiceType.Visible = false;
-                    cboSystemType.Visible = true;
-
-                    cboDiameter.Enabled = true;
-                    cboWidth.Enabled = false;
-                    cboHeight.Enabled = false;
-                }
-
-                AddDuctSize(settings, shape);
-
-                lblServiceType.Text = "System Type";
             }
         }
 
@@ -467,39 +301,6 @@ namespace PlumbingSolution.FireProtection.UI.GeneralUI
         {
             m_handler.Request.Make(request);
             m_exEvent.Raise();
-        }
-
-        private void AddMEPType()
-        {
-            cboMEPObjects.Items.Clear();
-
-            cboMEPObjects.Items.Add(MEPTypeText(MEPType.Pipe));
-            cboMEPObjects.Items.Add(MEPTypeText(MEPType.Rectangular_Duct));
-            cboMEPObjects.Items.Add(MEPTypeText(MEPType.Round_Duct));
-
-            cboMEPObjects.Items.Add(MEPTypeText(MEPType.CableTray));
-            cboMEPObjects.Items.Add(MEPTypeText(MEPType.Conduit));
-
-            AppUtils.ff(cboMEPObjects, null, null);
-
-            if (cboMEPObjects.SelectedItem == null && cboMEPObjects.Items.Count != 0)
-                cboMEPObjects.SelectedIndex = 0;
-
-            //Get current
-            m_MEPCurrent = ParseMEPType(cboMEPObjects.SelectedItem.ToString());
-        }
-
-        private static string MEPTypeText(MEPType type)
-        {
-            return type == MEPType.CableTray ? "Cable Tray" : type.ToString().Replace('_', ' ');
-        }
-
-        private static MEPType ParseMEPType(string text)
-        {
-            foreach (MEPType type in Enum.GetValues(typeof(MEPType)))
-                if (MEPTypeText(type) == text || type.ToString() == text)
-                    return type;
-            return MEPType.Pipe;
         }
 
         private void AddTopLevel()
@@ -551,7 +352,6 @@ namespace PlumbingSolution.FireProtection.UI.GeneralUI
 
             AppUtils.sa(cboLevelBottom);
             AppUtils.sa(cboLevelTop);
-            AppUtils.sa(cboMEPObjects);
 
             AppUtils.sa(txtOffsetBottom);
             AppUtils.sa(txtOffsetTop);
@@ -574,49 +374,12 @@ namespace PlumbingSolution.FireProtection.UI.GeneralUI
             AddSystemType(m_MEPCurrent);
         }
 
-        private Type GetType(MEPType enumType)
-        {
-            if (enumType == MEPType.Pipe)
-                return typeof(PipeType);
-            else if (enumType == MEPType.CableTray)
-                return typeof(CableTrayType);
-            else if (enumType == MEPType.Oval_Duct || enumType == MEPType.Rectangular_Duct || enumType == MEPType.Round_Duct)
-                return typeof(DuctType);
-            else
-                return typeof(ConduitType);
-        }
-
         private void AddFamilyType(MEPType enumType)
         {
             cboFamilyType.Items.Clear();
-            FilteredElementCollector pipeTypes = new FilteredElementCollector(Global.UIDoc.Document).OfClass(GetType(enumType));
+            FilteredElementCollector pipeTypes = new FilteredElementCollector(Global.UIDoc.Document).OfClass(typeof(PipeType));
             foreach (MEPCurveType type in pipeTypes)
             {
-                if (enumType == MEPType.Oval_Duct || enumType == MEPType.Rectangular_Duct || enumType == MEPType.Round_Duct)
-                {
-                    DuctShape shape = DuctShape.Oval;
-
-                    var familyName = type.LookupParameter("Family Name").AsString();
-
-                    if (familyName.Contains("Rectangular"))
-                    {
-                        shape = DuctShape.Rectangular;
-                    }
-                    else if (familyName.Contains("Round"))
-                    {
-                        shape = DuctShape.Round;
-                    }
-
-                    if (enumType == MEPType.Oval_Duct && shape != DuctShape.Oval)
-                        continue;
-
-                    if (enumType == MEPType.Rectangular_Duct && shape != DuctShape.Rectangular)
-                        continue;
-
-                    if (enumType == MEPType.Round_Duct && shape != DuctShape.Round)
-                        continue;
-                }
-
                 ObjectItem item = new ObjectItem(type.Name, type.Id);
                 cboFamilyType.Items.Add(item);
 
@@ -629,25 +392,11 @@ namespace PlumbingSolution.FireProtection.UI.GeneralUI
                 cboFamilyType.SelectedIndex = 0;
         }
 
-        private Type GetSytemType(MEPType enumType)
-        {
-            if (enumType == MEPType.Pipe)
-                return typeof(PipingSystemType);
-            else if (enumType == MEPType.Oval_Duct || enumType == MEPType.Rectangular_Duct || enumType == MEPType.Round_Duct)
-                return typeof(MechanicalSystemType);
-            else
-                return null;
-        }
-
         private void AddSystemType(MEPType enumType)
         {
             cboSystemType.Items.Clear();
 
-            var typeClass = GetSytemType(enumType);
-            if (typeClass == null)
-                return;
-
-            FilteredElementCollector pipeTypes = new FilteredElementCollector(Global.UIDoc.Document).OfClass(typeClass);
+            FilteredElementCollector pipeTypes = new FilteredElementCollector(Global.UIDoc.Document).OfClass(typeof(PipingSystemType));
             foreach (MEPSystemType type in pipeTypes)
             {
                 ObjectItem item = new ObjectItem(type.Name, type.Id);
@@ -660,68 +409,6 @@ namespace PlumbingSolution.FireProtection.UI.GeneralUI
 
             if (cboSystemType.SelectedItem == null && cboSystemType.Items.Count != 0)
                 cboSystemType.SelectedIndex = 0;
-        }
-
-        private void AddDuctSize(DuctSizeSettings settings, DuctShape shape)
-        {
-            foreach (KeyValuePair<DuctShape, DuctSizes> keyPair in settings)
-            {
-                if (keyPair.Key != shape)
-                    continue;
-
-                if (keyPair.Key == DuctShape.Round)
-                {
-                    cboDiameter.Items.Clear();
-                    DictionaryMEPSizes.Clear();
-
-                    foreach (MEPSize size in keyPair.Value)
-                    {
-                        string value = string.Empty;
-                        if (_GlobalUnit == Define.UnitInch)
-                            value = Common.FormatMilimeterToFractionInch(size.NominalDiameter * 304.8);
-                        else
-                            value = FeetToMmString(size.NominalDiameter) + " mm";
-
-                        cboDiameter.Items.Add(value);
-
-                        DictionaryMEPSizes.Add(value, size);
-                    }
-
-                    AppUtils.ff(cboDiameter, null, m_MEPCurrent.ToString());
-
-                    if (cboDiameter.SelectedItem == null && cboDiameter.Items.Count != 0)
-                        cboDiameter.SelectedIndex = 0;
-                }
-                else
-                {
-                    cboWidth.Items.Clear();
-                    cboHeight.Items.Clear();
-
-                    DictionaryMEPSizes.Clear();
-
-                    foreach (MEPSize size in keyPair.Value)
-                    {
-                        string value = string.Empty;
-                        if (_GlobalUnit == Define.UnitInch)
-                            value = Common.FormatMilimeterToFractionInch(size.NominalDiameter * 304.8);
-                        else
-                            value = FeetToMmString(size.NominalDiameter) + " mm";
-
-                        cboWidth.Items.Add(value);
-                        cboHeight.Items.Add(value);
-                        DictionaryMEPSizes.Add(value, size);
-                    }
-
-                    AppUtils.ff(cboWidth, null, m_MEPCurrent.ToString());
-                    AppUtils.ff(cboHeight, null, m_MEPCurrent.ToString());
-
-                    if (cboWidth.SelectedItem == null && cboWidth.Items.Count != 0)
-                        cboWidth.SelectedIndex = 0;
-
-                    if (cboHeight.SelectedItem == null && cboHeight.Items.Count != 0)
-                        cboHeight.SelectedIndex = 0;
-                }
-            }
         }
 
         private void AddDiameter(Segment segment)
@@ -740,66 +427,6 @@ namespace PlumbingSolution.FireProtection.UI.GeneralUI
                 cboDiameter.Items.Add(value);
 
                 DictionaryMEPSizes.Add(value, size);
-            }
-
-            AppUtils.ff(cboDiameter, null, m_MEPCurrent.ToString());
-
-            if (cboDiameter.SelectedItem == null && cboDiameter.Items.Count != 0)
-                cboDiameter.SelectedIndex = 0;
-        }
-
-        private void AddCableTraySizes(CableTraySizes sizes)
-        {
-            cboWidth.Items.Clear();
-            cboHeight.Items.Clear();
-
-            DictionaryMEPSizes.Clear();
-
-            foreach (MEPSize size in sizes)
-            {
-                string value = string.Empty;
-                if (_GlobalUnit == Define.UnitInch)
-                    value = Common.FormatMilimeterToFractionInch(size.NominalDiameter * 304.8);
-                else
-                    value = FeetToMmString(size.NominalDiameter) + " mm";
-
-                cboWidth.Items.Add(value);
-                cboHeight.Items.Add(value);
-                DictionaryMEPSizes.Add(value, size);
-            }
-
-            AppUtils.ff(cboWidth, null, m_MEPCurrent.ToString());
-            AppUtils.ff(cboHeight, null, m_MEPCurrent.ToString());
-
-            if (cboWidth.SelectedItem == null && cboWidth.Items.Count != 0)
-                cboWidth.SelectedIndex = 0;
-
-            if (cboHeight.SelectedItem == null && cboHeight.Items.Count != 0)
-                cboHeight.SelectedIndex = 0;
-        }
-
-        private void AddDiameter(ConduitSizeSettings settings, string standardName)
-        {
-            cboDiameter.Items.Clear();
-            DictionaryMEPSizes.Clear();
-
-            foreach (KeyValuePair<string, ConduitSizes> keyPair in settings)
-            {
-                if (keyPair.Key != standardName)
-                    continue;
-
-                foreach (ConduitSize size in keyPair.Value)
-                {
-                    string value = string.Empty;
-                    if (_GlobalUnit == Define.UnitInch)
-                        value = Common.FormatMilimeterToFractionInch(size.NominalDiameter * 304.8);
-                    else
-                        value = FeetToMmString(size.NominalDiameter) + " mm";
-
-                    cboDiameter.Items.Add(value);
-
-                    DictionaryMEPSizes.Add(value, size);
-                }
             }
 
             AppUtils.ff(cboDiameter, null, m_MEPCurrent.ToString());
