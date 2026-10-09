@@ -121,6 +121,7 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
             AppUtils.ff(tbL2);
             AppUtils.ff(rbtnByDistance);
             AppUtils.ff(rbtnByMep);
+            AppUtils.ff(rbtnAuto);
 
             RadioButtonCheckedChange();
         }
@@ -136,6 +137,9 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
 
         /// <summary>Type 5/6: đo theo đối tượng MEP chọn thêm (duct, cable tray...) thay vì L1/L2 nhập tay.</summary>
         public bool IsByMep => rbtnByMep.Checked;
+
+        /// <summary>Type 5/6: tự dò duct / cable tray / ống... cắt ngang tuyến; không thấy vật cản thì dùng L1/L2 như By Distance.</summary>
+        public bool IsAuto => rbtnAuto.Checked;
 
         /// <summary>Pipe Type chọn trên form (Type 5/6 dùng cho các ống nối, co theo Routing Preferences của type này).</summary>
         public ElementId PipeTypeIdC3 => (cboC3PipeType.SelectedItem as ObjectItem)?.ObjectId ?? ElementId.InvalidElementId;
@@ -230,6 +234,7 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
             AppUtils.sa(tbL2);
             AppUtils.sa(rbtnByDistance);
             AppUtils.sa(rbtnByMep);
+            AppUtils.sa(rbtnAuto);
 
             if (Height_ == double.MinValue)
                 return;
@@ -375,7 +380,7 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
                 this.picPreview.Image = System.Drawing.Image.FromFile(Path.Combine(_previewFolder, "A_Dau phun huong xuong_Type 4.jpg"));
             else if (rbtnOptions5.Checked || rbtnOptions6.Checked)
             {
-                string name = (rbtnOptions5.Checked ? "Pendent_Type5" : "Pendent_Type6") + (IsByMep ? "_MEP" : "") + ".png";
+                string name = (rbtnOptions5.Checked ? "Pendent_Type5" : "Pendent_Type6") + (IsByMep || IsAuto ? "_MEP" : "") + ".png";
                 string file = Path.Combine(Common.GetPreviewFolder(), "PlumbingSolution", name);
                 if (File.Exists(file))
                     this.picPreview.Image = System.Drawing.Image.FromFile(file);
@@ -387,7 +392,7 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
             bool type56 = rbtnOptions5.Checked || rbtnOptions6.Checked;
 
             // A: Type 1 (chiều cao) và Type 6 (đoạn đứng trên ống chính). L1/L2 và cách đo chỉ cho Type 5/6;
-            // By Pick MEP thì L2 cố định 20 mm dưới đáy đối tượng nên khoá ô L2.
+            // By Pick MEP thì L2 cố định 20 mm dưới đáy đối tượng nên khoá ô L2; Auto vẫn cần L2 khi không dò thấy vật cản.
             tbC4L2.Enabled = rbtnOptions1.Checked || rbtnOptions6.Checked;
             tbL1.Enabled = type56;
             tbL2.Enabled = type56 && !rbtnByMep.Checked;

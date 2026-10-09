@@ -22,6 +22,9 @@ namespace PlumbingSolution.FireProtection.Command.Modify
     /// By Distance: L1 = khoảng ngang từ tâm ống chính tới tâm ống đứng, L2 = khoảng đứng giữa hai ống ngang.
     /// By Pick MEP: chọn thêm duct / cable tray... L1 = khe hở từ mép ống đứng tới mép đối tượng,
     /// đỉnh ống ngang dưới (kể cả bảo ôn của đối tượng) cách đáy đối tượng cố định 20 mm.
+    /// Auto: không chọn đối tượng; tự dò duct / cable tray / conduit / ống / dầm cắt ngang tuyến (mặt bằng) trong khoảng
+    /// cao độ giữa đầu phun và ống ngang trên, rồi nối như By Pick MEP (ống dưới luồn dưới vật cản thấp nhất trên tuyến).
+    /// Không dò thấy vật cản thì nối như By Distance. Ống cùng System Type với ống chính (nhánh FP) không tính là vật cản.
     ///
     /// Thao tác: chọn đầu phun → Finish, chọn ống chính → Finish, (By MEP) chọn đối tượng MEP → Finish.
     /// Co và tee sinh ra theo Routing Preferences của Pipe Type chọn trên form.
@@ -90,7 +93,7 @@ namespace PlumbingSolution.FireProtection.Command.Modify
                             try
                             {
                                 var created = new List<ElementId>();
-                                reason = ConnectOne(doc, sprinkler, mainIds, obstacles, isType6, form.IsByMep,
+                                reason = ConnectOne(doc, sprinkler, mainIds, obstacles, isType6, form.IsByMep, form.IsAuto,
                                                     pipeTypeId, sizeFt, l1Ft, l2Ft, aFt, created);
                                 if (reason == null)
                                 {
@@ -144,7 +147,7 @@ namespace PlumbingSolution.FireProtection.Command.Modify
 
         /// <summary>Nối một đầu phun. Trả về null nếu thành công, ngược lại là lý do bỏ qua.</summary>
         private static string ConnectOne(Document doc, FamilyInstance sprinkler, List<ElementId> mainIds,
-                                         List<Element> obstacles, bool isType6, bool byMep,
+                                         List<Element> obstacles, bool isType6, bool byMep, bool auto,
                                          ElementId pipeTypeId, double sizeFt, double l1Ft, double l2Ft, double aFt,
                                          List<ElementId> created)
         {
@@ -176,12 +179,20 @@ namespace PlumbingSolution.FireProtection.Command.Modify
             double dropDist;   // khoảng ngang từ điểm tee tới tâm ống đứng
             double zLow;
 
+            Obstacle ob = null;
             if (byMep)
             {
-                Obstacle ob = FirstObstacle(doc, obstacles, tee, dir, planDist);
+                ob = FirstObstacle(doc, obstacles, tee, dir, planDist);
                 if (ob == null)
                     return "no picked MEP element between the main pipe and the sprinkler";
+            }
+            else if (auto)
+            {
+                ob = AutoObstacle(doc, main, mainIds, tee, dir, planDist, headPt.Z + radius * 4, zTop + radius);
+            }
 
+            if (ob != null)
+            {
                 dropDist = ob.Enter - l1Ft - radius;
                 zLow = ob.BottomZ - Common.mmToFT * ClearanceUnderMepMm - radius;
             }
@@ -191,14 +202,16 @@ namespace PlumbingSolution.FireProtection.Command.Modify
                 zLow = zTop - l2Ft;
             }
 
+            // Auto: ghi kèm Id vật cản dò được để người dùng kiểm tra khi dò nhầm.
+            string obNote = auto && ob != null ? " (obstacle " + ob.Id.ToInt() + ")" : "";
             if (dropDist < radius * 4)
-                return "L1 leaves no room after the main pipe";
+                return "L1 leaves no room after the main pipe" + obNote;
             if (dropDist > planDist - radius * 4)
-                return "L1 is longer than the distance to the sprinkler";
+                return "L1 is longer than the distance to the sprinkler" + obNote;
             if (zLow > zTop - radius * 4)
-                return "the lower run is not below the upper run";
+                return "the lower run is not below the upper run" + obNote;
             if (zLow < headPt.Z + radius * 4)
-                return "the lower run is too close to the sprinkler";
+                return "the lower run is too close to the sprinkler" + obNote;
 
             XYZ drop = tee + dir * dropDist;
             var pts = new List<XYZ>();
@@ -320,6 +333,8 @@ namespace PlumbingSolution.FireProtection.Command.Modify
         {
             public double Enter;     // khoảng ngang từ điểm tee tới mép đối tượng theo hướng tới đầu phun
             public double BottomZ;   // đáy đối tượng, đã trừ bảo ôn
+            public double TopZ;      // đỉnh đối tượng, đã cộng bảo ôn
+            public ElementId Id;
         }
 
         /// <summary>Đối tượng MEP đầu tiên mà tuyến (mặt bằng) từ tee tới đầu phun cắt qua.</summary>
@@ -363,7 +378,7 @@ namespace PlumbingSolution.FireProtection.Command.Modify
                         if (enter <= Math.Min(u1, v1))
                         {
                             XYZ at = axis.Project(start + dir * enter).XYZPoint;
-                            return new Obstacle { Enter = enter, BottomZ = at.Z - height / 2 - insulation };
+                            return new Obstacle { Enter = enter, BottomZ = at.Z - height / 2 - insulation, TopZ = at.Z + height / 2 + insulation, Id = e.Id };
                         }
                     }
                     return null;
@@ -378,9 +393,62 @@ namespace PlumbingSolution.FireProtection.Command.Modify
             {
                 double enter = Math.Max(x0, y0);
                 if (enter <= Math.Min(x1, y1))
-                    return new Obstacle { Enter = enter, BottomZ = bb.Min.Z - insulation };
+                    return new Obstacle { Enter = enter, BottomZ = bb.Min.Z - insulation, TopZ = bb.Max.Z + insulation, Id = e.Id };
             }
             return null;
+        }
+
+        private static readonly BuiltInCategory[] AutoCategories =
+        {
+            BuiltInCategory.OST_DuctCurves, BuiltInCategory.OST_DuctFitting, BuiltInCategory.OST_CableTray,
+            BuiltInCategory.OST_CableTrayFitting, BuiltInCategory.OST_Conduit, BuiltInCategory.OST_PipeCurves,
+            BuiltInCategory.OST_StructuralFraming,
+        };
+
+        /// <summary>
+        /// Auto: vật cản đầu tiên trên tuyến mặt bằng tee → đầu phun, chỉ xét đối tượng có cao độ chạm khoảng [zMin, zMax]
+        /// (dưới ống ngang trên, trên chỗ đặt được ống ngang dưới). Đáy trả về là đáy thấp nhất của mọi vật cản trên tuyến
+        /// để ống ngang dưới luồn qua hết. Bỏ qua ống chính và ống cùng System Type với ống chính.
+        /// </summary>
+        private static Obstacle AutoObstacle(Document doc, Pipe main, List<ElementId> mainIds, XYZ start, XYZ dir, double length,
+                                             double zMin, double zMax)
+        {
+            XYZ end = start + dir * length;
+            double pad = 0.1;
+            var box = new Outline(new XYZ(Math.Min(start.X, end.X) - pad, Math.Min(start.Y, end.Y) - pad, zMin),
+                                  new XYZ(Math.Max(start.X, end.X) + pad, Math.Max(start.Y, end.Y) + pad, zMax));
+            ElementId mainSystem = main.get_Parameter(BuiltInParameter.RBS_PIPING_SYSTEM_TYPE_PARAM)?.AsElementId();
+
+            var candidates = new FilteredElementCollector(doc)
+                .WhereElementIsNotElementType()
+                .WherePasses(new ElementMulticategoryFilter(AutoCategories))
+                .WherePasses(new BoundingBoxIntersectsFilter(box));
+
+            Obstacle first = null;
+            double lowest = double.MaxValue;
+            foreach (Element e in candidates)
+            {
+                if (e is Pipe p)
+                {
+                    if (mainIds.Contains(p.Id))
+                        continue;
+                    ElementId sys = p.get_Parameter(BuiltInParameter.RBS_PIPING_SYSTEM_TYPE_PARAM)?.AsElementId();
+                    if (mainSystem != null && sys == mainSystem)
+                        continue;
+                }
+
+                Obstacle ob = Intersect(doc, e, start, dir, length);
+                if (ob == null || ob.TopZ < zMin || ob.BottomZ > zMax)
+                    continue;
+
+                if (first == null || ob.Enter < first.Enter)
+                    first = ob;
+                lowest = Math.Min(lowest, ob.BottomZ);
+            }
+
+            if (first != null)
+                first.BottomZ = lowest;
+            return first;
         }
 
         /// <summary>Đoạn tham số [t0, t1] ⊂ [0, length] mà p + t*d nằm trong [min, max].</summary>

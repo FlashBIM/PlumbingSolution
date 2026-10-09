@@ -59,6 +59,7 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
             this.tlpMethod = new System.Windows.Forms.TableLayoutPanel();
             this.rbtnByDistance = new System.Windows.Forms.RadioButton();
             this.rbtnByMep = new System.Windows.Forms.RadioButton();
+            this.rbtnAuto = new System.Windows.Forms.RadioButton();
             this.label3 = new System.Windows.Forms.Label();
             this.tbC4L2 = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
@@ -405,11 +406,13 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
             // 
             // tlpMethod
             // 
-            this.tlpMethod.ColumnCount = 2;
-            this.tlpMethod.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpMethod.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpMethod.ColumnCount = 3;
+            this.tlpMethod.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30F));
+            this.tlpMethod.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 46F));
+            this.tlpMethod.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 24F));
             this.tlpMethod.Controls.Add(this.rbtnByDistance, 0, 0);
             this.tlpMethod.Controls.Add(this.rbtnByMep, 1, 0);
+            this.tlpMethod.Controls.Add(this.rbtnAuto, 2, 0);
             this.tlpMethod.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpMethod.Name = "tlpMethod";
             this.tlpMethod.RowCount = 1;
@@ -433,6 +436,15 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
             this.rbtnByMep.Name = "rbtnByMep";
             this.rbtnByMep.Text = "By Pick MEP Elements";
             this.rbtnByMep.UseVisualStyleBackColor = true;
+            // 
+            // rbtnAuto
+            // 
+            this.rbtnAuto.AutoSize = true;
+            this.rbtnAuto.Margin = new System.Windows.Forms.Padding(5);
+            this.rbtnAuto.Name = "rbtnAuto";
+            this.rbtnAuto.Text = "Auto";
+            this.rbtnAuto.UseVisualStyleBackColor = true;
+            this.rbtnAuto.CheckedChanged += new System.EventHandler(this.rbtnOptions5_CheckedChanged);
             // 
             // tableLayoutPanel6
             // 
@@ -589,5 +601,6 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
         private System.Windows.Forms.TableLayoutPanel tlpMethod;
         private System.Windows.Forms.RadioButton rbtnByDistance;
         private System.Windows.Forms.RadioButton rbtnByMep;
+        private System.Windows.Forms.RadioButton rbtnAuto;
     }
 }
