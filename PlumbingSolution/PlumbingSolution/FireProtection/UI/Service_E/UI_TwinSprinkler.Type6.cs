@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using Form = System.Windows.Forms.Form;
+using Control = System.Windows.Forms.Control;
 
 namespace PlumbingSolution.FireProtection.UI.Service_E
 {
