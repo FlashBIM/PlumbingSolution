@@ -105,20 +105,6 @@ internal static class Program
                 }
                 Console.WriteLine("saved " + file + " " + f.Size);
 
-                // Twin Sprinkler: chụp thêm trạng thái chọn Type 6 (form nới rộng, hiện khung Type 6).
-                if (buildType6 != null)
-                {
-                    RadioButton rb6 = All(f).OfType<RadioButton>().FirstOrDefault(x => x.Name == "rbC5Type6");
-                    if (rb6 != null) rb6.Checked = true;
-                    t.GetMethod("SetType6Panel", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(f, new object[] { true });
-                    Application.DoEvents();
-                    using (var bmp = new Bitmap(f.Width, f.Height))
-                    {
-                        f.DrawToBitmap(bmp, new Rectangle(Point.Empty, f.Size));
-                        bmp.Save(Path.ChangeExtension(file, null) + "_type6.png", ImageFormat.Png);
-                    }
-                }
-
                 TabControl tabs = All(f).OfType<TabControl>().FirstOrDefault();
                 for (int i = 1; tabs != null && i < tabs.TabCount; i++)
                 {

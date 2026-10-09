@@ -12,19 +12,19 @@ using Control = System.Windows.Forms.Control;
 namespace PlumbingSolution.FireProtection.UI.Service_E
 {
     /// <summary>
-    /// Twin Sprinkler Type 6 (sheet Fire Protection): khung thông số riêng hiện bên phải form khi chọn Type 6
-    /// (form nới rộng ra), ẩn lại khi chọn type khác. Dựng bằng code để không đụng bố cục Designer của Type 1-5.
+    /// Twin Sprinkler Type 6 (sheet Fire Protection): cột phải của form chia hai tab - "General" (các nhóm cũ của
+    /// Type 1-6) và "Type 6" (thông số riêng của Type 6, chỉ bật khi chọn Type 6). Dựng bằng code để không đụng bố cục
+    /// Designer của Type 1-5.
     /// </summary>
     public partial class UI_TwinSprinkler
     {
-        private const int Type6PanelWidth = 330;
+        private const int TabHeaderHeight = 30;   // form cao thêm chừng này để nội dung tab không bị hụt
 
         private TableLayoutPanel pnlType6;
         private TextBox tbT6L1, tbT6L2, tbT6L3, tbT6Elevation;
         private RadioButton rbT6Tee, rbT6TeeE90, rbT6TeeE45, rbT6ByMep, rbT6Auto;
         private ComboBox cbT6Family, cbT6Type;
         private CheckBox chkT6Direct;
-        private bool m_type6Shown;
 
         public bool IsType6 => rbC5Type6.Checked;
         public double L1_6 => Mm(tbT6L1);
@@ -55,7 +55,7 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
         // Chỉ dựng control (không gọi Revit API) - Tools/FormSnapshot cũng gọi hàm này để chụp khung Type 6.
         private void BuildType6Panel()
         {
-            pnlType6 = new TableLayoutPanel { Name = "pnlType6", Dock = DockStyle.Fill, ColumnCount = 1, RowCount = 5, Visible = false, Margin = new Padding(0, 0, 5, 0) };
+            pnlType6 = new TableLayoutPanel { Name = "pnlType6", Dock = DockStyle.Fill, ColumnCount = 1, RowCount = 5, Margin = new Padding(0) };
             pnlType6.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             pnlType6.RowStyles.Add(new RowStyle(SizeType.Absolute, 58F));
             pnlType6.RowStyles.Add(new RowStyle(SizeType.Absolute, 98F));
@@ -80,7 +80,7 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
             tlpParams.Controls.Add(tbT6L2, 3, 0);
             tlpParams.Controls.Add(Caption("L3"), 4, 0);
             tlpParams.Controls.Add(tbT6L3, 5, 0);
-            pnlType6.Controls.Add(Group("Type 6 Parameters", tlpParams), 0, 0);
+            pnlType6.Controls.Add(Group("Parameters", tlpParams), 0, 0);
 
             // Main Pipe Fittings.
             var tlpFit = Grid(1, 3);
@@ -125,10 +125,20 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
             tlpUp.SetColumnSpan(chkT6Direct, 2);
             pnlType6.Controls.Add(Group("Upright Sprinkler", tlpUp), 0, 3);
 
-            tableLayoutPanel1.ColumnCount = 3;
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 0F));
-            tableLayoutPanel1.Controls.Add(pnlType6, 2, 0);
-            tableLayoutPanel1.SetRowSpan(pnlType6, 2);
+            // Cột phải: tab General (bố cục cũ) + tab Type 6.
+            var tabs = new TabControl { Name = "tabTwin", Dock = DockStyle.Fill, Margin = new Padding(3, 3, 3, 0) };
+            var tpGeneral = new TabPage("General") { Name = "tpGeneral" };
+            var tpType6 = new TabPage("Type 6") { Name = "tpType6" };
+            tableLayoutPanel1.Controls.Remove(tableLayoutPanel2);
+            tpGeneral.Controls.Add(tableLayoutPanel2);
+            tpType6.Controls.Add(pnlType6);
+            tabs.TabPages.Add(tpGeneral);
+            tabs.TabPages.Add(tpType6);
+            tableLayoutPanel1.Controls.Add(tabs, 1, 0);
+
+            MaximumSize = new System.Drawing.Size(MaximumSize.Width, MaximumSize.Height + TabHeaderHeight);
+            MinimumSize = new System.Drawing.Size(MinimumSize.Width, MinimumSize.Height + TabHeaderHeight);
+            ClientSize = new System.Drawing.Size(ClientSize.Width, ClientSize.Height + TabHeaderHeight);
         }
 
         private void LoadType6()
@@ -235,7 +245,7 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
         private void RefreshType6State()
         {
             bool t6 = rbC5Type6.Checked;
-            SetType6Panel(t6);
+            pnlType6.Enabled = t6;
             if (t6)
             {
                 tbC4L.Enabled = MainFitting6 != TwinMainFitting.Tee;   // A: chỉ khi có đoạn đứng / chéo
@@ -257,31 +267,6 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
                 DisableControl();
             }
             CheckPreviewImages();
-        }
-
-        private void SetType6Panel(bool show)
-        {
-            if (show == m_type6Shown)
-                return;
-            m_type6Shown = show;
-
-            int delta = show ? Type6PanelWidth : -Type6PanelWidth;
-            SuspendLayout();
-            tableLayoutPanel1.ColumnStyles[2].Width = show ? Type6PanelWidth : 0;
-            pnlType6.Visible = show;
-            if (show)
-            {
-                MaximumSize = new System.Drawing.Size(MaximumSize.Width + delta, MaximumSize.Height);
-                MinimumSize = new System.Drawing.Size(MinimumSize.Width + delta, MinimumSize.Height);
-                Width += delta;
-            }
-            else
-            {
-                MinimumSize = new System.Drawing.Size(MinimumSize.Width + delta, MinimumSize.Height);
-                Width += delta;
-                MaximumSize = new System.Drawing.Size(MaximumSize.Width + delta, MaximumSize.Height);
-            }
-            ResumeLayout(true);
         }
 
         /// <summary>Ảnh preview Type 6 theo cách nối vào ống chính.</summary>
