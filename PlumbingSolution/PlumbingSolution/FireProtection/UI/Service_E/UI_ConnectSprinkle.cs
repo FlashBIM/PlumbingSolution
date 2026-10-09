@@ -77,6 +77,16 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
         /// <summary>Type 4: chiều cao A (mm) của đoạn ống đứng trên ống chính.</summary>
         public double HeightA_ => double.TryParse(tbA.Text.Trim(), out double v) ? v : double.MinValue;
 
+        /// <summary>Type 4: tích Preview thì A chỉnh bằng con trỏ trong view thay vì nhập.</summary>
+        public bool IsPreview => rbtnOptions4.Checked && ckbPreview.Checked;
+
+        /// <summary>Ghi lại A đã chốt trong chế độ Preview để lần sau mở form thấy đúng giá trị.</summary>
+        public void SetHeightA(double mm)
+        {
+            tbA.Text = Math.Round(mm).ToString();
+            AppUtils.sa(tbA);
+        }
+
         public ElementId FamilyTypeC2
         {
             get
@@ -197,13 +207,14 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
 
             AppUtils.sa(rbtnOptions4);
             AppUtils.sa(tbA);
+            AppUtils.sa(ckbPreview);
 
             if (PipeSizeC2 == double.MaxValue)
                 return;
 
             if (rbtnOptions4.Checked)
             {
-                if (HeightA_ <= 0)
+                if (!IsPreview && HeightA_ <= 0)
                 {
                     MessageBox.Show(this, "A must be greater than 0.", "Upright Sprinkler", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
@@ -247,6 +258,7 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
             AppUtils.ff(cboC2PypeSize);
             AppUtils.ff(rbtnOptions4);
             AppUtils.ff(tbA);
+            AppUtils.ff(ckbPreview);
             UpdateOptionState();
         }
 
@@ -255,10 +267,11 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
             UpdateOptionState();
         }
 
-        // A chỉ dùng cho Type 4; Type 4 tự đặt co ở đầu ống chính / tee giữa ống nên khoá Elbow 90.
+        // A chỉ dùng cho Type 4 (và mờ hẳn khi tích Preview); Type 4 tự đặt co ở đầu ống chính / tee giữa ống nên khoá Elbow 90.
         private void UpdateOptionState()
         {
-            tbA.Enabled = rbtnOptions4.Checked;
+            ckbPreview.Enabled = rbtnOptions4.Checked;
+            lblA.Enabled = tbA.Enabled = rbtnOptions4.Checked && !ckbPreview.Checked;
             ckbConnectCo90.Enabled = !rbtnOptions4.Checked;
 
             string folder = Common.GetFirePreviewFolder();

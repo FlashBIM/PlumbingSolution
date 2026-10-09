@@ -32,6 +32,7 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.btnRun = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
+            this.ckbPreview = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
@@ -84,6 +85,7 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
             this.tableLayoutPanel3.Controls.Add(this.btnRun, 1, 0);
             this.tableLayoutPanel3.Controls.Add(this.btnCancel, 2, 0);
+            this.tableLayoutPanel3.Controls.Add(this.ckbPreview, 0, 0);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel3.Location = new System.Drawing.Point(3, 303);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
@@ -92,6 +94,17 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
             this.tableLayoutPanel3.Size = new System.Drawing.Size(519, 35);
             this.tableLayoutPanel3.TabIndex = 1;
+            // 
+            // ckbPreview
+            // 
+            this.ckbPreview.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.ckbPreview.AutoSize = true;
+            this.ckbPreview.Margin = new System.Windows.Forms.Padding(8, 3, 3, 3);
+            this.ckbPreview.Name = "ckbPreview";
+            this.ckbPreview.TabIndex = 4;
+            this.ckbPreview.Text = "Preview";
+            this.ckbPreview.UseVisualStyleBackColor = true;
+            this.ckbPreview.CheckedChanged += new System.EventHandler(this.rbtnOptions1_CheckedChanged);
             // 
             // btnRun
             // 
@@ -371,6 +384,7 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
         private System.Windows.Forms.Button btnRun;
+        private System.Windows.Forms.CheckBox ckbPreview;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.GroupBox groupBox2;
