@@ -19,7 +19,7 @@ using System.Windows.Interop;
 namespace PlumbingSolution.FireProtection.Command.Modify
 {
     [Transaction(TransactionMode.Manual)]
-    public class CmdSprinklerUpright : IExternalCommand
+    public partial class CmdSprinklerUpright : IExternalCommand
     {
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {

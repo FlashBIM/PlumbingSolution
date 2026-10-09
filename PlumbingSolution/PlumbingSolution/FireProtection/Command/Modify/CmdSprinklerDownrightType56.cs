@@ -244,7 +244,7 @@ namespace PlumbingSolution.FireProtection.Command.Modify
         }
 
         /// <summary>Tee (hoặc Tap theo Routing Preferences) giữa ống chính; co nếu điểm nối ở đầu ống chính.</summary>
-        private static void ConnectToMain(Document doc, Pipe main, XYZ at, Pipe branch, List<ElementId> mainIds, List<ElementId> created)
+        internal static void ConnectToMain(Document doc, Pipe main, XYZ at, Pipe branch, List<ElementId> mainIds, List<ElementId> created)
         {
             Connector branchCon = ConnectorAt(branch, at);
             Line line = (Line)((LocationCurve)main.Location).Curve;
@@ -272,14 +272,14 @@ namespace PlumbingSolution.FireProtection.Command.Modify
             created.Add(doc.Create.NewTeeFitting(ConnectorAt(main, at), ConnectorAt(second, at), branchCon).Id);
         }
 
-        private static Connector ConnectorAt(MEPCurve curve, XYZ pt)
+        internal static Connector ConnectorAt(MEPCurve curve, XYZ pt)
         {
             return curve.ConnectorManager.Connectors.Cast<Connector>()
                         .Where(c => c.ConnectorType == ConnectorType.End)
                         .OrderBy(c => c.Origin.DistanceTo(pt)).First();
         }
 
-        private static Pipe NearestMainPipe(Document doc, List<ElementId> ids, XYZ pt)
+        internal static Pipe NearestMainPipe(Document doc, List<ElementId> ids, XYZ pt)
         {
             Pipe best = null;
             double bestD = double.MaxValue;
@@ -302,7 +302,7 @@ namespace PlumbingSolution.FireProtection.Command.Modify
         }
 
         /// <summary>Đường kính ngoài/2 của ống theo segment trong Routing Preferences (không có thì lấy danh nghĩa).</summary>
-        private static double OuterRadius(Document doc, ElementId pipeTypeId, double nominalFt)
+        internal static double OuterRadius(Document doc, ElementId pipeTypeId, double nominalFt)
         {
             var type = doc.GetElement(pipeTypeId) as PipeType;
             var rpm = type?.RoutingPreferenceManager;

@@ -48,6 +48,7 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
             keyControl.Add("Type2", rbtnOptions2);
             keyControl.Add("Type1", rbtnOptions1);
             keyControl.Add("Type3", rdnOption3);
+            keyControl.Add("Type4", rbtnOptions4);
             keyControl.Add("VerticalPipeType", label1);
             keyControl.Add("VerticalPipeDiameter", label2);
             keyControl.Add("OK", btnRun);
@@ -72,6 +73,9 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
         public bool isOption3 = false;
 
         public FamilySymbol fmlNipple = null;
+
+        /// <summary>Type 4: chiều cao A (mm) của đoạn ống đứng trên ống chính.</summary>
+        public double HeightA_ => double.TryParse(tbA.Text.Trim(), out double v) ? v : double.MinValue;
 
         public ElementId FamilyTypeC2
         {
@@ -191,8 +195,24 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
             AppUtils.sa(cboC2PipeType);
             AppUtils.sa(cboC2PypeSize);
 
+            AppUtils.sa(rbtnOptions4);
+            AppUtils.sa(tbA);
+
             if (PipeSizeC2 == double.MaxValue)
                 return;
+
+            if (rbtnOptions4.Checked)
+            {
+                if (HeightA_ <= 0)
+                {
+                    MessageBox.Show(this, "A must be greater than 0.", "Upright Sprinkler", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                SetFocus();
+                MakeRequest(RequestId.SprinklerUpType4_RUN);
+                return;
+            }
 
             isConnectTee = rbtnOptions2.Checked;
             isElbow = ckbConnectCo90.Checked;
@@ -225,15 +245,35 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
             AppUtils.ff(ckbConnectCo90);
             AppUtils.ff(cboC2PipeType);
             AppUtils.ff(cboC2PypeSize);
+            AppUtils.ff(rbtnOptions4);
+            AppUtils.ff(tbA);
+            UpdateOptionState();
         }
 
         private void rbtnOptions1_CheckedChanged(object sender, EventArgs e)
         {
+            UpdateOptionState();
+        }
+
+        // A chỉ dùng cho Type 4; Type 4 tự đặt co ở đầu ống chính / tee giữa ống nên khoá Elbow 90.
+        private void UpdateOptionState()
+        {
+            tbA.Enabled = rbtnOptions4.Checked;
+            ckbConnectCo90.Enabled = !rbtnOptions4.Checked;
+
             string folder = Common.GetFirePreviewFolder();
+            string type4 = Path.Combine(Common.GetPreviewFolder(), "PlumbingSolution", "Upright_Type4.png");
             if (rbtnOptions1.Checked)
                 this.picPreview.Image = System.Drawing.Image.FromFile(Path.Combine(folder, "Phuonganlen1.png"));
+            else if (rbtnOptions4.Checked && File.Exists(type4))
+                this.picPreview.Image = System.Drawing.Image.FromFile(type4);
             else
                 this.picPreview.Image = System.Drawing.Image.FromFile(Path.Combine(folder, "Phuonganlen2.png"));
+        }
+
+        private void tbA_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Common.NumberCheck(sender, e, false);
         }
     }
 }

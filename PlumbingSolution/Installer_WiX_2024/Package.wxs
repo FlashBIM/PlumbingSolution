@@ -158,6 +158,7 @@
         <File Id="PreviewPs_1" Source="$(var.SourceRoot)\Icon\Preview\PlumbingSolution\Pendent_Type5_MEP.png" />
         <File Id="PreviewPs_2" Source="$(var.SourceRoot)\Icon\Preview\PlumbingSolution\Pendent_Type6.png" />
         <File Id="PreviewPs_3" Source="$(var.SourceRoot)\Icon\Preview\PlumbingSolution\Pendent_Type6_MEP.png" />
+        <File Id="PreviewPs_4" Source="$(var.SourceRoot)\Icon\Preview\PlumbingSolution\Upright_Type4.png" />
         <RegistryValue Root="HKCU" Key="Software\FlashBim\PlumbingSolution2024" Name="PreviewPs" Type="integer" Value="1"
                        KeyPath="yes" />
         <RemoveFolder Id="RemovePreviewPsDir" Directory="PreviewPsDir" On="uninstall" />
