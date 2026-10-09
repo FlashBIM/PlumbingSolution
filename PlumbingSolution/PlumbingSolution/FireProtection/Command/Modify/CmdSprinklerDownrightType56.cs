@@ -370,7 +370,7 @@ namespace PlumbingSolution.FireProtection.Command.Modify
             return nominalFt / 2;
         }
 
-        private class Obstacle
+        internal class Obstacle
         {
             public double Enter;     // khoảng ngang từ điểm tee tới mép đối tượng theo hướng tới đầu phun
             public double BottomZ;   // đáy đối tượng, đã trừ bảo ôn
@@ -379,7 +379,7 @@ namespace PlumbingSolution.FireProtection.Command.Modify
         }
 
         /// <summary>Đối tượng MEP đầu tiên mà tuyến (mặt bằng) từ tee tới đầu phun cắt qua.</summary>
-        private static Obstacle FirstObstacle(Document doc, List<Element> obstacles, XYZ start, XYZ dir, double length)
+        internal static Obstacle FirstObstacle(Document doc, List<Element> obstacles, XYZ start, XYZ dir, double length)
         {
             Obstacle best = null;
             foreach (Element e in obstacles)
@@ -451,7 +451,7 @@ namespace PlumbingSolution.FireProtection.Command.Modify
         /// (dưới ống ngang trên, trên chỗ đặt được ống ngang dưới). Đáy trả về là đáy thấp nhất của mọi vật cản trên tuyến
         /// để ống ngang dưới luồn qua hết. Bỏ qua ống chính và ống cùng System Type với ống chính.
         /// </summary>
-        private static Obstacle AutoObstacle(Document doc, Pipe main, List<ElementId> mainIds, XYZ start, XYZ dir, double length,
+        internal static Obstacle AutoObstacle(Document doc, Pipe main, List<ElementId> mainIds, XYZ start, XYZ dir, double length,
                                              double zMin, double zMax)
         {
             XYZ end = start + dir * length;
@@ -517,7 +517,7 @@ namespace PlumbingSolution.FireProtection.Command.Modify
             return 0;
         }
 
-        private static List<Element> PickObstacles()
+        internal static List<Element> PickObstacles()
         {
             try
             {

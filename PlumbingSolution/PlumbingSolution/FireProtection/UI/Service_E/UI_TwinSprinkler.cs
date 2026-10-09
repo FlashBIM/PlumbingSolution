@@ -181,6 +181,7 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
             m_handler = handler;
             m_exEvent = exEvent;
 
+            InitType6();
             Common.SettingTemplate(this);
 
             this.StartPosition = FormStartPosition.CenterScreen;
@@ -209,6 +210,7 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
             AppUtils.ff(rbC5Type3);
             AppUtils.ff(rbC5Type4);
             AppUtils.ff(rbC5Type5);
+            AppUtils.ff(rbC5Type6);
             AppUtils.ff(chkUseNipple);
             AppUtils.ff(txtVerticalTeeOffset);
             AppUtils.ff(cbNipple);
@@ -228,6 +230,7 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
             DisableControl();
 
             CheckPreviewImages();
+            RefreshType6State();
         }
 
         private void btnApply_Click(object sender, EventArgs e)
@@ -245,6 +248,19 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
             AppUtils.sa(chkUseNipple);
             AppUtils.sa(txtVerticalTeeOffset);
             AppUtils.sa(cbNipple);
+            SaveType6();
+
+            if (rbC5Type6.Checked)
+            {
+                string error = ValidateType6();
+                if (error != null)
+                {
+                    MessageBox.Show(this, error, "Twin Sprinkler", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                MakeRequest(RequestId.TwinSprinkerType6_RUN);
+                return;
+            }
 
             fmlNipple = cbNipple.SelectedItem as FamilySymbol;
             if (fmlNipple != null)
@@ -522,6 +538,10 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
                 if (rbC5Type5.Checked)
                 {
                     this.pictureBox1.Image = System.Drawing.Image.FromFile(Path.Combine(previewPath, "Twin sprinkler_5.jpg"));
+                }
+                if (rbC5Type6 != null && rbC5Type6.Checked)
+                {
+                    ShowType6Preview();
                 }
             }
             catch (Exception)

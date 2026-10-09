@@ -50,6 +50,7 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.rbC5Type5 = new System.Windows.Forms.RadioButton();
+            this.rbC5Type6 = new System.Windows.Forms.RadioButton();
             this.rbC5Type4 = new System.Windows.Forms.RadioButton();
             this.rbC5Type3 = new System.Windows.Forms.RadioButton();
             this.rbC5Type2 = new System.Windows.Forms.RadioButton();
@@ -337,6 +338,7 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tableLayoutPanel4.Controls.Add(this.rbC5Type5, 1, 1);
+            this.tableLayoutPanel4.Controls.Add(this.rbC5Type6, 2, 1);
             this.tableLayoutPanel4.Controls.Add(this.rbC5Type4, 0, 1);
             this.tableLayoutPanel4.Controls.Add(this.rbC5Type3, 2, 0);
             this.tableLayoutPanel4.Controls.Add(this.rbC5Type2, 1, 0);
@@ -363,6 +365,17 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
             this.rbC5Type5.Text = "Type 5";
             this.rbC5Type5.UseVisualStyleBackColor = true;
             this.rbC5Type5.CheckedChanged += new System.EventHandler(this.rbC5Type5_CheckedChanged);
+            // 
+            // rbC5Type6
+            // 
+            this.rbC5Type6.AutoSize = true;
+            this.rbC5Type6.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.rbC5Type6.Margin = new System.Windows.Forms.Padding(5);
+            this.rbC5Type6.Name = "rbC5Type6";
+            this.rbC5Type6.TabIndex = 5;
+            this.rbC5Type6.Text = "Type 6";
+            this.rbC5Type6.UseVisualStyleBackColor = true;
+            this.rbC5Type6.CheckedChanged += new System.EventHandler(this.rbC5Type6_CheckedChanged);
             // 
             // rbC5Type4
             // 
@@ -619,6 +632,7 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
         private System.Windows.Forms.TextBox tbC4L1;
         private System.Windows.Forms.TextBox tbC4L;
         private System.Windows.Forms.RadioButton rbC5Type5;
+        private System.Windows.Forms.RadioButton rbC5Type6;
         private System.Windows.Forms.RadioButton rbC5Type4;
         private System.Windows.Forms.RadioButton rbC5Type3;
         private System.Windows.Forms.RadioButton rbC5Type2;
