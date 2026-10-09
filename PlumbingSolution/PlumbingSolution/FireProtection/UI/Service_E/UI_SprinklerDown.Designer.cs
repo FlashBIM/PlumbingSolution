@@ -53,11 +53,8 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
             this.grpParameters = new System.Windows.Forms.GroupBox();
             this.lblL1 = new System.Windows.Forms.Label();
             this.tbL1 = new System.Windows.Forms.TextBox();
-            this.lblL2 = new System.Windows.Forms.Label();
-            this.tbL2 = new System.Windows.Forms.TextBox();
             this.grpMethod = new System.Windows.Forms.GroupBox();
             this.tlpMethod = new System.Windows.Forms.TableLayoutPanel();
-            this.rbtnByDistance = new System.Windows.Forms.RadioButton();
             this.rbtnByMep = new System.Windows.Forms.RadioButton();
             this.rbtnAuto = new System.Windows.Forms.RadioButton();
             this.label3 = new System.Windows.Forms.Label();
@@ -157,7 +154,7 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 0F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 92F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 56F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 56F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
             this.tableLayoutPanel2.Size = new System.Drawing.Size(509, 278);
@@ -380,21 +377,6 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
             this.tbL1.Text = "500";
             this.tbL1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tbC4L2_KeyPress);
             // 
-            // lblL2
-            // 
-            this.lblL2.AutoSize = true;
-            this.lblL2.Margin = new System.Windows.Forms.Padding(5);
-            this.lblL2.Name = "lblL2";
-            this.lblL2.Text = "L2";
-            // 
-            // tbL2
-            // 
-            this.tbL2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tbL2.Margin = new System.Windows.Forms.Padding(5);
-            this.tbL2.Name = "tbL2";
-            this.tbL2.Text = "300";
-            this.tbL2.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tbC4L2_KeyPress);
-            // 
             // grpMethod
             // 
             this.grpMethod.Controls.Add(this.tlpMethod);
@@ -406,34 +388,23 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
             // 
             // tlpMethod
             // 
-            this.tlpMethod.ColumnCount = 3;
-            this.tlpMethod.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30F));
-            this.tlpMethod.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 46F));
-            this.tlpMethod.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 24F));
-            this.tlpMethod.Controls.Add(this.rbtnByDistance, 0, 0);
-            this.tlpMethod.Controls.Add(this.rbtnByMep, 1, 0);
-            this.tlpMethod.Controls.Add(this.rbtnAuto, 2, 0);
+            this.tlpMethod.ColumnCount = 2;
+            this.tlpMethod.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpMethod.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpMethod.Controls.Add(this.rbtnByMep, 0, 0);
+            this.tlpMethod.Controls.Add(this.rbtnAuto, 1, 0);
             this.tlpMethod.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpMethod.Name = "tlpMethod";
             this.tlpMethod.RowCount = 1;
             this.tlpMethod.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             // 
-            // rbtnByDistance
-            // 
-            this.rbtnByDistance.AutoSize = true;
-            this.rbtnByDistance.Checked = true;
-            this.rbtnByDistance.Margin = new System.Windows.Forms.Padding(5);
-            this.rbtnByDistance.Name = "rbtnByDistance";
-            this.rbtnByDistance.TabStop = true;
-            this.rbtnByDistance.Text = "By Distance";
-            this.rbtnByDistance.UseVisualStyleBackColor = true;
-            this.rbtnByDistance.CheckedChanged += new System.EventHandler(this.rbtnOptions5_CheckedChanged);
-            // 
             // rbtnByMep
             // 
             this.rbtnByMep.AutoSize = true;
+            this.rbtnByMep.Checked = true;
             this.rbtnByMep.Margin = new System.Windows.Forms.Padding(5);
             this.rbtnByMep.Name = "rbtnByMep";
+            this.rbtnByMep.TabStop = true;
             this.rbtnByMep.Text = "By Pick MEP Elements";
             this.rbtnByMep.UseVisualStyleBackColor = true;
             // 
@@ -455,16 +426,13 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
             this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel6.Controls.Add(this.lblL1, 0, 0);
             this.tableLayoutPanel6.Controls.Add(this.tbL1, 1, 0);
-            this.tableLayoutPanel6.Controls.Add(this.lblL2, 2, 0);
-            this.tableLayoutPanel6.Controls.Add(this.tbL2, 3, 0);
-            this.tableLayoutPanel6.Controls.Add(this.label3, 0, 1);
-            this.tableLayoutPanel6.Controls.Add(this.tbC4L2, 1, 1);
+            this.tableLayoutPanel6.Controls.Add(this.label3, 2, 0);
+            this.tableLayoutPanel6.Controls.Add(this.tbC4L2, 3, 0);
             this.tableLayoutPanel6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel6.Location = new System.Drawing.Point(203, 210);
             this.tableLayoutPanel6.Name = "tableLayoutPanel6";
-            this.tableLayoutPanel6.RowCount = 2;
-            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel6.RowCount = 1;
+            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel6.Size = new System.Drawing.Size(303, 29);
             this.tableLayoutPanel6.TabIndex = 4;
             // 
@@ -533,7 +501,7 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(187)))), ((int)(((byte)(226)))), ((int)(((byte)(252)))));
-            this.ClientSize = new System.Drawing.Size(515, 410);
+            this.ClientSize = new System.Drawing.Size(515, 374);
             this.Controls.Add(this.tableLayoutPanel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -595,11 +563,8 @@ namespace PlumbingSolution.FireProtection.UI.Service_E
         private System.Windows.Forms.GroupBox grpParameters;
         private System.Windows.Forms.Label lblL1;
         private System.Windows.Forms.TextBox tbL1;
-        private System.Windows.Forms.Label lblL2;
-        private System.Windows.Forms.TextBox tbL2;
         private System.Windows.Forms.GroupBox grpMethod;
         private System.Windows.Forms.TableLayoutPanel tlpMethod;
-        private System.Windows.Forms.RadioButton rbtnByDistance;
         private System.Windows.Forms.RadioButton rbtnByMep;
         private System.Windows.Forms.RadioButton rbtnAuto;
     }

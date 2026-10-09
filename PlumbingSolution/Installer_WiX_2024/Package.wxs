@@ -154,9 +154,7 @@
       </Component>
       <!-- Ảnh minh hoạ của PlumbingSolution (Pendent Type 5/6). -->
       <Component Id="PreviewPs" Guid="{0C7746A0-15BE-42FC-8101-87D8B9B34472}" Directory="PreviewPsDir">
-        <File Id="PreviewPs_0" Source="$(var.SourceRoot)\Icon\Preview\PlumbingSolution\Pendent_Type5.png" />
         <File Id="PreviewPs_1" Source="$(var.SourceRoot)\Icon\Preview\PlumbingSolution\Pendent_Type5_MEP.png" />
-        <File Id="PreviewPs_2" Source="$(var.SourceRoot)\Icon\Preview\PlumbingSolution\Pendent_Type6.png" />
         <File Id="PreviewPs_3" Source="$(var.SourceRoot)\Icon\Preview\PlumbingSolution\Pendent_Type6_MEP.png" />
         <File Id="PreviewPs_4" Source="$(var.SourceRoot)\Icon\Preview\PlumbingSolution\Upright_Type4.png" />
         <File Id="PreviewPs_5" Source="$(var.SourceRoot)\Icon\Preview\PlumbingSolution\ConnectPipe_Branch_Elbow45.png" />

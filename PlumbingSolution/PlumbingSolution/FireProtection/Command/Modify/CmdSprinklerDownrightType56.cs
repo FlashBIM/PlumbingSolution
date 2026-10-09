@@ -19,12 +19,11 @@ namespace PlumbingSolution.FireProtection.Command.Modify
     /// Type 5: tee bên hông ống chính → ống ngang L1 → co xuống L2 → ống ngang tới trên đầu phun → co xuống đầu phun.
     /// Type 6: như Type 5 nhưng tee trên đỉnh ống chính, có thêm đoạn đứng A trước khi đi ngang.
     ///
-    /// By Distance: L1 = khoảng ngang từ tâm ống chính tới tâm ống đứng, L2 = khoảng đứng giữa hai ống ngang.
     /// By Pick MEP: chọn thêm duct / cable tray... L1 = khe hở từ mép ống đứng tới mép đối tượng,
     /// đỉnh ống ngang dưới (kể cả bảo ôn của đối tượng) cách đáy đối tượng cố định 20 mm.
     /// Auto: không chọn đối tượng; tự dò duct / cable tray / conduit / ống / dầm cắt ngang tuyến (mặt bằng) trong khoảng
     /// cao độ giữa đầu phun và ống ngang trên, rồi nối như By Pick MEP (ống dưới luồn dưới vật cản thấp nhất trên tuyến).
-    /// Không dò thấy vật cản thì nối như By Distance. Ống cùng System Type với ống chính (nhánh FP) không tính là vật cản.
+    /// Không dò thấy vật cản thì bỏ qua đầu phun đó (báo lại). Ống cùng System Type với ống chính (nhánh FP) không tính là vật cản.
     ///
     /// Thao tác: chọn đầu phun → Finish, chọn ống chính → Finish, (By MEP) chọn đối tượng MEP → Finish.
     /// Co và tee sinh ra theo Routing Preferences của Pipe Type chọn trên form.
@@ -74,7 +73,6 @@ namespace PlumbingSolution.FireProtection.Command.Modify
                 ElementId pipeTypeId = form.PipeTypeIdC3;
                 double sizeFt = Common.mmToFT * form.PipeSizeC3;
                 double l1Ft = Common.mmToFT * form.L1_;
-                double l2Ft = Common.mmToFT * form.L2_;
                 double aFt = Common.mmToFT * form.Height_;
 
                 // Đoạn ống chính mới sinh ra khi cắt để đặt tee cũng phải được đầu phun sau tìm thấy.
@@ -110,7 +108,7 @@ namespace PlumbingSolution.FireProtection.Command.Modify
                             {
                                 var created = new List<ElementId>();
                                 reason = ConnectOne(doc, sprinkler, mainIds, obstacles, isType6, form.IsByMep, form.IsAuto,
-                                                    pipeTypeId, sizeFt, l1Ft, l2Ft, aFt, elbowAtFreeEnd, tees, created);
+                                                    pipeTypeId, sizeFt, l1Ft, aFt, elbowAtFreeEnd, tees, created);
                                 if (reason == null)
                                 {
                                     CmdDeleteSprinker.CreateSchema(sprinkler, created.Select(x => x.ToInt().ToString()).ToList());
@@ -164,7 +162,7 @@ namespace PlumbingSolution.FireProtection.Command.Modify
         /// <summary>Nối một đầu phun. Trả về null nếu thành công, ngược lại là lý do bỏ qua.</summary>
         private static string ConnectOne(Document doc, FamilyInstance sprinkler, List<ElementId> mainIds,
                                          List<Element> obstacles, bool isType6, bool byMep, bool auto,
-                                         ElementId pipeTypeId, double sizeFt, double l1Ft, double l2Ft, double aFt,
+                                         ElementId pipeTypeId, double sizeFt, double l1Ft, double aFt,
                                          bool elbowAtFreeEnd, IList<XYZ> otherTees, List<ElementId> created)
         {
             Connector head = sprinkler.MEPModel?.ConnectorManager?.Connectors.Cast<Connector>()
@@ -205,18 +203,12 @@ namespace PlumbingSolution.FireProtection.Command.Modify
             else if (auto)
             {
                 ob = AutoObstacle(doc, main, mainIds, tee, dir, planDist, headPt.Z + radius * 4, zTop + radius);
+                if (ob == null)
+                    return "no obstacle detected between the main pipe and the sprinkler";
             }
 
-            if (ob != null)
-            {
-                dropDist = ob.Enter - l1Ft - radius;
-                zLow = ob.BottomZ - Common.mmToFT * ClearanceUnderMepMm - radius;
-            }
-            else
-            {
-                dropDist = l1Ft;
-                zLow = zTop - l2Ft;
-            }
+            dropDist = ob.Enter - l1Ft - radius;
+            zLow = ob.BottomZ - Common.mmToFT * ClearanceUnderMepMm - radius;
 
             // Auto: ghi kèm Id vật cản dò được để người dùng kiểm tra khi dò nhầm.
             string obNote = auto && ob != null ? " (obstacle " + ob.Id.ToInt() + ")" : "";
