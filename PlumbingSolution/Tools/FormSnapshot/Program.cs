@@ -46,6 +46,7 @@ internal static class Program
             Tuple.Create("FrmCreateFmlFromBlockCad", ""),
             Tuple.Create("FrmCreateBranchPipeFire", ""),
             Tuple.Create("VerticalMEPForm", ""),
+            Tuple.Create("FrmConnectPipe", ""),
         };
 
         int failures = 0;

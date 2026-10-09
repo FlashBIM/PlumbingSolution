@@ -17,6 +17,13 @@
     <Compile Include="$(MSBuildThisFileDirectory)Commands\Plumbing\PlumbingCommands.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FireProtection\App.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Command\General\CmdPlaceVerticalMep.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\Command\General\CmdConnectPipe.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\UI\GeneralUI\FrmConnectPipe.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)FireProtection\UI\GeneralUI\FrmConnectPipe.Designer.cs">
+      <DependentUpon>FrmConnectPipe.cs</DependentUpon>
+    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)FireProtection\UI\GeneralUI\VerticalMEPForm.cs">
       <SubType>Form</SubType>
     </Compile>
