@@ -256,8 +256,16 @@ namespace PlumbingSolution.FireProtection.Command.Modify
             return null;
         }
 
-        /// <summary>Tee (hoặc Tap theo Routing Preferences) giữa ống chính; co nếu điểm nối ở đầu ống chính.</summary>
-        internal static void ConnectToMain(Document doc, Pipe main, XYZ at, Pipe branch, List<ElementId> mainIds, List<ElementId> created)
+        /// <summary>Elbow Connection: đầu phun cách đầu ống chính còn hở trong khoảng này thì cắt ống chính tới điểm nối và đặt co.</summary>
+        private const double FreeEndElbowMm = 1000;
+
+        /// <summary>
+        /// Tee (hoặc Tap theo Routing Preferences) giữa ống chính; co nếu điểm nối ở đầu ống chính.
+        /// elbowAtFreeEnd (tuỳ chọn Elbow Connection): điểm nối cách đầu ống hở ≤ 1 m và đoạn thừa không có điểm nối của
+        /// đầu phun khác (otherTees) → cắt bỏ đoạn thừa, nối bằng co thay vì tee để lại đoạn cụt.
+        /// </summary>
+        internal static void ConnectToMain(Document doc, Pipe main, XYZ at, Pipe branch, List<ElementId> mainIds, List<ElementId> created,
+                                           bool elbowAtFreeEnd = false, IList<XYZ> otherTees = null)
         {
             Connector branchCon = ConnectorAt(branch, at);
             Line line = (Line)((LocationCurve)main.Location).Curve;
@@ -269,6 +277,23 @@ namespace PlumbingSolution.FireProtection.Command.Modify
             {
                 created.Add(doc.Create.NewElbowFitting(endCon, branchCon).Id);
                 return;
+            }
+
+            if (elbowAtFreeEnd)
+            {
+                Connector free = main.ConnectorManager.Connectors.Cast<Connector>()
+                                     .Where(c => c.ConnectorType == ConnectorType.End && !c.IsConnected)
+                                     .OrderBy(c => c.Origin.DistanceTo(at)).FirstOrDefault();
+                double stubTol = Common.mmToFT * 10;
+                if (free != null && free.Origin.DistanceTo(at) <= Common.mmToFT * FreeEndElbowMm
+                    && (otherTees == null || !otherTees.Any(p => p.DistanceTo(at) > stubTol && OnSegment(p, at, free.Origin, stubTol))))
+                {
+                    XYZ keep = line.GetEndPoint(0).DistanceTo(free.Origin) < tol ? line.GetEndPoint(1) : line.GetEndPoint(0);
+                    ((LocationCurve)main.Location).Curve = Line.CreateBound(keep, at);
+                    doc.Regenerate();
+                    created.Add(doc.Create.NewElbowFitting(ConnectorAt(main, at), branchCon).Id);
+                    return;
+                }
             }
 
             if (GetPreferredJunctionType(main) == PreferredJunctionType.Tap)
@@ -283,6 +308,14 @@ namespace PlumbingSolution.FireProtection.Command.Modify
             doc.Regenerate();
 
             created.Add(doc.Create.NewTeeFitting(ConnectorAt(main, at), ConnectorAt(second, at), branchCon).Id);
+        }
+
+        private static bool OnSegment(XYZ p, XYZ a, XYZ b, double tol)
+        {
+            XYZ ab = b - a;
+            double len2 = ab.DotProduct(ab);
+            double t = len2 < 1e-12 ? 0 : Math.Max(0, Math.Min(1, (p - a).DotProduct(ab) / len2));
+            return (a + ab * t).DistanceTo(p) < tol;
         }
 
         internal static Connector ConnectorAt(MEPCurve curve, XYZ pt)
